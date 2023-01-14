@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Mocks\" />
+    <Folder Include="Models\CloudServiceModels\" />
   </ItemGroup>
 
 </Project>

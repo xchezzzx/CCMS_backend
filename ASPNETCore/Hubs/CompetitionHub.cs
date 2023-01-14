@@ -1,9 +1,8 @@
 ﻿using ASPNETCore.Helpers;
-using ASPNETCore.Models.DTModels;
 using ASPNETCore.Models.DBModels;
+using ASPNETCore.Models.DTModels;
 using ASPNETCore.Repositories;
 using Microsoft.AspNetCore.SignalR;
-using ASPNETCore.Interfaces;
 
 namespace ASPNETCore.Hubs
 {
@@ -11,16 +10,18 @@ namespace ASPNETCore.Hubs
     {
 
         private readonly IRepository<Competition> _competitionRepository;
+        private readonly CCMSContext _dbContext;
 
-        public CompetitionHub(IRepository<Competition> competitionRepository)
+        public CompetitionHub(IRepository<Competition> competitionRepository, CCMSContext cCMSContext)
         {
             _competitionRepository = competitionRepository;
+            _dbContext = cCMSContext;
         }
 
         public async Task GetAllCompetitions()
         {
-			
-			var	competitions = await _competitionRepository.GetAllCompetitions();
+
+            var competitions = await _competitionRepository.GetAllEntitiesWithIncludeAsync(x=>x.CreateUser, p=>p.State, p=>p.Status);
 
             List<CompetitionDT> competitionsDT = new();
 

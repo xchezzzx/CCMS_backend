@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ASPNETCore.Models.DBModels
 {
-    public partial class Competition : ICRUDEntity
+    public partial class Competition : ICRUDEntity, IEntityWithId
     {
         public Competition()
         {

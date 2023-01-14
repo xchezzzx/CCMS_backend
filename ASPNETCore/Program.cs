@@ -33,7 +33,7 @@ builder.Services.AddDbContext<CCMSContext>(options => options.UseSqlServer(DB_CO
 
 builder.Services.AddCors(c => c.AddPolicy("policy", a => a.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
-builder.Services.AddTransient<IRepository<Competition>, CompetitionRepository>();
+builder.Services.AddTransient<IRepository<Competition>, Repository<Competition>>();
 builder.Services.AddTransient<IGeneric<Competition>, GenericRepository<Competition>>();
 builder.Services.AddTransient<IGeneric<User>, GenericRepository<User>>();
 
