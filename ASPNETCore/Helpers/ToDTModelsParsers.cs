@@ -1,6 +1,6 @@
 ﻿using ASPNETCore.DataAccess.Models.DBModels;
 using SharedLib.DataTransferModels;
-
+using SharedLib.Enums;
 
 namespace ASPNETCore.Helpers
 {
@@ -18,8 +18,15 @@ namespace ASPNETCore.Helpers
                 StartDateTime = competition.StartDateTime,
                 NumberConcTasks = competition.NumberConcTasks,
                 Hashtag = competition.Hashtag,
-                    
-            };
+                State = ((CompetitionStates)competition.StateId).ToString(),
+                StateId = (CompetitionStates)competition.StateId,
+
+                CreateDate = competition.CreateDate,
+                CreateUserId = competition.CreateUserId,
+                UpdateDate = competition.UpdateDate,
+                UpdateUserId = competition.UpdateUserId,
+                Status = ((EntityStatuses)competition.StatusId).ToString()
+			};
         }
     }
 }
