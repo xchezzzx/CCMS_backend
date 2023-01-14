@@ -8,12 +8,12 @@ using System.Linq.Expressions;
 
 namespace ASPNETCore.Repositories
 { 
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, ICRUDEntity, IEntityWithId
+    public class EntityRepository<TEntity> : IEntityRepository<TEntity> where TEntity : class, ICRUDEntity
     {
         private readonly CCMSContext _dbContext;
 		private readonly DbSet<TEntity> _dbSet;
 
-        public Repository(CCMSContext dbContext)
+        public EntityRepository(CCMSContext dbContext)
         {
             _dbContext = dbContext;
 			_dbSet = _dbContext.Set<TEntity>();
@@ -43,28 +43,14 @@ namespace ASPNETCore.Repositories
 			return await query.ToListAsync();
 		}
 
-		public async Task<TEntity> GetEntityByIdWithIncludeAsyncAsync(int id, params Expression<Func<TEntity, object>>[] includeProperties)
-		{
-			return await Include(includeProperties).Where(e => e.Id == id).FirstOrDefaultAsync();
-		}
-
 		public async Task AddEntityAsync(TEntity Entity, int userCreateId)
 		{
-			FillEntityHelper.CreateEntity(ref Entity, userCreateId);
 			await _dbSet.AddAsync(Entity);
 			await _dbContext.SaveChangesAsync();
 		}
 
 		public async Task UpdateEntityAsync(TEntity Entity, int userUpdateId)
 		{
-			FillEntityHelper.UpdateEntity(ref Entity, userUpdateId);
-			_dbSet.Update(Entity);
-			await _dbContext.SaveChangesAsync();
-		}
-
-		public async Task DeleteEntityAsync(TEntity Entity, int userUpdateId)
-		{
-			FillEntityHelper.DeleteEntity(ref Entity, userUpdateId);
 			_dbSet.Update(Entity);
 			await _dbContext.SaveChangesAsync();
 		}

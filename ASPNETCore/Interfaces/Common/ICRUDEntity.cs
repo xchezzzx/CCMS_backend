@@ -2,6 +2,7 @@
 {
     public interface ICRUDEntity
     {
+        int Id { get; }
         int StatusId { get; set; }
         int CreateUserId { get; set; }
         public DateTime CreateDate { get; set; }

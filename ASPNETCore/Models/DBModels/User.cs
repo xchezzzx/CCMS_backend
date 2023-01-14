@@ -1,10 +1,11 @@
-﻿using System;
+﻿using ASPNETCore.Interfaces.Common;
+using System;
 using System.Collections.Generic;
 
 namespace ASPNETCore.Models.DBModels
 {
-    public partial class User
-    {
+    public partial class User : ICRUDEntity
+	{
         public User()
         {
             CompetitionCreateUsers = new HashSet<Competition>();

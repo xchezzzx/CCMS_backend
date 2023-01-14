@@ -1,10 +1,11 @@
-﻿using System;
+﻿using ASPNETCore.Interfaces.Common;
+using System;
 using System.Collections.Generic;
 
 namespace ASPNETCore.Models.DBModels
 {
-    public partial class ExercisePlatform
-    {
+    public partial class ExercisePlatform : ICRUDEntity
+	{
         public ExercisePlatform()
         {
             Exercises = new HashSet<Exercise>();

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using ASPNETCore.Interfaces.Common;
+using System;
 using System.Collections.Generic;
 
 namespace ASPNETCore.Models.DBModels
 {
-    public partial class UsersToTeam
-    {
+    public partial class UsersToTeam : ICRUDEntity
+	{
         public int Id { get; set; }
         public int UserId { get; set; }
         public int TeamId { get; set; }

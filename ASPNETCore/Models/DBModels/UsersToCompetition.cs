@@ -1,10 +1,11 @@
-﻿using System;
+﻿using ASPNETCore.Interfaces.Common;
+using System;
 using System.Collections.Generic;
 
 namespace ASPNETCore.Models.DBModels
 {
-    public partial class UsersToCompetition
-    {
+    public partial class UsersToCompetition : ICRUDEntity
+	{
         public int Id { get; set; }
         public int CompetitionId { get; set; }
         public int UserId { get; set; }

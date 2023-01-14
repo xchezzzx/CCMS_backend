@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace ASPNETCore.Repositories
 {
-    public interface IRepository<TEntity> where TEntity : class, ICRUDEntity
+    public interface IEntityRepository<TEntity> where TEntity : class, ICRUDEntity
     {
 		Task<List<TEntity>> GetAllEntitiesWithIncludeAsync(params Expression<Func<TEntity, object>>[] includeProperties);
         Task<List<TEntity>> GetAllEntitiesWithIncludeAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties);
@@ -13,14 +13,9 @@ namespace ASPNETCore.Repositories
 		Task<List<TEntity>> GetActiveEntitiesWithIncludeAsync(params Expression<Func<TEntity, object>>[] includeProperties);
         Task<List<TEntity>> GetActiveEntitiesWithIncludeAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties);
 
-
-		Task<TEntity> GetEntityByIdWithIncludeAsyncAsync(int id, params Expression<Func<TEntity, object>>[] includeProperties);
-
         Task AddEntityAsync(TEntity Entity, int userCreateId);
 
         Task UpdateEntityAsync(TEntity Entity, int userUpdateId);
-
-        Task DeleteEntityAsync(TEntity Entity, int userUpdateId);
 
 	}
 }

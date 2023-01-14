@@ -1,6 +1,7 @@
 ﻿using ASPNETCore.Helpers;
 using ASPNETCore.Models.DBModels;
 using ASPNETCore.Models.DTModels;
+using ASPNETCore.Providers.EntityProvider;
 using ASPNETCore.Repositories;
 using Microsoft.AspNetCore.SignalR;
 
@@ -9,13 +10,11 @@ namespace ASPNETCore.Hubs
     public class CompetitionHub: Hub
     {
 
-        private readonly IRepository<Competition> _competitionRepository;
-        private readonly CCMSContext _dbContext;
+        private readonly IEntityProvider<Competition> _competitionRepository;
 
-        public CompetitionHub(IRepository<Competition> competitionRepository, CCMSContext cCMSContext)
+        public CompetitionHub(IEntityProvider<Competition> competitionRepository)
         {
             _competitionRepository = competitionRepository;
-            _dbContext = cCMSContext;
         }
 
         public async Task GetAllCompetitions()
