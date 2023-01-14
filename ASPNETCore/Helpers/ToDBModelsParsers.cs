@@ -16,13 +16,40 @@ namespace ASPNETCore.Helpers
                 EndDateTime = competitionDT.EndDateTime,
                 NumberConcTasks = competitionDT.NumberConcTasks,
                 Hashtag = competitionDT.Hashtag,
-                StateId = 1,
-                StatusId = 1,
-                CreateUserId= 1,
-                UpdateUserId= 1,
-                CreateDate = DateTime.Now,
-                UpdateDate= DateTime.Now,
+                StateId = (int)competitionDT.StateId
+                
             };
         }
-    }
+
+		public static Exercise ExerciseParser(ExerciseDT exerciseDT)
+		{
+
+			return new Exercise()
+			{
+				Name = exerciseDT.Name,
+                Content = exerciseDT.Content,
+                CategoryId = exerciseDT.CategoryId,
+                LangId = exerciseDT.LangId,
+                PlatformId = exerciseDT.PlatformId,
+                Timeframe = exerciseDT.Timeframe,
+                Points = exerciseDT.Points,
+                Fine = exerciseDT.Fine,
+                IfHasBonus = exerciseDT.IfHasBonus,
+                BonusContent = exerciseDT.BonusContent,
+                BonusTimeframe = exerciseDT.BonusTimeframe,
+                BonusPoints = exerciseDT.BonusPoints
+			};
+		}
+
+		public static Team TeamParser(TeamDT teamDT)
+		{
+
+			return new Team()
+			{
+				Name = teamDT.Name,
+                Icon = teamDT.Icon,
+                SumPoints = teamDT.SumPoints
+			};
+		}
+	}
 }

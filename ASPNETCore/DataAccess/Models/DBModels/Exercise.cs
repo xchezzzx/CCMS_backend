@@ -21,7 +21,7 @@ namespace ASPNETCore.DataAccess.Models.DBModels
         public int Points { get; set; }
         public int Fine { get; set; }
         public bool IfHasBonus { get; set; }
-        public string BonusContent { get; set; }
+        public string? BonusContent { get; set; }
         public TimeSpan? BonusTimeframe { get; set; }
         public int? BonusPoints { get; set; }
         public DateTime CreateDate { get; set; }

@@ -1,4 +1,6 @@
 using ASPNETCore.BuisnessLogic.Managers.CompetitionsManager;
+using ASPNETCore.BuisnessLogic.Managers.ExercisesManager;
+using ASPNETCore.BuisnessLogic.Managers.TeamsManager;
 using ASPNETCore.BuisnessLogic.Providers.EntityProvider;
 using ASPNETCore.DataAccess.Models.DBModels;
 using ASPNETCore.DataAccess.Repositories;
@@ -60,6 +62,8 @@ builder.Services.AddTransient<IEntityProvider<UsersToTeam>, EntityProvider<Users
 
 
 builder.Services.AddTransient<ICompetitionManager, CompetitionManager>();
+builder.Services.AddTransient<ITeamManager, TeamManager>();
+builder.Services.AddTransient<IExercisesManager, ExercisesManager>();
 
 builder.Services.AddControllers()
         .AddJsonOptions(options =>
@@ -105,5 +109,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapHub<CompetitionHub>("/competitions");
+app.MapHub<ExerciseHub>("/exercises");
+app.MapHub<TeamHub>("/teams");
+
 
 app.Run();
