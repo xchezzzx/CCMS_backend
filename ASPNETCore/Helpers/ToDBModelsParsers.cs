@@ -1,5 +1,5 @@
-﻿using ASPNETCore.Models.DTModels;
-using ASPNETCore.Models.DBModels;
+﻿using ASPNETCore.DataAccess.Models.DBModels;
+using SharedLib.DataTransferModels;
 
 namespace ASPNETCore.Helpers
 {

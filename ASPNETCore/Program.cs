@@ -1,13 +1,11 @@
+using ASPNETCore.BuisnessLogic.Managers.CompetitionsManager;
+using ASPNETCore.BuisnessLogic.Providers.EntityProvider;
+using ASPNETCore.DataAccess.Models.DBModels;
+using ASPNETCore.DataAccess.Repositories;
 using ASPNETCore.Hubs;
-using ASPNETCore.Interfaces;
-using ASPNETCore.Models.DBModels;
-using ASPNETCore.Repositories;
-using ASPNETCore.Helpers;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
-using System.Text.Json;
-using ASPNETCore.Providers.EntityProvider;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +57,9 @@ builder.Services.AddTransient<IEntityProvider<TeamsToCompetition>, EntityProvide
 builder.Services.AddTransient<IEntityProvider<User>, EntityProvider<User>>();
 builder.Services.AddTransient<IEntityProvider<UsersToCompetition>, EntityProvider<UsersToCompetition>>();
 builder.Services.AddTransient<IEntityProvider<UsersToTeam>, EntityProvider<UsersToTeam>>();
+
+
+builder.Services.AddTransient<ICompetitionManager, CompetitionManager>();
 
 builder.Services.AddControllers()
         .AddJsonOptions(options =>

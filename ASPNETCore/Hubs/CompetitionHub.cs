@@ -1,33 +1,27 @@
-﻿using ASPNETCore.Helpers;
-using ASPNETCore.Models.DBModels;
-using ASPNETCore.Models.DTModels;
-using ASPNETCore.Providers.EntityProvider;
-using ASPNETCore.Repositories;
+﻿using ASPNETCore.BuisnessLogic.Managers.CompetitionsManager;
+using ASPNETCore.BuisnessLogic.Providers.EntityProvider;
+using ASPNETCore.DataAccess.Models.DBModels;
+using ASPNETCore.Helpers;
 using Microsoft.AspNetCore.SignalR;
+using SharedLib.DataTransferModels;
 
 namespace ASPNETCore.Hubs
 {
     public class CompetitionHub: Hub
     {
 
-        private readonly IEntityProvider<Competition> _competitionRepository;
+        private readonly ICompetitionManager _competitionManager;
 
-        public CompetitionHub(IEntityProvider<Competition> competitionRepository)
+        public CompetitionHub(ICompetitionManager competitionManager)
         {
-            _competitionRepository = competitionRepository;
-        }
+            _competitionManager = competitionManager;
+;
+		}
 
         public async Task GetAllCompetitions()
         {
 
-            var competitions = await _competitionRepository.GetAllEntitiesWithIncludeAsync(x=>x.CreateUser, p=>p.State, p=>p.Status);
-
-            List<CompetitionDT> competitionsDT = new();
-
-            foreach (var c in competitions)
-            {
-                competitionsDT.Add(ToDTModelsParsers.DTCompetitionParser(c));
-            }
+            var competitionsDT = await _competitionManager.GetAllCompetitionsAsync();
 
             await Clients.All.SendAsync("Get", competitionsDT);
         }
@@ -51,13 +45,10 @@ namespace ASPNETCore.Hubs
         {
             string res = "failed";
 
-            Competition competition = ToDBModelsParsers.CompetitionParser(competitionDT);
-            FillEntityHelper.CreateEntity(ref competition, 1);
-
-            if (competition != null)
+            if (competitionDT != null)
             {
-                //_competitionRepository.AddCompetiton(competition);
-                res = "success";
+                await _competitionManager.CreateNewCompetitionAsync(competitionDT, 1);
+				res = "success";
             }
 
             await Clients.Caller.SendAsync("Add", res);
