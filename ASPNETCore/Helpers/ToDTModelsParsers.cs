@@ -5,27 +5,20 @@ namespace ASPNETCore.Helpers
 {
     public class ToDTModelsParsers
     {
-        public static CompetitionDT DTCompetitionParser<T>(T competition)
+        public static CompetitionDT DTCompetitionParser(Competition competition)
         {
 
-            if (competition is Competition)
+            return new CompetitionDT()
             {
-                Competition c = (Competition)(object)competition;
-
-                return new CompetitionDT()
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    Duration = c.Duration,
-                    EndDateTime = c.EndDateTime,
-                    StartDateTime = c.StartDateTime,
-                    NumberConcTasks = c.NumberConcTasks,
-                    Hashtag =   c.Hashtag,
-                    State = c.State.Name,
-                    Status = c.Status.Name
-                };
-            }
-            else return new CompetitionDT();  
+                Id = competition.Id,
+                Name = competition.Name,
+                Duration = competition.Duration,
+                EndDateTime = competition.EndDateTime,
+                StartDateTime = competition.StartDateTime,
+                NumberConcTasks = competition.NumberConcTasks,
+                Hashtag = competition.Hashtag,
+                    
+            };
         }
     }
 }

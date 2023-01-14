@@ -7,12 +7,12 @@ namespace ASPNETCore.Models.DBModels
     {
         public ExerciseState()
         {
-            CompetitionsToTeamsToTasks = new HashSet<CompetitionsToTeamsToExercise>();
+            ExercisesToTeams = new HashSet<ExercisesToTeam>();
         }
 
         public int Id { get; set; }
-        public string Name { get; set; } = null!;
+        public string Name { get; set; }
 
-        public virtual ICollection<CompetitionsToTeamsToExercise> CompetitionsToTeamsToTasks { get; set; }
+        public virtual ICollection<ExercisesToTeam> ExercisesToTeams { get; set; }
     }
 }

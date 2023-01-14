@@ -14,6 +14,6 @@ namespace ASPNETCore.Models.CloudServiceModels
         public long? ProvisionScopePeerTimestamp { get; set; }
         public DateTime? ProvisionDatetime { get; set; }
         public int? State { get; set; }
-        public byte[] Version { get; set; } = null!;
+        public byte[] Version { get; set; }
     }
 }

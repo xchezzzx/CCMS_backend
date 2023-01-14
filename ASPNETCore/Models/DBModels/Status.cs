@@ -8,24 +8,31 @@ namespace ASPNETCore.Models.DBModels
         public Status()
         {
             Competitions = new HashSet<Competition>();
-            CompetitionsToTeams = new HashSet<CompetitionsToTeam>();
-            CompetitionsToTeamsToTasks = new HashSet<CompetitionsToTeamsToExercise>();
-            CompetitionsToTeamsToUsers = new HashSet<CompetitionsToTeamsToUser>();
-            CompetitionsToUsers = new HashSet<CompetitionsToUser>();
-            Tasks = new HashSet<Exercise>();
+            ExerciseCategories = new HashSet<ExerciseCategory>();
+            ExerciseLangs = new HashSet<ExerciseLang>();
+            ExercisePlatforms = new HashSet<ExercisePlatform>();
+            Exercises = new HashSet<Exercise>();
+            ExercisesToTeams = new HashSet<ExercisesToTeam>();
+            Teams = new HashSet<Team>();
+            TeamsToCompetitions = new HashSet<TeamsToCompetition>();
             Users = new HashSet<User>();
+            UsersToCompetitions = new HashSet<UsersToCompetition>();
+            UsersToTeams = new HashSet<UsersToTeam>();
         }
 
         public int Id { get; set; }
-        public string Name { get; set; } = null!;
+        public string Name { get; set; }
 
         public virtual ICollection<Competition> Competitions { get; set; }
-        public virtual ICollection<CompetitionsToTeam> CompetitionsToTeams { get; set; }
-        public virtual ICollection<CompetitionsToTeamsToExercise> CompetitionsToTeamsToTasks { get; set; }
-        public virtual ICollection<CompetitionsToTeamsToUser> CompetitionsToTeamsToUsers { get; set; }
-        public virtual ICollection<CompetitionsToUser> CompetitionsToUsers { get; set; }
-        public virtual ICollection<Exercise> Tasks { get; set; }
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<ExerciseCategory> ExerciseCategories { get; set; }
+        public virtual ICollection<ExerciseLang> ExerciseLangs { get; set; }
+        public virtual ICollection<ExercisePlatform> ExercisePlatforms { get; set; }
+        public virtual ICollection<Exercise> Exercises { get; set; }
+        public virtual ICollection<ExercisesToTeam> ExercisesToTeams { get; set; }
         public virtual ICollection<Team> Teams { get; set; }
+        public virtual ICollection<TeamsToCompetition> TeamsToCompetitions { get; set; }
+        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<UsersToCompetition> UsersToCompetitions { get; set; }
+        public virtual ICollection<UsersToTeam> UsersToTeams { get; set; }
     }
 }

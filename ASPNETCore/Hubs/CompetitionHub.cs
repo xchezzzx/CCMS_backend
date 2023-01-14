@@ -10,16 +10,17 @@ namespace ASPNETCore.Hubs
     public class CompetitionHub: Hub
     {
 
-        private readonly ICompetition _competitionRepository;
+        private readonly IRepository<Competition> _competitionRepository;
 
-        public CompetitionHub(ICompetition iCompetiton)
+        public CompetitionHub(IRepository<Competition> competitionRepository)
         {
-            _competitionRepository = iCompetiton;
+            _competitionRepository = competitionRepository;
         }
 
         public async Task GetAllCompetitions()
         {
-            List<Competition> competitions = _competitionRepository.GetAllCompetitions;
+			
+			var	competitions = await _competitionRepository.GetAllCompetitions();
 
             List<CompetitionDT> competitionsDT = new();
 
@@ -34,16 +35,16 @@ namespace ASPNETCore.Hubs
 
         public async Task GetCompetitionById()
         {
-            Competition competitions = _competitionRepository.GetAllCompetitions;
+            //var competitions = _competitionRepository.GetAllCompetitions;
 
-            List<CompetitionDT> competitionsDT = new();
+            //List<CompetitionDT> competitionsDT = new();
 
-            foreach (var c in competitions)
-            {
-                competitionsDT.Add(ToDTModelsParsers.DTCompetitionParser(c));
-            }
+            //foreach (var c in competitions)
+            //{
+            //    competitionsDT.Add(ToDTModelsParsers.DTCompetitionParser(c));
+            //}
 
-            await Clients.All.SendAsync("Get", competitionsDT);
+            //await Clients.All.SendAsync("Get", competitionsDT);
         }
 
         public async Task AddNewCompetition(CompetitionDT competitionDT)
@@ -55,7 +56,7 @@ namespace ASPNETCore.Hubs
 
             if (competition != null)
             {
-                _competitionRepository.AddCompetiton(competition);
+                //_competitionRepository.AddCompetiton(competition);
                 res = "success";
             }
 

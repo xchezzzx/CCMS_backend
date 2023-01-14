@@ -1,6 +1,6 @@
 ﻿namespace ASPNETCore.Interfaces.Common
 {
-    public interface IFillable
+    public interface ICRUDEntity
     {
         int StatusId { get; set; }
         int CreateUserId { get; set; }

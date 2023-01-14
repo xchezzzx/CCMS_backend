@@ -27,21 +27,13 @@ builder.Services.AddControllers();
 builder.Services.AddSignalR();
 
 string DB_CONNECTION_STRING =
-    "Server=tcp:ccmsdbserver.database.windows.net,1433;" +
-    "Initial Catalog=ccms;" +
-    "Persist Security Info=False;" +
-    "User ID=ccmsadmin;" +
-    "Password=Q!w2e3r4t5;" +
-    "MultipleActiveResultSets=False;" +
-    "Encrypt=True;" +
-    "TrustServerCertificate=False;" +
-    "Connection Timeout=30;";
+    "Server=tcp:ccmsdbserver.database.windows.net,1433;Initial Catalog=ccms;Persist Security Info=False;User ID=ccmsadmin;Password=Q!w2e3r4t5;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
 builder.Services.AddDbContext<CCMSContext>(options => options.UseSqlServer(DB_CONNECTION_STRING));
 
 builder.Services.AddCors(c => c.AddPolicy("policy", a => a.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
-builder.Services.AddTransient<ICompetition, CompetitionRepository>();
+builder.Services.AddTransient<IRepository<Competition>, CompetitionRepository>();
 builder.Services.AddTransient<IGeneric<Competition>, GenericRepository<Competition>>();
 builder.Services.AddTransient<IGeneric<User>, GenericRepository<User>>();
 
@@ -88,7 +80,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapHub<CompetitionHub<Competition>>("/competitions");
-app.MapHub<CompetitionHub<User>>("/users");
+app.MapHub<CompetitionHub>("/competitions");
 
 app.Run();

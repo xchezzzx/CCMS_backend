@@ -7,6 +7,6 @@ namespace ASPNETCore.Models.CloudServiceModels
     {
         public int SchemaMajorVersion { get; set; }
         public int SchemaMinorVersion { get; set; }
-        public string SchemaExtendedInfo { get; set; } = null!;
+        public string SchemaExtendedInfo { get; set; }
     }
 }

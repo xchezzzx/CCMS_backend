@@ -5,7 +5,7 @@ namespace ASPNETCore.Helpers
 {
     public class FillEntityHelper
     {
-        public static void CreateEntity<T>(ref T entity, int createUserId) where T : IFillable
+        public static void CreateEntity<T>(ref T entity, int createUserId) where T : ICRUDEntity
         {
             entity.CreateUserId = createUserId;
             entity.CreateDate = DateTime.Now;
@@ -14,13 +14,13 @@ namespace ASPNETCore.Helpers
             entity.StatusId = (int)EntityStatuses.active;
         }
 
-        public static void UpdateEntity<T>(ref T entity, int updateUserId) where T : IFillable
+        public static void UpdateEntity<T>(ref T entity, int updateUserId) where T : ICRUDEntity
         {
             entity.UpdateUserId = updateUserId;
             entity.UpdateDate = DateTime.Now;
         }
 
-        public static void DeleteEntity<T>(ref T entity, int updateUserId) where T : IFillable
+        public static void DeleteEntity<T>(ref T entity, int updateUserId) where T : ICRUDEntity
         {
             entity.UpdateUserId = updateUserId;
             entity.UpdateDate = DateTime.Now;
