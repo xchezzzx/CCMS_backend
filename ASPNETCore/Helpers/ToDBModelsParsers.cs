@@ -51,5 +51,31 @@ namespace ASPNETCore.Helpers
                 SumPoints = teamDT.SumPoints
 			};
 		}
+
+        public static ExerciseCategory ExerciseCategoryParser(ExerciseCategoryDT exerciseCategoryDT)
+        {
+            return new ExerciseCategory()
+            {
+                Name = exerciseCategoryDT.Name,
+                CreateDate = exerciseCategoryDT.CreateDate,
+                UpdateDate = exerciseCategoryDT.UpdateDate,
+                CreateUserId = exerciseCategoryDT.CreateUserId,
+                UpdateUserId = exerciseCategoryDT.UpdateUserId,
+                StatusId = (int)exerciseCategoryDT.StatusId,
+            };
+        }
+
+        public static ExerciseLang ExerciseLangParser(ExerciseLangDT exerciseLangDT)
+        {
+            return new ExerciseLang()
+            {
+                Name = exerciseLangDT.Name,
+                CreateDate = exerciseLangDT.CreateDate,
+                CreateUserId = exerciseLangDT.CreateUserId,
+                UpdateDate  = exerciseLangDT.UpdateDate,
+                UpdateUserId = exerciseLangDT.UpdateUserId,
+                StatusId = (int)(exerciseLangDT.StatusId)
+			};
+        }
 	}
 }

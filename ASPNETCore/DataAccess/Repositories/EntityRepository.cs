@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace ASPNETCore.DataAccess.Repositories
 {
-    public class EntityRepository<TEntity> : IEntityRepository<TEntity> where TEntity : class, ICRUDEntity
+    public class EntityRepository<TEntity> : IEntityProvider<TEntity> where TEntity : class, ICRUDEntity
     {
         private readonly CCMSContext _dbContext;
         private readonly DbSet<TEntity> _dbSet;

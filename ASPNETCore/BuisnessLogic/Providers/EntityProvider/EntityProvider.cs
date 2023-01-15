@@ -7,9 +7,9 @@ namespace ASPNETCore.BuisnessLogic.Providers.EntityProvider
 {
     public class EntityProvider<TEntity> : IEntityProvider<TEntity> where TEntity : class, ICRUDEntity
     {
-        private readonly IEntityRepository<TEntity> _entityRepository;
+        private readonly DataAccess.Repositories.IEntityProvider<TEntity> _entityRepository;
 
-        public EntityProvider(IEntityRepository<TEntity> entityRepository)
+        public EntityProvider(DataAccess.Repositories.IEntityProvider<TEntity> entityRepository)
         {
             _entityRepository = entityRepository;
         }

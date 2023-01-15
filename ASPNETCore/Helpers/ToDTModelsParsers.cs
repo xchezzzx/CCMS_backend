@@ -96,7 +96,7 @@ namespace ASPNETCore.Helpers
 			};
 		}
 
-		public static ExerciseCategoryDT DTExerciseCategoryParser(ExerciseCategoryDT category)
+		public static ExerciseCategoryDT DTExerciseCategoryParser(ExerciseCategory category)
 		{
 			return new ExerciseCategoryDT()
 			{
@@ -112,7 +112,7 @@ namespace ASPNETCore.Helpers
 			};
 		}
 
-		public static ExerciseLangDT DTExerciseLanguageParser(ExerciseLangDT lang)
+		public static ExerciseLangDT DTExerciseLanguageParser(ExerciseLang lang)
 		{
 			return new ExerciseLangDT()
 			{
@@ -128,7 +128,7 @@ namespace ASPNETCore.Helpers
 			};
 		}
 
-		public static ExercisePlatformDT DTExercisePlatformParser(ExercisePlatformDT platform)
+		public static ExercisePlatformDT DTExercisePlatformParser(ExercisePlatform platform)
 		{
 			return new ExercisePlatformDT()
 			{

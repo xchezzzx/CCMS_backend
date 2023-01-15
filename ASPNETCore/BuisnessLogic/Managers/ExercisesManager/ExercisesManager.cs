@@ -7,16 +7,20 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 {
 	public class ExercisesManager : IExercisesManager
 	{
-		private readonly IEntityRepository<Exercise> _entityRepository;
+		private readonly IEntityProvider<Exercise> _entityProviderExercise;
+		private readonly IEntityProvider<ExerciseLang> _entityProviderExerciseLang;
+		private readonly IEntityProvider<ExerciseCategory> _entityProviderExerciseCategory;
 
-		public ExercisesManager(IEntityRepository<Exercise> entityRepository)
+		public ExercisesManager(IEntityProvider<Exercise> entityProviderExercise, IEntityProvider<ExerciseLang> entityProviderExerciseLang, IEntityProvider<ExerciseCategory> entityProviderExerciseCategory)
 		{
-			_entityRepository = entityRepository;
+			_entityProviderExercise = entityProviderExercise;
+			_entityProviderExerciseLang = entityProviderExerciseLang;
+			_entityProviderExerciseCategory = entityProviderExerciseCategory;
 		}
 
 		public async Task<List<ExerciseDT>> GetAllExercisesAsync()
 		{
-			var exercises = await _entityRepository.GetAllEntitiesWithIncludeAsync(c => c.CreateUser, e => e.UpdateUser, e => e.Lang, e => e.Platform, e => e.Category);
+			var exercises = await _entityProviderExercise.GetAllEntitiesWithIncludeAsync(c => c.CreateUser, e => e.UpdateUser, e => e.Lang, e => e.Platform, e => e.Category);
 
 			List<ExerciseDT> result = new List<ExerciseDT>();
 			
@@ -30,7 +34,43 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 		public async Task AddExerciseAsync(ExerciseDT exerciseDT, int userCreateId)
 		{
 			var exercise = ToDBModelsParsers.ExerciseParser(exerciseDT);
-			await _entityRepository.AddEntityAsync(exercise, userCreateId);
+			await _entityProviderExercise.AddEntityAsync(exercise, userCreateId);
+		}
+
+		public async Task<List<ExerciseLangDT>> GetAllExerciseLangsAsync()
+		{
+			var langs = await _entityProviderExerciseLang.GetAllEntitiesWithIncludeAsync();
+			var result = new List<ExerciseLangDT>();
+			foreach(var lang in langs)
+			{
+				result.Add(ToDTModelsParsers.DTExerciseLanguageParser(lang));
+			}
+
+			return result;
+		}
+
+		public async Task<List<ExerciseCategoryDT>> GetAllExerciseCategoriesAsync()
+		{
+			var categories = await _entityProviderExerciseCategory.GetAllEntitiesWithIncludeAsync();
+			var result = new List<ExerciseCategoryDT>();
+			foreach (var category in categories)
+			{
+				result.Add(ToDTModelsParsers.DTExerciseCategoryParser(category));
+			}
+
+			return result;
+		}
+
+		public async Task AddNewExerciseLangAsync(ExerciseLangDT exerciseLangDT)
+		{
+			var exerciseLang = ToDBModelsParsers.ExerciseLangParser(exerciseLangDT);
+			await _entityProviderExerciseLang.AddEntityAsync(exerciseLang, 1);
+		}
+
+		public async Task AddNewExerciseCategoryAsync(ExerciseCategoryDT exerciseCategoryDT)
+		{
+			var exerciseCategory = ToDBModelsParsers.ExerciseCategoryParser(exerciseCategoryDT);
+			await _entityProviderExerciseCategory.AddEntityAsync(exerciseCategory, 1);
 		}
 	}
 }

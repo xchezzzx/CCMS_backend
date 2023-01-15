@@ -7,5 +7,11 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 		Task AddExerciseAsync(ExerciseDT exerciseDT, int userCreateId);
 
 		Task<List<ExerciseDT>> GetAllExercisesAsync();
+
+		Task<List<ExerciseLangDT>> GetAllExerciseLangsAsync();
+		Task<List<ExerciseCategoryDT>> GetAllExerciseCategoriesAsync();
+
+		Task AddNewExerciseLangAsync(ExerciseLangDT exerciseLangDT);
+		Task AddNewExerciseCategoryAsync(ExerciseCategoryDT exerciseCategoryDT);
 	}
 }
