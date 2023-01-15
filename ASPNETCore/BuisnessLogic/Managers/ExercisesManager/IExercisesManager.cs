@@ -10,8 +10,10 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 
 		Task<List<ExerciseLangDT>> GetAllExerciseLangsAsync();
 		Task<List<ExerciseCategoryDT>> GetAllExerciseCategoriesAsync();
+		Task<List<ExercisePlatformDT>> GetAllExercisePlatformsAsync();
 
 		Task AddNewExerciseLangAsync(ExerciseLangDT exerciseLangDT);
 		Task AddNewExerciseCategoryAsync(ExerciseCategoryDT exerciseCategoryDT);
+		Task AddNewExercisePlatformAsync(ExercisePlatformDT exerciseCategoryDT);
 	}
 }

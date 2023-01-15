@@ -10,12 +10,14 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 		private readonly IEntityProvider<Exercise> _entityProviderExercise;
 		private readonly IEntityProvider<ExerciseLang> _entityProviderExerciseLang;
 		private readonly IEntityProvider<ExerciseCategory> _entityProviderExerciseCategory;
+		private readonly IEntityProvider<ExercisePlatform> _entityProviderExercisePlatform;
 
-		public ExercisesManager(IEntityProvider<Exercise> entityProviderExercise, IEntityProvider<ExerciseLang> entityProviderExerciseLang, IEntityProvider<ExerciseCategory> entityProviderExerciseCategory)
+		public ExercisesManager(IEntityProvider<Exercise> entityProviderExercise, IEntityProvider<ExerciseLang> entityProviderExerciseLang, IEntityProvider<ExerciseCategory> entityProviderExerciseCategory, IEntityProvider<ExercisePlatform> entityProviderExercisePlatform)
 		{
 			_entityProviderExercise = entityProviderExercise;
 			_entityProviderExerciseLang = entityProviderExerciseLang;
 			_entityProviderExerciseCategory = entityProviderExerciseCategory;
+			_entityProviderExercisePlatform = entityProviderExercisePlatform;
 		}
 
 		public async Task<List<ExerciseDT>> GetAllExercisesAsync()
@@ -61,6 +63,18 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 			return result;
 		}
 
+		public async Task<List<ExercisePlatformDT>> GetAllExercisePlatformsAsync()
+		{
+			var platforms = await _entityProviderExercisePlatform.GetAllEntitiesWithIncludeAsync();
+			var result = new List<ExercisePlatformDT>();
+			foreach (var platform in platforms)
+			{
+				result.Add(ToDTModelsParsers.DTExercisePlatformParser(platform));
+			}
+
+			return result;
+		}
+
 		public async Task AddNewExerciseLangAsync(ExerciseLangDT exerciseLangDT)
 		{
 			var exerciseLang = ToDBModelsParsers.ExerciseLangParser(exerciseLangDT);
@@ -71,6 +85,12 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 		{
 			var exerciseCategory = ToDBModelsParsers.ExerciseCategoryParser(exerciseCategoryDT);
 			await _entityProviderExerciseCategory.AddEntityAsync(exerciseCategory, 1);
+		}
+
+		public async Task AddNewExercisePlatformAsync(ExercisePlatformDT exercisePlatformDT)
+		{
+			var exercisePlatform = ToDBModelsParsers.ExercisePlatformParser(exercisePlatformDT);
+			await _entityProviderExercisePlatform.AddEntityAsync(exercisePlatform, 1);
 		}
 	}
 }

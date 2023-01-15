@@ -77,5 +77,18 @@ namespace ASPNETCore.Helpers
                 StatusId = (int)(exerciseLangDT.StatusId)
 			};
         }
+
+        public static ExercisePlatform ExercisePlatformParser(ExercisePlatformDT exercisePlatformDT)
+        {
+            return new ExercisePlatform()
+            {
+                Name = exercisePlatformDT.Name,
+                CreateDate = exercisePlatformDT.CreateDate,
+                CreateUserId = exercisePlatformDT.CreateUserId,
+                UpdateDate = exercisePlatformDT.UpdateDate,
+                UpdateUserId = exercisePlatformDT.UpdateUserId,
+                StatusId = (int)exercisePlatformDT.StatusId
+			};
+        }
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using ASPNETCore.BuisnessLogic.Managers.ExercisesManager;
+using ASPNETCore.DataAccess.Models.DBModels;
 using Microsoft.AspNetCore.SignalR;
 using SharedLib.DataTransferModels;
 
@@ -54,5 +55,20 @@ namespace ASPNETCore.Hubs
 
 			await Clients.Caller.SendAsync("Get", exerciseLangDT);
 		}
+
+		public async Task GetAllExercisePlatforms()
+		{
+			var exercisePlatformDT = await _exercisesManager.GetAllExercisePlatformsAsync();
+
+			await Clients.Caller.SendAsync("Get", exercisePlatformDT);
+		}
+
+		public async Task AddNewExercisePlatform(ExercisePlatformDT exercisePlatformDT)
+		{
+			await _exercisesManager.AddNewExercisePlatformAsync(exercisePlatformDT);
+			await Clients.Caller.SendAsync("Add", "Success");
+
+		}
+
 	}
 }
