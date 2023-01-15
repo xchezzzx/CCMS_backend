@@ -65,6 +65,12 @@ builder.Services.AddTransient<ICompetitionManager, CompetitionManager>();
 builder.Services.AddTransient<ITeamManager, TeamManager>();
 builder.Services.AddTransient<IExercisesManager, ExercisesManager>();
 
+
+builder.Services.AddTransient<IGenerateUsers, UsersStorage>();
+
+builder.Services.AddTransient<IReadUsers, UsersStorage>();
+
+
 builder.Services.AddControllers()
         .AddJsonOptions(options =>
         {
