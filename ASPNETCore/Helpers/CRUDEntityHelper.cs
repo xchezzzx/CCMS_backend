@@ -1,5 +1,5 @@
 ﻿using ASPNETCore.DataAccess.Models;
-using SharedLib.Enums;
+using SharedLib.Constants.Enums;
 
 namespace ASPNETCore.Helpers
 {

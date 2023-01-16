@@ -1,9 +1,8 @@
 ﻿using ASPNETCore.BuisnessLogic.Managers.CompetitionsManager;
-using ASPNETCore.BuisnessLogic.Providers.EntityProvider;
-using ASPNETCore.DataAccess.Models.DBModels;
-using ASPNETCore.Helpers;
 using Microsoft.AspNetCore.SignalR;
+using SharedLib.Constants.Enums;
 using SharedLib.DataTransferModels;
+using SharedLib.Services.ExceptionBuilderService;
 
 namespace ASPNETCore.Hubs
 {
@@ -11,17 +10,26 @@ namespace ASPNETCore.Hubs
     {
 
         private readonly ICompetitionManager _competitionManager;
+		private readonly IExceptionBuilderService _exceptionBuilderService;
 
-        public CompetitionHub(ICompetitionManager competitionManager)
+		public CompetitionHub(ICompetitionManager competitionManager, IExceptionBuilderService exceptionBuilderService)
         {
             _competitionManager = competitionManager;
-;
+            _exceptionBuilderService = exceptionBuilderService;
 		}
 
         public async Task GetAllCompetitions()
         {
 
-            var competitionsDT = await _competitionManager.GetAllCompetitionsAsync();
+            List<CompetitionDT> competitionsDT;
+            try
+			{
+				competitionsDT = await _competitionManager.GetAllCompetitionsAsync();
+			}
+            catch
+            {
+                throw;
+            }
 
             await Clients.All.SendAsync("Get", competitionsDT);
         }
@@ -29,27 +37,27 @@ namespace ASPNETCore.Hubs
 
         public async Task GetCompetitionById()
         {
-            //var competitions = _competitionRepository.GetAllCompetitions;
 
-            //List<CompetitionDT> competitionsDT = new();
-
-            //foreach (var c in competitions)
-            //{
-            //    competitionsDT.Add(ToDTModelsParsers.DTCompetitionParser(c));
-            //}
-
-            //await Clients.All.SendAsync("Get", competitionsDT);
         }
 
         public async Task AddNewCompetition(CompetitionDT competitionDT)
         {
-            string res = "failed";
+            string res = "success";
 
-            if (competitionDT != null)
+
+			try
+			{
+				if (competitionDT == null)
+                {
+                    throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionDT));
+                }
+
+				await _competitionManager.CreateNewCompetitionAsync(competitionDT, 1);
+			}
+            catch
             {
-                await _competitionManager.CreateNewCompetitionAsync(competitionDT, 1);
-				res = "success";
-            }
+				res = "failed";
+			}
 
             await Clients.Caller.SendAsync("Add", res);
         }

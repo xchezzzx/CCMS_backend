@@ -1,6 +1,6 @@
 ﻿using ASPNETCore.DataAccess.Models.DBModels;
+using SharedLib.Constants.Enums;
 using SharedLib.DataTransferModels;
-using SharedLib.Enums;
 
 namespace ASPNETCore.Helpers
 {

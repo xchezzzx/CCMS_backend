@@ -1,72 +1,159 @@
 ﻿using ASPNETCore.BuisnessLogic.Managers.ExercisesManager;
-using ASPNETCore.DataAccess.Models.DBModels;
 using Microsoft.AspNetCore.SignalR;
 using SharedLib.DataTransferModels;
+using SharedLib.Services.ExceptionBuilderService;
 
 namespace ASPNETCore.Hubs
 {
 	public class ExerciseHub : Hub
 	{
 		private readonly IExercisesManager _exercisesManager;
+		private readonly IExceptionBuilderService _exceptionBuilderService;
 
-		public ExerciseHub(IExercisesManager exercisesManager)
+		public ExerciseHub(IExercisesManager exercisesManager, IExceptionBuilderService exceptionBuilderService)
 		{
 			_exercisesManager = exercisesManager;
+			_exceptionBuilderService = exceptionBuilderService;
 		}
 
 		public async Task GetAllExercises()
 		{
-			var exercisesDT = await _exercisesManager.GetAllExercisesAsync();
+			List<ExerciseDT> exercisesDT;
+			try
+			{
+				exercisesDT = await _exercisesManager.GetAllExercisesAsync();
+			}
+			catch
+			{
+				throw;
+			}
 
 			await Clients.Caller.SendAsync("GetAllExercises", exercisesDT);
 		}
 
 		public async Task AddNewExercise(ExerciseDT exerciseDT)
 		{
-			await _exercisesManager.AddExerciseAsync(exerciseDT, 1);
-			await Clients.Caller.SendAsync("Add", "Success");
+			string res = "Success";
+			try
+			{
+				if (exerciseDT == null)
+				{
+					throw _exceptionBuilderService.ParseException(SharedLib.Constants.Enums.ExceptionCodes.HubMethodNullArgumentException, nameof(exerciseDT));
+				}
+				await _exercisesManager.AddExerciseAsync(exerciseDT, 1);
+			}
+			catch
+			{
+				res = "failed";
+			}
+			await Clients.Caller.SendAsync("Add", res);
 		}
 
 
 		public async Task AddNewExerciseCategory(ExerciseCategoryDT exerciseCategoryDT)
 		{
-			await _exercisesManager.AddNewExerciseCategoryAsync(exerciseCategoryDT);
-			await Clients.Caller.SendAsync("Add", "Success");
+
+			string res = "Success";
+			try
+			{
+				if (exerciseCategoryDT == null)
+				{
+					throw _exceptionBuilderService.ParseException(SharedLib.Constants.Enums.ExceptionCodes.HubMethodNullArgumentException, nameof(exerciseCategoryDT));
+				}
+				await _exercisesManager.AddNewExerciseCategoryAsync(exerciseCategoryDT);
+			}
+			catch
+			{
+				res = "failed";
+			}
+			await Clients.Caller.SendAsync("Add", res);
 
 		}
 
 		public async Task AddNewExerciseLang(ExerciseLangDT exerciseLangDT)
 		{
-			await _exercisesManager.AddNewExerciseLangAsync(exerciseLangDT);
-			await Clients.Caller.SendAsync("Add", "Success");
+
+			string res = "Success";
+			try
+			{
+				if (exerciseLangDT == null)
+				{
+					throw _exceptionBuilderService.ParseException(SharedLib.Constants.Enums.ExceptionCodes.HubMethodNullArgumentException, nameof(exerciseLangDT));
+				}
+				await _exercisesManager.AddNewExerciseLangAsync(exerciseLangDT);
+			}
+			catch
+			{
+				res = "failed";
+			}
+			await Clients.Caller.SendAsync("Add", res);
 
 		}
 
 		public async Task GetAllExerciseCategories()
 		{
-			var exerciseCategoryDT = await _exercisesManager.GetAllExerciseCategoriesAsync();
+			List<ExerciseCategoryDT> exerciseCategoryDT;
+			try
+			{
+				exerciseCategoryDT = await _exercisesManager.GetAllExerciseCategoriesAsync();
+			}
+			catch
+			{
+				throw;
+			}
 
 			await Clients.Caller.SendAsync("Get", exerciseCategoryDT);
 		}
 
 		public async Task GetAllExerciseLangs()
 		{
-			var exerciseLangDT = await _exercisesManager.GetAllExerciseLangsAsync();
+			List<ExerciseLangDT> exerciseLangDT;
+			try
+			{
+				exerciseLangDT = await _exercisesManager.GetAllExerciseLangsAsync();
+			}
+			catch
+			{
+				throw;
+			}
 
 			await Clients.Caller.SendAsync("Get", exerciseLangDT);
 		}
 
 		public async Task GetAllExercisePlatforms()
 		{
-			var exercisePlatformDT = await _exercisesManager.GetAllExercisePlatformsAsync();
+
+			List<ExercisePlatformDT> exercisePlatformDT;
+			try
+			{
+				exercisePlatformDT = await _exercisesManager.GetAllExercisePlatformsAsync();
+			}
+			catch
+			{
+				throw;
+			}
 
 			await Clients.Caller.SendAsync("Get", exercisePlatformDT);
 		}
 
 		public async Task AddNewExercisePlatform(ExercisePlatformDT exercisePlatformDT)
 		{
-			await _exercisesManager.AddNewExercisePlatformAsync(exercisePlatformDT);
-			await Clients.Caller.SendAsync("Add", "Success");
+
+
+			string res = "Success";
+			try
+			{
+				if (exercisePlatformDT == null)
+				{
+					throw _exceptionBuilderService.ParseException(SharedLib.Constants.Enums.ExceptionCodes.HubMethodNullArgumentException, nameof(exercisePlatformDT));
+				}
+				await _exercisesManager.AddNewExercisePlatformAsync(exercisePlatformDT);
+			}
+			catch
+			{
+				res = "failed";
+			}
+			await Clients.Caller.SendAsync("Add", res);
 
 		}
 

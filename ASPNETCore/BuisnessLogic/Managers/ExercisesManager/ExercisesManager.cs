@@ -1,7 +1,9 @@
-﻿using ASPNETCore.DataAccess.Models.DBModels;
-using ASPNETCore.DataAccess.Repositories;
+﻿using ASPNETCore.BuisnessLogic.Providers.EntityProvider;
+using ASPNETCore.DataAccess.Models.DBModels;
 using ASPNETCore.Helpers;
+using SharedLib.Constants.Enums;
 using SharedLib.DataTransferModels;
+using SharedLib.Services.ExceptionBuilderService;
 
 namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 {
@@ -11,18 +13,29 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 		private readonly IEntityProvider<ExerciseLang> _entityProviderExerciseLang;
 		private readonly IEntityProvider<ExerciseCategory> _entityProviderExerciseCategory;
 		private readonly IEntityProvider<ExercisePlatform> _entityProviderExercisePlatform;
+		private readonly IExceptionBuilderService _exceptionBuilderService;
 
-		public ExercisesManager(IEntityProvider<Exercise> entityProviderExercise, IEntityProvider<ExerciseLang> entityProviderExerciseLang, IEntityProvider<ExerciseCategory> entityProviderExerciseCategory, IEntityProvider<ExercisePlatform> entityProviderExercisePlatform)
+		public ExercisesManager(IEntityProvider<Exercise> entityProviderExercise, IEntityProvider<ExerciseLang> entityProviderExerciseLang, IEntityProvider<ExerciseCategory> entityProviderExerciseCategory, IEntityProvider<ExercisePlatform> entityProviderExercisePlatform, IExceptionBuilderService exceptionBuilderService)
 		{
 			_entityProviderExercise = entityProviderExercise;
 			_entityProviderExerciseLang = entityProviderExerciseLang;
 			_entityProviderExerciseCategory = entityProviderExerciseCategory;
 			_entityProviderExercisePlatform = entityProviderExercisePlatform;
+			_exceptionBuilderService = exceptionBuilderService;
 		}
 
 		public async Task<List<ExerciseDT>> GetAllExercisesAsync()
 		{
-			var exercises = await _entityProviderExercise.GetAllEntitiesWithIncludeAsync(c => c.CreateUser, e => e.UpdateUser, e => e.Lang, e => e.Platform, e => e.Category);
+			List<Exercise> exercises;
+
+			try
+			{
+				exercises = await _entityProviderExercise.GetAllEntitiesWithIncludeAsync(c => c.CreateUser, e => e.UpdateUser, e => e.Lang, e => e.Platform, e => e.Category);
+			}
+			catch
+			{
+				throw;
+			}
 
 			List<ExerciseDT> result = new List<ExerciseDT>();
 			
@@ -41,7 +54,17 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 
 		public async Task<List<ExerciseLangDT>> GetAllExerciseLangsAsync()
 		{
-			var langs = await _entityProviderExerciseLang.GetAllEntitiesWithIncludeAsync();
+			List<ExerciseLang> langs;
+				
+			try
+			{
+				langs = await _entityProviderExerciseLang.GetAllEntitiesWithIncludeAsync();
+			}
+			catch
+			{
+				throw;
+			}
+
 			var result = new List<ExerciseLangDT>();
 			foreach(var lang in langs)
 			{
@@ -53,7 +76,17 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 
 		public async Task<List<ExerciseCategoryDT>> GetAllExerciseCategoriesAsync()
 		{
-			var categories = await _entityProviderExerciseCategory.GetAllEntitiesWithIncludeAsync();
+			List<ExerciseCategory> categories;
+
+			try
+			{
+				categories = await _entityProviderExerciseCategory.GetAllEntitiesWithIncludeAsync();
+			}
+			catch
+			{
+				throw;
+			}
+
 			var result = new List<ExerciseCategoryDT>();
 			foreach (var category in categories)
 			{
@@ -65,7 +98,17 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 
 		public async Task<List<ExercisePlatformDT>> GetAllExercisePlatformsAsync()
 		{
-			var platforms = await _entityProviderExercisePlatform.GetAllEntitiesWithIncludeAsync();
+			List<ExercisePlatform> platforms;
+			
+			try
+			{
+				platforms = await _entityProviderExercisePlatform.GetAllEntitiesWithIncludeAsync();
+			}
+			catch
+			{
+				throw;
+			}
+
 			var result = new List<ExercisePlatformDT>();
 			foreach (var platform in platforms)
 			{
@@ -77,20 +120,56 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 
 		public async Task AddNewExerciseLangAsync(ExerciseLangDT exerciseLangDT)
 		{
+			if (exerciseLangDT == null)
+			{
+				throw _exceptionBuilderService.ParseException(ExceptionCodes.ArgumentNullException, nameof(exerciseLangDT));
+			}
 			var exerciseLang = ToDBModelsParsers.ExerciseLangParser(exerciseLangDT);
-			await _entityProviderExerciseLang.AddEntityAsync(exerciseLang, 1);
+			try
+			{
+				await _entityProviderExerciseLang.AddEntityAsync(exerciseLang, 1);
+			}
+			catch
+			{
+				throw;
+			}
 		}
 
 		public async Task AddNewExerciseCategoryAsync(ExerciseCategoryDT exerciseCategoryDT)
 		{
+			if (exerciseCategoryDT == null)
+			{
+				throw _exceptionBuilderService.ParseException(ExceptionCodes.ArgumentNullException, nameof(exerciseCategoryDT));
+			}
 			var exerciseCategory = ToDBModelsParsers.ExerciseCategoryParser(exerciseCategoryDT);
-			await _entityProviderExerciseCategory.AddEntityAsync(exerciseCategory, 1);
+
+			try
+			{
+				await _entityProviderExerciseCategory.AddEntityAsync(exerciseCategory, 1);
+			}
+			catch
+			{
+				throw;
+			}
+
 		}
 
 		public async Task AddNewExercisePlatformAsync(ExercisePlatformDT exercisePlatformDT)
 		{
+			if (exercisePlatformDT == null)
+			{
+				throw _exceptionBuilderService.ParseException(ExceptionCodes.ArgumentNullException, nameof(exercisePlatformDT));
+			}
 			var exercisePlatform = ToDBModelsParsers.ExercisePlatformParser(exercisePlatformDT);
-			await _entityProviderExercisePlatform.AddEntityAsync(exercisePlatform, 1);
+
+			try
+			{
+				await _entityProviderExercisePlatform.AddEntityAsync(exercisePlatform, 1);
+			}
+			catch
+			{
+				throw;
+			}
 		}
 	}
 }
