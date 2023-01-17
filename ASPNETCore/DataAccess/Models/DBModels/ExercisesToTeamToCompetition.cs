@@ -1,6 +1,6 @@
 ﻿namespace ASPNETCore.DataAccess.Models.DBModels
 {
-    public partial class ExercisesToTeam : ICRUDEntity
+    public partial class ExercisesToTeamToCompetition : ICRUDEntity
     {
         public int Id { get; set; }
         public int CompetitionId { get; set; }

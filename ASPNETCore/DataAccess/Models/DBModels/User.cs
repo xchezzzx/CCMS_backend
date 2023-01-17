@@ -16,8 +16,8 @@
             ExerciseUpdateUsers = new HashSet<Exercise>();
             ExercisesToCompetitionCreateUsers = new HashSet<ExercisesToCompetition>();
             ExercisesToCompetitionUpdateUsers = new HashSet<ExercisesToCompetition>();
-            ExercisesToTeamCreateUsers = new HashSet<ExercisesToTeam>();
-            ExercisesToTeamUpdateUsers = new HashSet<ExercisesToTeam>();
+            ExercisesToTeamCreateUsers = new HashSet<ExercisesToTeamToCompetition>();
+            ExercisesToTeamUpdateUsers = new HashSet<ExercisesToTeamToCompetition>();
             ExercisesToUsers = new HashSet<ExercisesToUser>();
             InverseCreateUser = new HashSet<User>();
             InverseUpdateUser = new HashSet<User>();
@@ -64,8 +64,8 @@
         public virtual ICollection<Exercise> ExerciseUpdateUsers { get; set; }
         public virtual ICollection<ExercisesToCompetition> ExercisesToCompetitionCreateUsers { get; set; }
         public virtual ICollection<ExercisesToCompetition> ExercisesToCompetitionUpdateUsers { get; set; }
-        public virtual ICollection<ExercisesToTeam> ExercisesToTeamCreateUsers { get; set; }
-        public virtual ICollection<ExercisesToTeam> ExercisesToTeamUpdateUsers { get; set; }
+        public virtual ICollection<ExercisesToTeamToCompetition> ExercisesToTeamCreateUsers { get; set; }
+        public virtual ICollection<ExercisesToTeamToCompetition> ExercisesToTeamUpdateUsers { get; set; }
         public virtual ICollection<ExercisesToUser> ExercisesToUsers { get; set; }
         public virtual ICollection<User> InverseCreateUser { get; set; }
         public virtual ICollection<User> InverseUpdateUser { get; set; }

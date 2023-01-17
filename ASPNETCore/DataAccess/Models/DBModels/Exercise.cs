@@ -5,7 +5,7 @@
         public Exercise()
         {
             ExercisesToCompetitions = new HashSet<ExercisesToCompetition>();
-            ExercisesToTeams = new HashSet<ExercisesToTeam>();
+            ExercisesToTeams = new HashSet<ExercisesToTeamToCompetition>();
             ExercisesToUsers = new HashSet<ExercisesToUser>();
         }
 
@@ -35,7 +35,7 @@
         public virtual Status Status { get; set; }
         public virtual User UpdateUser { get; set; }
         public virtual ICollection<ExercisesToCompetition> ExercisesToCompetitions { get; set; }
-        public virtual ICollection<ExercisesToTeam> ExercisesToTeams { get; set; }
+        public virtual ICollection<ExercisesToTeamToCompetition> ExercisesToTeams { get; set; }
         public virtual ICollection<ExercisesToUser> ExercisesToUsers { get; set; }
     }
 }

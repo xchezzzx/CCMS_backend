@@ -24,7 +24,7 @@ namespace ASPNETCore.DataAccess.Models.DBModels
         public virtual DbSet<ExercisePlatform> ExercisePlatforms { get; set; }
         public virtual DbSet<ExerciseState> ExerciseStates { get; set; }
         public virtual DbSet<ExercisesToCompetition> ExercisesToCompetitions { get; set; }
-        public virtual DbSet<ExercisesToTeam> ExercisesToTeams { get; set; }
+        public virtual DbSet<ExercisesToTeamToCompetition> ExercisesToTeams { get; set; }
         public virtual DbSet<ExercisesToUser> ExercisesToUsers { get; set; }
         public virtual DbSet<OperatorsToCompetition> OperatorsToCompetitions { get; set; }
         public virtual DbSet<Status> Statuses { get; set; }
@@ -422,7 +422,7 @@ namespace ASPNETCore.DataAccess.Models.DBModels
                     .HasConstraintName("FK_exercises_to_competition_user_update");
             });
 
-            modelBuilder.Entity<ExercisesToTeam>(entity =>
+            modelBuilder.Entity<ExercisesToTeamToCompetition>(entity =>
             {
                 entity.ToTable("exercises_to_teams");
 

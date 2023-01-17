@@ -1,10 +1,8 @@
 ﻿using ASPNETCore.BuisnessLogic.Managers.CompetitionsManager;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.CodeAnalysis.Editing;
 using SharedLib.Constants.Enums;
 using SharedLib.DataTransferModels;
 using SharedLib.Services.ExceptionBuilderService;
-using System.Collections.Generic;
 
 namespace ASPNETCore.Hubs
 {
@@ -86,7 +84,7 @@ namespace ASPNETCore.Hubs
 				res = "failed";
 			}
 
-			await Clients.Caller.SendAsync("AddNewCompetition", res, competitionDT);
+			await Clients.Caller.SendAsync("AddNewCompetition", competitionDT);
 		}
 
 		public async Task DeleteCompetitionById(int competitionId)

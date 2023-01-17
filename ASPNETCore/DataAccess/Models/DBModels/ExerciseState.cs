@@ -4,12 +4,12 @@
     {
         public ExerciseState()
         {
-            ExercisesToTeams = new HashSet<ExercisesToTeam>();
+            ExercisesToTeams = new HashSet<ExercisesToTeamToCompetition>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public virtual ICollection<ExercisesToTeam> ExercisesToTeams { get; set; }
+        public virtual ICollection<ExercisesToTeamToCompetition> ExercisesToTeams { get; set; }
     }
 }
