@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ASPNETCore.DataAccess.Models.DBModels
+﻿namespace ASPNETCore.DataAccess.Models.DBModels
 {
     public partial class Status
     {
@@ -12,11 +9,12 @@ namespace ASPNETCore.DataAccess.Models.DBModels
             ExerciseLangs = new HashSet<ExerciseLang>();
             ExercisePlatforms = new HashSet<ExercisePlatform>();
             Exercises = new HashSet<Exercise>();
+            ExercisesToCompetitions = new HashSet<ExercisesToCompetition>();
             ExercisesToTeams = new HashSet<ExercisesToTeam>();
+            OperatorsToCompetitions = new HashSet<OperatorsToCompetition>();
             Teams = new HashSet<Team>();
             TeamsToCompetitions = new HashSet<TeamsToCompetition>();
             Users = new HashSet<User>();
-            UsersToCompetitions = new HashSet<UsersToCompetition>();
             UsersToTeams = new HashSet<UsersToTeam>();
         }
 
@@ -28,11 +26,12 @@ namespace ASPNETCore.DataAccess.Models.DBModels
         public virtual ICollection<ExerciseLang> ExerciseLangs { get; set; }
         public virtual ICollection<ExercisePlatform> ExercisePlatforms { get; set; }
         public virtual ICollection<Exercise> Exercises { get; set; }
+        public virtual ICollection<ExercisesToCompetition> ExercisesToCompetitions { get; set; }
         public virtual ICollection<ExercisesToTeam> ExercisesToTeams { get; set; }
+        public virtual ICollection<OperatorsToCompetition> OperatorsToCompetitions { get; set; }
         public virtual ICollection<Team> Teams { get; set; }
         public virtual ICollection<TeamsToCompetition> TeamsToCompetitions { get; set; }
         public virtual ICollection<User> Users { get; set; }
-        public virtual ICollection<UsersToCompetition> UsersToCompetitions { get; set; }
         public virtual ICollection<UsersToTeam> UsersToTeams { get; set; }
     }
 }

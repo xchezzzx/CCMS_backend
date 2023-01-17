@@ -3,7 +3,7 @@ using System.Data.Entity;
 
 namespace ASPNETCore.DataAccess.Repositories
 {
-	public interface IGenerateUsers
+    public interface IGenerateUsers
 	{
 		Task GenerateUsers();
 	}

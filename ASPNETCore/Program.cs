@@ -41,11 +41,11 @@ builder.Services.AddTransient<IEntityRepository<ExerciseCategory>, EntityReposit
 builder.Services.AddTransient<IEntityRepository<ExerciseLang>, EntityRepository<ExerciseLang>>();
 builder.Services.AddTransient<IEntityRepository<ExercisePlatform>, EntityRepository<ExercisePlatform>>();
 builder.Services.AddTransient<IEntityRepository<ExercisesToTeam>, EntityRepository<ExercisesToTeam>>();
-builder.Services.AddTransient<IEntityRepository<ExercisesToUser>, EntityRepository<ExercisesToUser>>();
+//builder.Services.AddTransient<IEntityRepository<ExercisesToUser>, EntityRepository<ExercisesToUser>>();
 builder.Services.AddTransient<IEntityRepository<Team>, EntityRepository<Team>>();
 builder.Services.AddTransient<IEntityRepository<TeamsToCompetition>, EntityRepository<TeamsToCompetition>>();
 builder.Services.AddTransient<IEntityRepository<User>, EntityRepository<User>>();
-builder.Services.AddTransient<IEntityRepository<UsersToCompetition>, EntityRepository<UsersToCompetition>>();
+builder.Services.AddTransient<IEntityRepository<OperatorsToCompetition>, EntityRepository<OperatorsToCompetition>>();
 builder.Services.AddTransient<IEntityRepository<UsersToTeam>, EntityRepository<UsersToTeam>>();
 
 builder.Services.AddTransient<IEntityProvider<Competition>, EntityProvider<Competition>>();
@@ -54,11 +54,11 @@ builder.Services.AddTransient<IEntityProvider<ExerciseCategory>, EntityProvider<
 builder.Services.AddTransient<IEntityProvider<ExerciseLang>, EntityProvider<ExerciseLang>>();
 builder.Services.AddTransient<IEntityProvider<ExercisePlatform>, EntityProvider<ExercisePlatform>>();
 builder.Services.AddTransient<IEntityProvider<ExercisesToTeam>, EntityProvider<ExercisesToTeam>>();
-builder.Services.AddTransient<IEntityProvider<ExercisesToUser>, EntityProvider<ExercisesToUser>>();
+//builder.Services.AddTransient<IEntityProvider<ExercisesToUser>, EntityProvider<ExercisesToUser>>();
 builder.Services.AddTransient<IEntityProvider<Team>, EntityProvider<Team>>();
 builder.Services.AddTransient<IEntityProvider<TeamsToCompetition>, EntityProvider<TeamsToCompetition>>();
 builder.Services.AddTransient<IEntityProvider<User>, EntityProvider<User>>();
-builder.Services.AddTransient<IEntityProvider<UsersToCompetition>, EntityProvider<UsersToCompetition>>();
+builder.Services.AddTransient<IEntityProvider<OperatorsToCompetition>, EntityProvider<OperatorsToCompetition>>();
 builder.Services.AddTransient<IEntityProvider<UsersToTeam>, EntityProvider<UsersToTeam>>();
 
 builder.Services.AddSingleton<IExceptionBuilderService, ExceptionBuilderService>();

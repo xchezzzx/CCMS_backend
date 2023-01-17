@@ -1,39 +1,79 @@
-﻿using ASPNETCore.BuisnessLogic.Providers.EntityProvider;
+﻿using ASPNETCore.BuisnessLogic.Providers.CompetitionsToAdministratorsProvider;
+using ASPNETCore.BuisnessLogic.Providers.EntityProvider;
 using ASPNETCore.DataAccess.Models.DBModels;
 using ASPNETCore.Helpers;
+using Microsoft.CodeAnalysis.Editing;
 using SharedLib.Constants.Enums;
 using SharedLib.DataTransferModels;
 using SharedLib.Services.ExceptionBuilderService;
+using System.Collections.Generic;
 
 namespace ASPNETCore.BuisnessLogic.Managers.CompetitionsManager
 {
-	public class CompetitionManager : ICompetitionManager
+    public class CompetitionManager : ICompetitionManager
 	{
-		private readonly IEntityProvider<Competition> _entityProvider;
+		private readonly IEntityProvider<Competition> _competitionEntityProvider;
+		private readonly IEntityProvider<OperatorsToCompetition> _operatorsToCompetitionEntityProvider;
+		private readonly IEntityProvider<TeamsToCompetition> _teamsToCompetitionEntityProvider;
+		private readonly IEntityProvider<ExercisesToCompetition> _exercisesToCompetitionEntityProvider;
+		private readonly IEntityToCompetitionProvider _entityToCompetitionProvider;
 		private readonly IExceptionBuilderService _exceptionBuilderService;
 
-		public CompetitionManager(IEntityProvider<Competition> entityProvider, IExceptionBuilderService exceptionBuilderService)
+		public CompetitionManager(IEntityProvider<ExercisesToCompetition> exercisesToCompetitionEntityProvider, IEntityProvider<TeamsToCompetition> teamsToCompetitionEntityProvider, IEntityProvider<OperatorsToCompetition> operatorsToCompetitionEntityProvider, IEntityProvider<Competition> entityProvider, IExceptionBuilderService exceptionBuilderService, IEntityToCompetitionProvider entityToCompetitionProvider)
 		{
-			_entityProvider = entityProvider;
+			_competitionEntityProvider = entityProvider;
 			_exceptionBuilderService = exceptionBuilderService;
+			_entityToCompetitionProvider = entityToCompetitionProvider;
+			_operatorsToCompetitionEntityProvider = operatorsToCompetitionEntityProvider;
+			_teamsToCompetitionEntityProvider = teamsToCompetitionEntityProvider;
+			_exercisesToCompetitionEntityProvider = exercisesToCompetitionEntityProvider;
 		}
 
-		public Task AddAdministratorToCompetitionAsync()
+		public async Task<List<CompetitionDT>> GetAllCompetitionsAsync()
 		{
-			throw new NotImplementedException();
+			List<Competition> competitions;
+			try
+			{
+				competitions = await _competitionEntityProvider.GetAllEntitiesWithIncludeAsync(c => c.CreateUser, c => c.UpdateUser, c => c.Status, c => c.State);
+			}
+			catch
+			{
+				throw;
+			}
+
+			List<CompetitionDT> result = new List<CompetitionDT>();
+
+			foreach (var competition in competitions)
+			{
+				result.Add(ToDTModelsParsers.DTCompetitionParser(competition));
+			}
+
+			return result;
 		}
 
-		public Task AddExerciseToCompetitionAsync()
+		public async Task<List<CompetitionDT>> GetActiveCompetitionsAsync()
 		{
-			throw new NotImplementedException();
+			List<Competition> competitions;
+			try
+			{
+				competitions = await _competitionEntityProvider.GetActiveEntitiesWithIncludeAsync(c => c.CreateUser, c => c.UpdateUser, c => c.Status, c => c.State);
+			}
+			catch
+			{
+				throw;
+			}
+
+			List<CompetitionDT> result = new List<CompetitionDT>();
+
+			foreach (var competition in competitions)
+			{
+				result.Add(ToDTModelsParsers.DTCompetitionParser(competition));
+			}
+
+			return result;
 		}
 
-		public Task AddTeamToCompetitionAsync()
-		{
-			throw new NotImplementedException();
-		}
-
-		public async Task CreateNewCompetitionAsync(CompetitionDT competitionDT, int createUserId)
+		public async Task<CompetitionDT> AddNewCompetitionAsync(CompetitionDT competitionDT, int createUserId)
 		{
 			if (competitionDT == null)
 			{
@@ -45,10 +85,43 @@ namespace ASPNETCore.BuisnessLogic.Managers.CompetitionsManager
 			}
 
 			var competition = ToDBModelsParsers.CompetitionParser(competitionDT);
-
+			
 			try
 			{
-				await _entityProvider.AddEntityAsync(competition, createUserId);
+				competition = await _competitionEntityProvider.AddNewEntityAsync(competition, createUserId);
+			}
+			catch
+			{
+				throw;
+			}
+
+			competitionDT = ToDTModelsParsers.DTCompetitionParser(competition);
+
+			return competitionDT;
+		}
+
+		public async Task<CompetitionDT> GetCompetitionByIdAsync(int competitionId)
+		{
+			CompetitionDT competitionDT;
+			try
+			{
+				var competition = await _competitionEntityProvider.GetEntityByIdWithIncludeAsync(competitionId, c => c.Status, c => c.CreateUser, c => c.UpdateUser, c => c.State);
+				competitionDT = ToDTModelsParsers.DTCompetitionParser(competition);
+			}
+			catch
+			{
+				throw;
+			}
+			return competitionDT;
+		}
+
+		public async Task DeleteCompetitionByIdAsync(int competitionId, int updateUserId)
+		{
+			try
+			{
+				var competition = await _competitionEntityProvider.GetEntityByIdWithIncludeAsync(competitionId);
+
+				await _competitionEntityProvider.DeleteEntityAsync(competition, updateUserId);
 			}
 			catch
 			{
@@ -56,76 +129,253 @@ namespace ASPNETCore.BuisnessLogic.Managers.CompetitionsManager
 			}
 		}
 
-		public Task DeleteCompetitionAsync()
+		public async Task DisableCompetitionByIdAsync(int competitionId, int updateUserId)
 		{
-			throw new NotImplementedException();
-		}
-
-		public Task DisableCompetitionAsync()
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task EndCompetitionAsync()
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task GetAllActiveCompetitionsAsync()
-		{
-			throw new NotImplementedException();
-		}
-
-		public async Task<List<CompetitionDT>> GetAllCompetitionsAsync()
-		{
-			List<Competition> competitions;
 			try
 			{
-				competitions = await _entityProvider.GetAllEntitiesWithIncludeAsync(c => c.CreateUser, c => c.UpdateUser, c => c.Status, c => c.State);
+				var competition = await _competitionEntityProvider.GetEntityByIdWithIncludeAsync(competitionId);
+
+				competition.StateId = (int)CompetitionStates.Canceled;
+
+				await _competitionEntityProvider.UpdateEntityAsync(competition, updateUserId);
 			}
 			catch
 			{
 				throw;
 			}
+		}
 
-			List<CompetitionDT> result = new List<CompetitionDT>();
-
-			foreach(var competition in competitions)
+		public async Task StartCompetitionByIdAsync(int competitionId, int updateUserId)
+		{
+			try
 			{
-				result.Add(ToDTModelsParsers.DTCompetitionParser(competition));
+				var competition = await _competitionEntityProvider.GetEntityByIdWithIncludeAsync(competitionId);
+
+				competition.StateId = (int)CompetitionStates.InProgress;
+				competition.StartDateTime = DateTime.Now;
+				competition.EndDateTime = competition.StartDateTime + competition.Duration;
+
+				await _competitionEntityProvider.UpdateEntityAsync(competition, updateUserId);
 			}
-
-			return result;
+			catch
+			{
+				throw;
+			}
 		}
 
-		public Task GetCompetitionById()
+		public async Task EndCompetitionByIdAsync(int competitionId, int updateUserId)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				var competition = await _competitionEntityProvider.GetEntityByIdWithIncludeAsync(competitionId);
+
+				competition.StateId = (int)CompetitionStates.Ended;
+				competition.EndDateTime = DateTime.Now;
+				competition.Duration = competition.StartDateTime - competition.EndDateTime;
+
+				await _competitionEntityProvider.UpdateEntityAsync(competition, updateUserId);
+			}
+			catch
+			{
+				throw;
+			}
 		}
 
-		public Task RemoveAdministratorFromCompetitionAsync()
+		public async Task UpdateCompetitionAsync(CompetitionDT competitionDT, int updateUserId)
 		{
-			throw new NotImplementedException();
+			var competition = ToDBModelsParsers.CompetitionParser(competitionDT);
+
+			await _competitionEntityProvider.UpdateEntityAsync(competition, updateUserId);
 		}
 
-		public Task RemoveExerciseFromCompetitionAsync()
+
+
+		public async Task AddNewOperatorToCompetitionAsync(int competitionId, int operatorId, int createUserId)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				var operatorToCompetition = new OperatorsToCompetition()
+				{
+					CompetitionId = competitionId,
+					UserId = operatorId,
+				};
+				await _operatorsToCompetitionEntityProvider.AddNewEntityAsync(operatorToCompetition, createUserId);
+			}
+			catch
+			{
+				throw;
+			}
 		}
 
-		public Task RemoveTeamFromCompetitionAsync()
+		public async Task RemoveOperatorFromCompetitionAsync(int competitionId, int operatorId, int updateUserId)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				var operatorToCompetition = new OperatorsToCompetition()
+				{
+					CompetitionId = competitionId,
+					UserId = operatorId,
+				};
+				await _operatorsToCompetitionEntityProvider.DeleteEntityAsync(operatorToCompetition, updateUserId);
+			}
+			catch
+			{
+
+				throw;
+			}
 		}
 
-		public Task StartCompetitionAsync()
+
+
+		public async Task AddNewExerciseToCompetitionAsync(int competitionId, int exerciseId, int createUserId)
 		{
-			throw new NotImplementedException();
+
+			try
+			{
+				var exercisesToCompetition = new ExercisesToCompetition()
+				{
+					CompetitionId = competitionId,
+					ExerciseId = exerciseId,
+				};
+				await _exercisesToCompetitionEntityProvider.AddNewEntityAsync(exercisesToCompetition, createUserId);
+			}
+			catch
+			{
+				throw;
+			}
 		}
 
-		public Task UpdateNewCompetitionAsync()
+		public async Task RemoveExerciseFromCompetitionAsync(int competitionId, int exerciseId, int updateUserId)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				var exercisesToCompetition = new ExercisesToCompetition()
+				{
+					CompetitionId = competitionId,
+					ExerciseId = exerciseId,
+				};
+				await _exercisesToCompetitionEntityProvider.DeleteEntityAsync(exercisesToCompetition, updateUserId);
+			}
+			catch
+			{
+				throw;
+			}
 		}
+
+
+
+		public async Task AddNewTeamToCompetitionAsync(int competitionId, int teamId, int createUserId)
+		{
+			try
+			{
+				var teamsToCompetition = new TeamsToCompetition()
+				{
+					CompetitionId = competitionId,
+					TeamId = teamId,
+				};
+				await _teamsToCompetitionEntityProvider.AddNewEntityAsync(teamsToCompetition, createUserId);
+			}
+			catch
+			{
+				throw;
+			}
+		}
+
+		public async Task RemoveTeamFromCompetitionAsync(int competitionId, int teamId, int updateUserId)
+		{
+			try
+			{
+				var teamsToCompetition = new TeamsToCompetition()
+				{
+					CompetitionId = competitionId,
+					TeamId = teamId,
+				};
+				await _teamsToCompetitionEntityProvider.DeleteEntityAsync(teamsToCompetition, updateUserId);
+			}
+			catch
+			{
+				throw;
+			}
+		}
+
+
+
+		public async Task<List<UserDT>> GetAllCompetitionOperatorsAsync(int competitionId)
+		{
+			List<UserDT> usersDT = new();
+			try
+			{
+				var users = await _entityToCompetitionProvider.GetAllCompetitionOperatorsAsync(competitionId);
+				foreach (var user in users)
+				{
+					usersDT.Add(ToDTModelsParsers.DTUserParser(user));
+				}
+			}
+			catch
+			{
+				throw;
+			}
+			return usersDT;
+		}
+
+		public async Task<List<UserDT>> GetAllCompetitionParticipantsAsync(int competitionId)
+		{
+			List<UserDT> usersDT = new();
+			try
+			{
+				var users = await _entityToCompetitionProvider.GetAllCompetitionParticipantsAsync(competitionId);
+				foreach (var user in users)
+				{
+					usersDT.Add(ToDTModelsParsers.DTUserParser(user));
+				}
+			}
+			catch
+			{
+				throw;
+			}
+			return usersDT;
+		}
+
+		public async Task<List<ExerciseDT>> GetAllCompetitionExercisesAsync(int competitionId)
+		{
+			List<ExerciseDT> exercisesDT = new();
+			try
+			{
+				var exercises = await _entityToCompetitionProvider.GetAllCompetitionExercisesAsync(competitionId);
+				foreach (var exercise in exercises)
+				{
+					exercisesDT.Add(ToDTModelsParsers.DTExerciseParser(exercise));
+				}
+			}
+			catch
+			{
+				throw;
+			}
+			return exercisesDT;
+		}
+
+		public async Task<List<TeamDT>> GetAllCompetitionTeamsAsync(int competitionId)
+		{
+			List<TeamDT> teamsDT = new();
+			try
+			{
+				var teams = await _entityToCompetitionProvider.GetAllCompetitionTeamsAsync(competitionId);
+				foreach (var team in teams)
+				{
+					teamsDT.Add(ToDTModelsParsers.DTTeamParser(team));
+				}
+			}
+			catch
+			{
+				throw;
+			}
+			return teamsDT;
+		}
+
+
+		/////////////////////////////////////////////////////////////
+
+
+
 	}
 }

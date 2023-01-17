@@ -7,7 +7,7 @@ using SharedLib.Services.ExceptionBuilderService;
 
 namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 {
-	public class ExercisesManager : IExercisesManager
+    public class ExercisesManager : IExercisesManager
 	{
 		private readonly IEntityProvider<Exercise> _entityProviderExercise;
 		private readonly IEntityProvider<ExerciseLang> _entityProviderExerciseLang;
@@ -49,7 +49,7 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 		public async Task AddExerciseAsync(ExerciseDT exerciseDT, int userCreateId)
 		{
 			var exercise = ToDBModelsParsers.ExerciseParser(exerciseDT);
-			await _entityProviderExercise.AddEntityAsync(exercise, userCreateId);
+			await _entityProviderExercise.AddNewEntityAsync(exercise, userCreateId);
 		}
 
 		public async Task<List<ExerciseLangDT>> GetAllExerciseLangsAsync()
@@ -127,7 +127,7 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 			var exerciseLang = ToDBModelsParsers.ExerciseLangParser(exerciseLangDT);
 			try
 			{
-				await _entityProviderExerciseLang.AddEntityAsync(exerciseLang, 1);
+				await _entityProviderExerciseLang.AddNewEntityAsync(exerciseLang, 1);
 			}
 			catch
 			{
@@ -145,7 +145,7 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 
 			try
 			{
-				await _entityProviderExerciseCategory.AddEntityAsync(exerciseCategory, 1);
+				await _entityProviderExerciseCategory.AddNewEntityAsync(exerciseCategory, 1);
 			}
 			catch
 			{
@@ -164,7 +164,7 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 
 			try
 			{
-				await _entityProviderExercisePlatform.AddEntityAsync(exercisePlatform, 1);
+				await _entityProviderExercisePlatform.AddNewEntityAsync(exercisePlatform, 1);
 			}
 			catch
 			{

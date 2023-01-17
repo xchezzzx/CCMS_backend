@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ASPNETCore.DataAccess.Models.DBModels
+﻿namespace ASPNETCore.DataAccess.Models.DBModels
 {
     public partial class ExercisesToTeam : ICRUDEntity
     {
         public int Id { get; set; }
+        public int CompetitionId { get; set; }
         public int TeamId { get; set; }
         public int ExerciseId { get; set; }
         public DateTime TakeTime { get; set; }
@@ -23,6 +21,7 @@ namespace ASPNETCore.DataAccess.Models.DBModels
         public int UpdateUserId { get; set; }
         public int StatusId { get; set; }
 
+        public virtual Competition Competition { get; set; }
         public virtual User CreateUser { get; set; }
         public virtual Exercise Exercise { get; set; }
         public virtual ExerciseState ExerciseState { get; set; }

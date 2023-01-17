@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ASPNETCore.DataAccess.Models.DBModels
+﻿namespace ASPNETCore.DataAccess.Models.DBModels
 {
     public partial class Exercise : ICRUDEntity
     {
         public Exercise()
         {
+            ExercisesToCompetitions = new HashSet<ExercisesToCompetition>();
             ExercisesToTeams = new HashSet<ExercisesToTeam>();
             ExercisesToUsers = new HashSet<ExercisesToUser>();
         }
@@ -21,7 +19,7 @@ namespace ASPNETCore.DataAccess.Models.DBModels
         public int Points { get; set; }
         public int Fine { get; set; }
         public bool IfHasBonus { get; set; }
-        public string? BonusContent { get; set; }
+        public string BonusContent { get; set; }
         public TimeSpan? BonusTimeframe { get; set; }
         public int? BonusPoints { get; set; }
         public DateTime CreateDate { get; set; }
@@ -36,6 +34,7 @@ namespace ASPNETCore.DataAccess.Models.DBModels
         public virtual ExercisePlatform Platform { get; set; }
         public virtual Status Status { get; set; }
         public virtual User UpdateUser { get; set; }
+        public virtual ICollection<ExercisesToCompetition> ExercisesToCompetitions { get; set; }
         public virtual ICollection<ExercisesToTeam> ExercisesToTeams { get; set; }
         public virtual ICollection<ExercisesToUser> ExercisesToUsers { get; set; }
     }

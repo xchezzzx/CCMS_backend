@@ -81,7 +81,7 @@ namespace ASPNETCore.BuisnessLogic.Providers.EntityProvider
 			return entities;
 		}
 
-		public async Task<TEntity> GetEntityByIdWithIncludeAsyncAsync(int id, params Expression<Func<TEntity, object>>[] includeProperties)
+		public async Task<TEntity> GetEntityByIdWithIncludeAsync(int id, params Expression<Func<TEntity, object>>[] includeProperties)
 		{
 
 			List<TEntity> entities;
@@ -101,7 +101,7 @@ namespace ASPNETCore.BuisnessLogic.Providers.EntityProvider
 			return entities[0];
 		}
 
-		public async Task AddEntityAsync(TEntity Entity, int userCreateId)
+		public async Task<TEntity> AddNewEntityAsync(TEntity Entity, int userCreateId)
 		{
 			if (Entity == null)
 			{
@@ -115,14 +115,17 @@ namespace ASPNETCore.BuisnessLogic.Providers.EntityProvider
 
 			CRUDEntityHelper.CreateEntity(ref Entity, userCreateId);
 
+			TEntity addedEntity;
+			
 			try
 			{
-				await _entityRepository.AddEntityAsync(Entity, userCreateId);
+				addedEntity = await _entityRepository.AddEntityAsync(Entity, userCreateId);
 			}
 			catch
 			{
 				throw;
 			}
+			return addedEntity;
 		}
 
 		public async Task UpdateEntityAsync(TEntity Entity, int userUpdateId)

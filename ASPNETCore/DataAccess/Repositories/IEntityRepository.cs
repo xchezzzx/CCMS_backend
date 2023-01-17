@@ -13,7 +13,7 @@ namespace ASPNETCore.DataAccess.Repositories
         Task<List<TEntity>> GetActiveEntitiesWithIncludeAsync(params Expression<Func<TEntity, object>>[] includeProperties);
         Task<List<TEntity>> GetActiveEntitiesWithIncludeAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties);
 
-        Task AddEntityAsync(TEntity Entity, int userCreateId);
+        Task<TEntity> AddEntityAsync(TEntity Entity, int userCreateId);
 
         Task UpdateEntityAsync(TEntity Entity, int userUpdateId);
 

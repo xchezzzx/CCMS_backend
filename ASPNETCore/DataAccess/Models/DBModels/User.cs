@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ASPNETCore.DataAccess.Models.DBModels
+﻿namespace ASPNETCore.DataAccess.Models.DBModels 
 {
     public partial class User : ICRUDEntity
     {
@@ -17,18 +14,20 @@ namespace ASPNETCore.DataAccess.Models.DBModels
             ExercisePlatformCreateUsers = new HashSet<ExercisePlatform>();
             ExercisePlatformUpdateUsers = new HashSet<ExercisePlatform>();
             ExerciseUpdateUsers = new HashSet<Exercise>();
+            ExercisesToCompetitionCreateUsers = new HashSet<ExercisesToCompetition>();
+            ExercisesToCompetitionUpdateUsers = new HashSet<ExercisesToCompetition>();
             ExercisesToTeamCreateUsers = new HashSet<ExercisesToTeam>();
             ExercisesToTeamUpdateUsers = new HashSet<ExercisesToTeam>();
             ExercisesToUsers = new HashSet<ExercisesToUser>();
             InverseCreateUser = new HashSet<User>();
             InverseUpdateUser = new HashSet<User>();
+            OperatorsToCompetitionCreateUsers = new HashSet<OperatorsToCompetition>();
+            OperatorsToCompetitionUpdateUsers = new HashSet<OperatorsToCompetition>();
+            OperatorsToCompetitionUsers = new HashSet<OperatorsToCompetition>();
             TeamCreateUsers = new HashSet<Team>();
             TeamUpdateUsers = new HashSet<Team>();
             TeamsToCompetitionCreateUsers = new HashSet<TeamsToCompetition>();
             TeamsToCompetitionUpdateUsers = new HashSet<TeamsToCompetition>();
-            UsersToCompetitionCreateUsers = new HashSet<UsersToCompetition>();
-            UsersToCompetitionUpdateUsers = new HashSet<UsersToCompetition>();
-            UsersToCompetitionUsers = new HashSet<UsersToCompetition>();
             UsersToTeamCreateUsers = new HashSet<UsersToTeam>();
             UsersToTeamUpdateUsers = new HashSet<UsersToTeam>();
             UsersToTeamUsers = new HashSet<UsersToTeam>();
@@ -63,18 +62,20 @@ namespace ASPNETCore.DataAccess.Models.DBModels
         public virtual ICollection<ExercisePlatform> ExercisePlatformCreateUsers { get; set; }
         public virtual ICollection<ExercisePlatform> ExercisePlatformUpdateUsers { get; set; }
         public virtual ICollection<Exercise> ExerciseUpdateUsers { get; set; }
+        public virtual ICollection<ExercisesToCompetition> ExercisesToCompetitionCreateUsers { get; set; }
+        public virtual ICollection<ExercisesToCompetition> ExercisesToCompetitionUpdateUsers { get; set; }
         public virtual ICollection<ExercisesToTeam> ExercisesToTeamCreateUsers { get; set; }
         public virtual ICollection<ExercisesToTeam> ExercisesToTeamUpdateUsers { get; set; }
         public virtual ICollection<ExercisesToUser> ExercisesToUsers { get; set; }
         public virtual ICollection<User> InverseCreateUser { get; set; }
         public virtual ICollection<User> InverseUpdateUser { get; set; }
+        public virtual ICollection<OperatorsToCompetition> OperatorsToCompetitionCreateUsers { get; set; }
+        public virtual ICollection<OperatorsToCompetition> OperatorsToCompetitionUpdateUsers { get; set; }
+        public virtual ICollection<OperatorsToCompetition> OperatorsToCompetitionUsers { get; set; }
         public virtual ICollection<Team> TeamCreateUsers { get; set; }
         public virtual ICollection<Team> TeamUpdateUsers { get; set; }
         public virtual ICollection<TeamsToCompetition> TeamsToCompetitionCreateUsers { get; set; }
         public virtual ICollection<TeamsToCompetition> TeamsToCompetitionUpdateUsers { get; set; }
-        public virtual ICollection<UsersToCompetition> UsersToCompetitionCreateUsers { get; set; }
-        public virtual ICollection<UsersToCompetition> UsersToCompetitionUpdateUsers { get; set; }
-        public virtual ICollection<UsersToCompetition> UsersToCompetitionUsers { get; set; }
         public virtual ICollection<UsersToTeam> UsersToTeamCreateUsers { get; set; }
         public virtual ICollection<UsersToTeam> UsersToTeamUpdateUsers { get; set; }
         public virtual ICollection<UsersToTeam> UsersToTeamUsers { get; set; }

@@ -68,17 +68,24 @@ namespace ASPNETCore.DataAccess.Repositories
 			return entities;
 		}
 
-        public async Task AddEntityAsync(TEntity Entity, int userCreateId)
-        {
-            await _dbSet.AddAsync(Entity);
-            try
-            {
+        public async Task<TEntity> AddEntityAsync(TEntity Entity, int userCreateId)
+		{
+			TEntity addedEntity;
+
+			try
+			{
+				addedEntity = (await _dbSet.AddAsync(Entity)).Entity;
+                if (addedEntity == null)
+                {
+                    throw _exceptionBuilderService.ParseException(ExceptionCodes.DBNullResponseException);
+                }
 				await _dbContext.SaveChangesAsync();
 			}
             catch
             {
                 throw _exceptionBuilderService.ParseException(ExceptionCodes.DBUpdateException, nameof(Entity));
             }
+            return addedEntity;
         }
 
         public async Task UpdateEntityAsync(TEntity Entity, int userUpdateId)

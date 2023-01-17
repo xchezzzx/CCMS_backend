@@ -7,7 +7,7 @@ using SharedLib.Services.ExceptionBuilderService;
 
 namespace ASPNETCore.BuisnessLogic.Managers.TeamsManager
 {
-	public class TeamManager : ITeamManager
+    public class TeamManager : ITeamManager
 	{
 		private readonly IEntityProvider<Team> _entityProvider;
 		private readonly IExceptionBuilderService _exceptionBuilderService;
@@ -28,7 +28,7 @@ namespace ASPNETCore.BuisnessLogic.Managers.TeamsManager
 			var team = ToDBModelsParsers.TeamParser(teamDT);
 			try
 			{
-				await _entityProvider.AddEntityAsync(team, userCreateId);
+				await _entityProvider.AddNewEntityAsync(team, userCreateId);
 			}
 			catch
 			{

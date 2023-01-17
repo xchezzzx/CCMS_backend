@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ASPNETCore.DataAccess.Models.DBModels
+﻿namespace ASPNETCore.DataAccess.Models.DBModels
 {
     public partial class Competition : ICRUDEntity
     {
         public Competition()
         {
+            ExercisesToCompetitions = new HashSet<ExercisesToCompetition>();
+            ExercisesToTeams = new HashSet<ExercisesToTeam>();
+            OperatorsToCompetitions = new HashSet<OperatorsToCompetition>();
             TeamsToCompetitions = new HashSet<TeamsToCompetition>();
             Users = new HashSet<User>();
-            UsersToCompetitions = new HashSet<UsersToCompetition>();
         }
 
         public int Id { get; set; }
@@ -30,8 +29,10 @@ namespace ASPNETCore.DataAccess.Models.DBModels
         public virtual CompetitionState State { get; set; }
         public virtual Status Status { get; set; }
         public virtual User UpdateUser { get; set; }
+        public virtual ICollection<ExercisesToCompetition> ExercisesToCompetitions { get; set; }
+        public virtual ICollection<ExercisesToTeam> ExercisesToTeams { get; set; }
+        public virtual ICollection<OperatorsToCompetition> OperatorsToCompetitions { get; set; }
         public virtual ICollection<TeamsToCompetition> TeamsToCompetitions { get; set; }
         public virtual ICollection<User> Users { get; set; }
-        public virtual ICollection<UsersToCompetition> UsersToCompetitions { get; set; }
     }
 }

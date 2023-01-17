@@ -13,9 +13,9 @@ namespace ASPNETCore.BuisnessLogic.Providers.EntityProvider
         Task<List<TEntity>> GetActiveEntitiesWithIncludeAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties);
 
 
-        Task<TEntity> GetEntityByIdWithIncludeAsyncAsync(int id, params Expression<Func<TEntity, object>>[] includeProperties);
+        Task<TEntity> GetEntityByIdWithIncludeAsync(int id, params Expression<Func<TEntity, object>>[] includeProperties);
 
-        Task AddEntityAsync(TEntity Entity, int userCreateId);
+        Task<TEntity> AddNewEntityAsync(TEntity Entity, int userCreateId);
 
         Task UpdateEntityAsync(TEntity Entity, int userUpdateId);
 

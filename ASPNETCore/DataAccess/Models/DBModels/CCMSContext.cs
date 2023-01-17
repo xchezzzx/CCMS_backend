@@ -23,20 +23,22 @@ namespace ASPNETCore.DataAccess.Models.DBModels
         public virtual DbSet<ExerciseLang> ExerciseLangs { get; set; }
         public virtual DbSet<ExercisePlatform> ExercisePlatforms { get; set; }
         public virtual DbSet<ExerciseState> ExerciseStates { get; set; }
+        public virtual DbSet<ExercisesToCompetition> ExercisesToCompetitions { get; set; }
         public virtual DbSet<ExercisesToTeam> ExercisesToTeams { get; set; }
         public virtual DbSet<ExercisesToUser> ExercisesToUsers { get; set; }
+        public virtual DbSet<OperatorsToCompetition> OperatorsToCompetitions { get; set; }
         public virtual DbSet<Status> Statuses { get; set; }
         public virtual DbSet<Team> Teams { get; set; }
         public virtual DbSet<TeamsToCompetition> TeamsToCompetitions { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
-        public virtual DbSet<UsersToCompetition> UsersToCompetitions { get; set; }
         public virtual DbSet<UsersToTeam> UsersToTeams { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Server=tcp:ccmsdbserver.database.windows.net,1433;Initial Catalog=ccms;Persist Security Info=False;User ID=ccmsadmin;Password=Q!w2e3r4t5;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
@@ -365,6 +367,61 @@ namespace ASPNETCore.DataAccess.Models.DBModels
                     .HasColumnName("name");
             });
 
+            modelBuilder.Entity<ExercisesToCompetition>(entity =>
+            {
+                entity.ToTable("exercises_to_competition");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.CompetitionId).HasColumnName("competition_id");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("create_date");
+
+                entity.Property(e => e.CreateUserId).HasColumnName("create_user_id");
+
+                entity.Property(e => e.ExerciseId).HasColumnName("exercise_id");
+
+                entity.Property(e => e.StatusId).HasColumnName("status_id");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("update_date");
+
+                entity.Property(e => e.UpdateUserId).HasColumnName("update_user_id");
+
+                entity.HasOne(d => d.Competition)
+                    .WithMany(p => p.ExercisesToCompetitions)
+                    .HasForeignKey(d => d.CompetitionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_exercises_to_competition_competition");
+
+                entity.HasOne(d => d.CreateUser)
+                    .WithMany(p => p.ExercisesToCompetitionCreateUsers)
+                    .HasForeignKey(d => d.CreateUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_exercises_to_competition_user_create");
+
+                entity.HasOne(d => d.Exercise)
+                    .WithMany(p => p.ExercisesToCompetitions)
+                    .HasForeignKey(d => d.ExerciseId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_exercises_to_competition_exercise");
+
+                entity.HasOne(d => d.Status)
+                    .WithMany(p => p.ExercisesToCompetitions)
+                    .HasForeignKey(d => d.StatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_exercises_to_competition_status");
+
+                entity.HasOne(d => d.UpdateUser)
+                    .WithMany(p => p.ExercisesToCompetitionUpdateUsers)
+                    .HasForeignKey(d => d.UpdateUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_exercises_to_competition_user_update");
+            });
+
             modelBuilder.Entity<ExercisesToTeam>(entity =>
             {
                 entity.ToTable("exercises_to_teams");
@@ -376,6 +433,8 @@ namespace ASPNETCore.DataAccess.Models.DBModels
                 entity.Property(e => e.Comment)
                     .HasMaxLength(2000)
                     .HasColumnName("comment");
+
+                entity.Property(e => e.CompetitionId).HasColumnName("competition_id");
 
                 entity.Property(e => e.CreateDate)
                     .HasColumnType("datetime")
@@ -416,6 +475,12 @@ namespace ASPNETCore.DataAccess.Models.DBModels
                     .HasColumnName("update_date");
 
                 entity.Property(e => e.UpdateUserId).HasColumnName("update_user_id");
+
+                entity.HasOne(d => d.Competition)
+                    .WithMany(p => p.ExercisesToTeams)
+                    .HasForeignKey(d => d.CompetitionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_exercises_to_teams_competition");
 
                 entity.HasOne(d => d.CreateUser)
                     .WithMany(p => p.ExercisesToTeamCreateUsers)
@@ -475,6 +540,61 @@ namespace ASPNETCore.DataAccess.Models.DBModels
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_exercises_to_users_user");
+            });
+
+            modelBuilder.Entity<OperatorsToCompetition>(entity =>
+            {
+                entity.ToTable("operators_to_competitions");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.CompetitionId).HasColumnName("competition_id");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("create_date");
+
+                entity.Property(e => e.CreateUserId).HasColumnName("create_user_id");
+
+                entity.Property(e => e.StatusId).HasColumnName("status_id");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("update_date");
+
+                entity.Property(e => e.UpdateUserId).HasColumnName("update_user_id");
+
+                entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.HasOne(d => d.Competition)
+                    .WithMany(p => p.OperatorsToCompetitions)
+                    .HasForeignKey(d => d.CompetitionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_operators_to_competitions_competition");
+
+                entity.HasOne(d => d.CreateUser)
+                    .WithMany(p => p.OperatorsToCompetitionCreateUsers)
+                    .HasForeignKey(d => d.CreateUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_operators_to_competitions_user_create");
+
+                entity.HasOne(d => d.Status)
+                    .WithMany(p => p.OperatorsToCompetitions)
+                    .HasForeignKey(d => d.StatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_operators_to_competitions_status");
+
+                entity.HasOne(d => d.UpdateUser)
+                    .WithMany(p => p.OperatorsToCompetitionUpdateUsers)
+                    .HasForeignKey(d => d.UpdateUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_operators_to_competitions_user_update");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.OperatorsToCompetitionUsers)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_operators_to_competitions_user");
             });
 
             modelBuilder.Entity<Status>(entity =>
@@ -690,61 +810,6 @@ namespace ASPNETCore.DataAccess.Models.DBModels
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnName("name");
-            });
-
-            modelBuilder.Entity<UsersToCompetition>(entity =>
-            {
-                entity.ToTable("users_to_competitions");
-
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.CompetitionId).HasColumnName("competition_id");
-
-                entity.Property(e => e.CreateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("create_date");
-
-                entity.Property(e => e.CreateUserId).HasColumnName("create_user_id");
-
-                entity.Property(e => e.StatusId).HasColumnName("status_id");
-
-                entity.Property(e => e.UpdateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("update_date");
-
-                entity.Property(e => e.UpdateUserId).HasColumnName("update_user_id");
-
-                entity.Property(e => e.UserId).HasColumnName("user_id");
-
-                entity.HasOne(d => d.Competition)
-                    .WithMany(p => p.UsersToCompetitions)
-                    .HasForeignKey(d => d.CompetitionId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_competitions_to_users_competition");
-
-                entity.HasOne(d => d.CreateUser)
-                    .WithMany(p => p.UsersToCompetitionCreateUsers)
-                    .HasForeignKey(d => d.CreateUserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_competitions_to_users_user_create");
-
-                entity.HasOne(d => d.Status)
-                    .WithMany(p => p.UsersToCompetitions)
-                    .HasForeignKey(d => d.StatusId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_competitions_to_users_status");
-
-                entity.HasOne(d => d.UpdateUser)
-                    .WithMany(p => p.UsersToCompetitionUpdateUsers)
-                    .HasForeignKey(d => d.UpdateUserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_competitions_to_users_user_update");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.UsersToCompetitionUsers)
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_competitions_to_users_user");
             });
 
             modelBuilder.Entity<UsersToTeam>(entity =>
