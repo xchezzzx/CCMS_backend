@@ -4,6 +4,7 @@ using ASPNETCore.BuisnessLogic.Managers.TeamsManager;
 using ASPNETCore.BuisnessLogic.Providers.CompetitionsToAdministratorsProvider;
 using ASPNETCore.BuisnessLogic.Providers.EntityProvider;
 using ASPNETCore.BuisnessLogic.Providers.EntityToCompetitionProvider;
+using ASPNETCore.BuisnessLogic.Providers.EntityToTeamProvider;
 using ASPNETCore.DataAccess.Models.DBModels;
 using ASPNETCore.DataAccess.Repositories;
 using ASPNETCore.Hubs;
@@ -44,7 +45,7 @@ builder.Services.AddTransient<IEntityRepository<ExerciseLang>, EntityRepository<
 builder.Services.AddTransient<IEntityRepository<ExercisePlatform>, EntityRepository<ExercisePlatform>>();
 builder.Services.AddTransient<IEntityRepository<ExercisesToCompetition>, EntityRepository<ExercisesToCompetition>>();
 builder.Services.AddTransient<IEntityRepository<ExercisesToTeamToCompetition>, EntityRepository<ExercisesToTeamToCompetition>>();
-//builder.Services.AddTransient<IEntityRepository<ExercisesToUser>, EntityRepository<ExercisesToUser>>();
+builder.Services.AddTransient<IEntityRepository<ExercisesToUsersToCompetition>, EntityRepository<ExercisesToUsersToCompetition>>();
 builder.Services.AddTransient<IEntityRepository<Team>, EntityRepository<Team>>();
 builder.Services.AddTransient<IEntityRepository<TeamsToCompetition>, EntityRepository<TeamsToCompetition>>();
 builder.Services.AddTransient<IEntityRepository<User>, EntityRepository<User>>();
@@ -53,13 +54,15 @@ builder.Services.AddTransient<IEntityRepository<UsersToTeam>, EntityRepository<U
 
 
 builder.Services.AddTransient<IEntityToCompetitionProvider, EntityToCompetitionProvider>();
+builder.Services.AddTransient<IEntityToTeamProvider, EntityToTeamProvider>();
 builder.Services.AddTransient<IEntityProvider<Competition>, EntityProvider<Competition>>();
 builder.Services.AddTransient<IEntityProvider<Exercise>, EntityProvider<Exercise>>();
 builder.Services.AddTransient<IEntityProvider<ExerciseCategory>, EntityProvider<ExerciseCategory>>();
 builder.Services.AddTransient<IEntityProvider<ExerciseLang>, EntityProvider<ExerciseLang>>();
 builder.Services.AddTransient<IEntityProvider<ExercisePlatform>, EntityProvider<ExercisePlatform>>();
+builder.Services.AddTransient<IEntityProvider<ExercisesToCompetition>, EntityProvider<ExercisesToCompetition>>();
 builder.Services.AddTransient<IEntityProvider<ExercisesToTeamToCompetition>, EntityProvider<ExercisesToTeamToCompetition>>();
-//builder.Services.AddTransient<IEntityProvider<ExercisesToUser>, EntityProvider<ExercisesToUser>>();
+builder.Services.AddTransient<IEntityProvider<ExercisesToUsersToCompetition>, EntityProvider<ExercisesToUsersToCompetition>>();
 builder.Services.AddTransient<IEntityProvider<Team>, EntityProvider<Team>>();
 builder.Services.AddTransient<IEntityProvider<TeamsToCompetition>, EntityProvider<TeamsToCompetition>>();
 builder.Services.AddTransient<IEntityProvider<User>, EntityProvider<User>>();
@@ -74,9 +77,8 @@ builder.Services.AddTransient<ITeamManager, TeamManager>();
 builder.Services.AddTransient<IExercisesManager, ExercisesManager>();
 
 
-builder.Services.AddTransient<IGenerateUsers, UsersStorage>();
-
-builder.Services.AddTransient<IReadUsers, UsersStorage>();
+//builder.Services.AddTransient<IGenerateUsers, UsersStorage>();
+//builder.Services.AddTransient<IReadUsers, UsersStorage>();
 
 
 builder.Services.AddControllers()

@@ -2,7 +2,7 @@
 
 namespace ASPNETCore.BuisnessLogic.Providers.EntityToTeamProvider
 {
-	public interface IEntityToTeamProvider
+    public interface IEntityToTeamProvider
 	{
 		Task<List<User>> GetAllTeamMembersAsync(int teamId);
 		Task<List<Competition>> GetAllTeamCompetitionsAsync(int teamId);

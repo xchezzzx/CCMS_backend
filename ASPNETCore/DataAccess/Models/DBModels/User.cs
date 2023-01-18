@@ -1,7 +1,7 @@
-﻿namespace ASPNETCore.DataAccess.Models.DBModels 
+﻿namespace ASPNETCore.DataAccess.Models.DBModels
 {
     public partial class User : ICRUDEntity
-    {
+	{
         public User()
         {
             CompetitionCreateUsers = new HashSet<Competition>();
@@ -18,7 +18,9 @@
             ExercisesToCompetitionUpdateUsers = new HashSet<ExercisesToCompetition>();
             ExercisesToTeamCreateUsers = new HashSet<ExercisesToTeamToCompetition>();
             ExercisesToTeamUpdateUsers = new HashSet<ExercisesToTeamToCompetition>();
-            ExercisesToUsers = new HashSet<ExercisesToUser>();
+            ExercisesToUsersToCompetitionCreateUsers = new HashSet<ExercisesToUsersToCompetition>();
+            ExercisesToUsersToCompetitionUpdateUsers = new HashSet<ExercisesToUsersToCompetition>();
+            ExercisesToUsersToCompetitionUsers = new HashSet<ExercisesToUsersToCompetition>();
             InverseCreateUser = new HashSet<User>();
             InverseUpdateUser = new HashSet<User>();
             OperatorsToCompetitionCreateUsers = new HashSet<OperatorsToCompetition>();
@@ -66,7 +68,9 @@
         public virtual ICollection<ExercisesToCompetition> ExercisesToCompetitionUpdateUsers { get; set; }
         public virtual ICollection<ExercisesToTeamToCompetition> ExercisesToTeamCreateUsers { get; set; }
         public virtual ICollection<ExercisesToTeamToCompetition> ExercisesToTeamUpdateUsers { get; set; }
-        public virtual ICollection<ExercisesToUser> ExercisesToUsers { get; set; }
+        public virtual ICollection<ExercisesToUsersToCompetition> ExercisesToUsersToCompetitionCreateUsers { get; set; }
+        public virtual ICollection<ExercisesToUsersToCompetition> ExercisesToUsersToCompetitionUpdateUsers { get; set; }
+        public virtual ICollection<ExercisesToUsersToCompetition> ExercisesToUsersToCompetitionUsers { get; set; }
         public virtual ICollection<User> InverseCreateUser { get; set; }
         public virtual ICollection<User> InverseUpdateUser { get; set; }
         public virtual ICollection<OperatorsToCompetition> OperatorsToCompetitionCreateUsers { get; set; }

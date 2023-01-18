@@ -1,12 +1,9 @@
 ﻿using ASPNETCore.DataAccess.Models.DBModels;
 using ASPNETCore.DataAccess.Repositories;
-using SharedLib.Constants.Enums;
-using SharedLib.DataTransferModels;
-using SharedLib.Services.ExceptionBuilderService;
 
 namespace ASPNETCore.BuisnessLogic.Providers.EntityToTeamProvider
 {
-	public class EntityToTeamProvider : IEntityToTeamProvider
+    public class EntityToTeamProvider : IEntityToTeamProvider
 	{
 		private readonly IEntityRepository<ExercisesToTeamToCompetition> _exercisesToTeamToCompetitionRepository;
 		private readonly IEntityRepository<UsersToTeam> _usersToTeamRepository;
@@ -14,9 +11,8 @@ namespace ASPNETCore.BuisnessLogic.Providers.EntityToTeamProvider
 		private readonly IEntityRepository<User> _userRepository;
 		private readonly IEntityRepository<Competition> _competitionRepository;
 		private readonly IEntityRepository<Exercise> _exerciseRepository;
-		private readonly IExceptionBuilderService _exceptionBuilderService;
 
-		public EntityToTeamProvider(IExceptionBuilderService exceptionBuilderService, IEntityRepository<Competition> competitionRepository, IEntityRepository<TeamsToCompetition> teamsToCompetitionRepository, IEntityRepository<Exercise> exerciseRepository, IEntityRepository<ExercisesToTeamToCompetition> exercisesToTeamToCompetitionRepository, IEntityRepository<UsersToTeam> usersToTeamRepository, IEntityRepository<User> userRepository)
+		public EntityToTeamProvider(IEntityRepository<Competition> competitionRepository, IEntityRepository<TeamsToCompetition> teamsToCompetitionRepository, IEntityRepository<Exercise> exerciseRepository, IEntityRepository<ExercisesToTeamToCompetition> exercisesToTeamToCompetitionRepository, IEntityRepository<UsersToTeam> usersToTeamRepository, IEntityRepository<User> userRepository)
 		{
 			_exercisesToTeamToCompetitionRepository = exercisesToTeamToCompetitionRepository;
 			_usersToTeamRepository = usersToTeamRepository;
@@ -24,7 +20,6 @@ namespace ASPNETCore.BuisnessLogic.Providers.EntityToTeamProvider
 			_exerciseRepository = exerciseRepository;
 			_teamsToCompetitionRepository = teamsToCompetitionRepository;
 			_competitionRepository = competitionRepository;
-			_exceptionBuilderService = exceptionBuilderService;
 		}
 
 		public async Task<List<Exercise>> GetAllCompetitionTeamExercisesAsync(int competitionId, int teamId)
@@ -105,7 +100,6 @@ namespace ASPNETCore.BuisnessLogic.Providers.EntityToTeamProvider
 							if (comp.StartDateTime < competition.StartDateTime) competition = comp;
 						}
 					}
-					else throw _exceptionBuilderService.ParseException(ExceptionCodes.DBNoDataFoundException);
 				}
 
 				return competition;

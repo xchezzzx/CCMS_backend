@@ -8,19 +8,17 @@ using SharedLib.Services.ExceptionBuilderService;
 
 namespace ASPNETCore.BuisnessLogic.Managers.TeamsManager
 {
-	public class TeamManager : ITeamManager
+    public class TeamManager : ITeamManager
 	{
 		private readonly IEntityProvider<Team> _teamEntityProvider;
 		private readonly IEntityProvider<ExercisesToTeamToCompetition> _exercisesToTeamToCompetitionEntityProvider;
 		private readonly IEntityToTeamProvider _entityToTeamProvider;
-		private readonly IExceptionBuilderService _exceptionBuilderService;
 		private readonly IEntityProvider<Exercise> _exerciseEntityProvider;
 		private readonly IEntityProvider<UsersToTeam> _usersToTeamEntityProvider;
 
-		public TeamManager(IEntityProvider<UsersToTeam> usersToTeamEntityProvider, IEntityProvider<ExercisesToTeamToCompetition> exercisesToTeamToCompetitionEntityProvider, IEntityProvider<Exercise> exerciseEntityProvider, IEntityToTeamProvider entityToTeamProvider, IEntityProvider<Team> entityProvider, IExceptionBuilderService exceptionBuilderService)
+		public TeamManager(IEntityProvider<UsersToTeam> usersToTeamEntityProvider, IEntityProvider<ExercisesToTeamToCompetition> exercisesToTeamToCompetitionEntityProvider, IEntityProvider<Exercise> exerciseEntityProvider, IEntityToTeamProvider entityToTeamProvider, IEntityProvider<Team> entityProvider)
 		{
 			_teamEntityProvider = entityProvider;
-			_exceptionBuilderService = exceptionBuilderService;
 			_entityToTeamProvider = entityToTeamProvider;
 			_exerciseEntityProvider = exerciseEntityProvider;
 			_exercisesToTeamToCompetitionEntityProvider = exercisesToTeamToCompetitionEntityProvider;
@@ -73,7 +71,7 @@ namespace ASPNETCore.BuisnessLogic.Managers.TeamsManager
 			Team team;
 			try
 			{
-				team = await _teamEntityProvider.GetEntityByIdWithIncludeAsync(teamId, t => t.UpdateUser, t => t.CreateUser, t => t.Status);
+				team = await _teamEntityProvider.GetActiveEntityByIdWithIncludeAsync(teamId, t => t.UpdateUser, t => t.CreateUser, t => t.Status);
 			}
 			catch
 			{
@@ -86,11 +84,6 @@ namespace ASPNETCore.BuisnessLogic.Managers.TeamsManager
 
 		public async Task<TeamDT> AddNewTeamAsync(TeamDT teamDT, int userCreateId)
 		{
-			
-			if (teamDT == null)
-			{
-				throw _exceptionBuilderService.ParseException(ExceptionCodes.ArgumentNullException, nameof(teamDT));
-			}
 
 			var team = ToDBModelsParsers.TeamParser(teamDT);
 			try
@@ -122,7 +115,7 @@ namespace ASPNETCore.BuisnessLogic.Managers.TeamsManager
 		{
 			try
 			{
-				var team = await _teamEntityProvider.GetEntityByIdWithIncludeAsync(teamId);
+				var team = await _teamEntityProvider.GetActiveEntityByIdWithIncludeAsync(teamId);
 				await _teamEntityProvider.DeleteEntityAsync(team, userUpdateId);
 			}
 			catch
@@ -215,8 +208,6 @@ namespace ASPNETCore.BuisnessLogic.Managers.TeamsManager
 			{
 				var exercise = (await _exerciseEntityProvider.GetActiveEntitiesWithIncludeAsync(x => x.Id == exerciseId))[0];
 
-				if (exercise != null)
-				{
 					exerciseToTeamToCompetition = new()
 					{
 						CompetitionId = competitionId,
@@ -234,8 +225,6 @@ namespace ASPNETCore.BuisnessLogic.Managers.TeamsManager
 					};
 
 					await _exercisesToTeamToCompetitionEntityProvider.AddNewEntityAsync(exerciseToTeamToCompetition, userCreateId);
-				}
-				else throw _exceptionBuilderService.ParseException(ExceptionCodes.DBNoDataFoundException, nameof(exerciseId));
 
 			}
 			catch
@@ -271,9 +260,7 @@ namespace ASPNETCore.BuisnessLogic.Managers.TeamsManager
 			try
 			{
 				var usersToTeam = await _usersToTeamEntityProvider.GetActiveEntitiesWithIncludeAsync(x => x.TeamId == teamId);
-				UsersToTeam userToTeam;
-				if (usersToTeam != null)
-				{
+
 					for (int i = 0; i < usersToTeam.Count; i++)
 					{
 						if (usersToTeam[i].IsCaptain && usersToTeam[i].Id != userId)
@@ -287,8 +274,6 @@ namespace ASPNETCore.BuisnessLogic.Managers.TeamsManager
 							await _usersToTeamEntityProvider.UpdateEntityAsync(usersToTeam[i], userUpdateId);
 						}
 					}
-				}
-				else throw _exceptionBuilderService.ParseException(ExceptionCodes.DBNoDataFoundException, nameof(teamId));
 			}
 			catch 
 			{

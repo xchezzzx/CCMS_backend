@@ -1,5 +1,6 @@
 ﻿using ASPNETCore.BuisnessLogic.Managers.ExercisesManager;
 using Microsoft.AspNetCore.SignalR;
+using SharedLib.Constants.Enums;
 using SharedLib.DataTransferModels;
 using SharedLib.Services.ExceptionBuilderService;
 
@@ -138,8 +139,6 @@ namespace ASPNETCore.Hubs
 
 		public async Task AddNewExercisePlatform(ExercisePlatformDT exercisePlatformDT)
 		{
-
-
 			string res = "Success";
 			try
 			{

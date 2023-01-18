@@ -1,7 +1,7 @@
 ﻿namespace ASPNETCore.DataAccess.Models.DBModels
 {
     public partial class Team : ICRUDEntity
-    {
+	{
         public Team()
         {
             ExercisesToTeams = new HashSet<ExercisesToTeamToCompetition>();

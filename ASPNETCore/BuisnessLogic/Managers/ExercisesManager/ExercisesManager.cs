@@ -13,7 +13,6 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 		private readonly IEntityProvider<ExerciseLang> _entityProviderExerciseLang;
 		private readonly IEntityProvider<ExerciseCategory> _entityProviderExerciseCategory;
 		private readonly IEntityProvider<ExercisePlatform> _entityProviderExercisePlatform;
-		private readonly IExceptionBuilderService _exceptionBuilderService;
 
 		public ExercisesManager(IEntityProvider<Exercise> entityProviderExercise, IEntityProvider<ExerciseLang> entityProviderExerciseLang, IEntityProvider<ExerciseCategory> entityProviderExerciseCategory, IEntityProvider<ExercisePlatform> entityProviderExercisePlatform, IExceptionBuilderService exceptionBuilderService)
 		{
@@ -21,7 +20,6 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 			_entityProviderExerciseLang = entityProviderExerciseLang;
 			_entityProviderExerciseCategory = entityProviderExerciseCategory;
 			_entityProviderExercisePlatform = entityProviderExercisePlatform;
-			_exceptionBuilderService = exceptionBuilderService;
 		}
 
 		public async Task<List<ExerciseDT>> GetAllExercisesAsync()
@@ -55,7 +53,6 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 		public async Task<List<ExerciseLangDT>> GetAllExerciseLangsAsync()
 		{
 			List<ExerciseLang> langs;
-				
 			try
 			{
 				langs = await _entityProviderExerciseLang.GetAllEntitiesWithIncludeAsync();
@@ -77,7 +74,6 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 		public async Task<List<ExerciseCategoryDT>> GetAllExerciseCategoriesAsync()
 		{
 			List<ExerciseCategory> categories;
-
 			try
 			{
 				categories = await _entityProviderExerciseCategory.GetAllEntitiesWithIncludeAsync();
@@ -99,7 +95,6 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 		public async Task<List<ExercisePlatformDT>> GetAllExercisePlatformsAsync()
 		{
 			List<ExercisePlatform> platforms;
-			
 			try
 			{
 				platforms = await _entityProviderExercisePlatform.GetAllEntitiesWithIncludeAsync();
@@ -120,10 +115,6 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 
 		public async Task AddNewExerciseLangAsync(ExerciseLangDT exerciseLangDT)
 		{
-			if (exerciseLangDT == null)
-			{
-				throw _exceptionBuilderService.ParseException(ExceptionCodes.ArgumentNullException, nameof(exerciseLangDT));
-			}
 			var exerciseLang = ToDBModelsParsers.ExerciseLangParser(exerciseLangDT);
 			try
 			{
@@ -137,10 +128,6 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 
 		public async Task AddNewExerciseCategoryAsync(ExerciseCategoryDT exerciseCategoryDT)
 		{
-			if (exerciseCategoryDT == null)
-			{
-				throw _exceptionBuilderService.ParseException(ExceptionCodes.ArgumentNullException, nameof(exerciseCategoryDT));
-			}
 			var exerciseCategory = ToDBModelsParsers.ExerciseCategoryParser(exerciseCategoryDT);
 
 			try
@@ -156,10 +143,6 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 
 		public async Task AddNewExercisePlatformAsync(ExercisePlatformDT exercisePlatformDT)
 		{
-			if (exercisePlatformDT == null)
-			{
-				throw _exceptionBuilderService.ParseException(ExceptionCodes.ArgumentNullException, nameof(exercisePlatformDT));
-			}
 			var exercisePlatform = ToDBModelsParsers.ExercisePlatformParser(exercisePlatformDT);
 
 			try

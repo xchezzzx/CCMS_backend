@@ -25,7 +25,7 @@ namespace ASPNETCore.DataAccess.Models.DBModels
         public virtual DbSet<ExerciseState> ExerciseStates { get; set; }
         public virtual DbSet<ExercisesToCompetition> ExercisesToCompetitions { get; set; }
         public virtual DbSet<ExercisesToTeamToCompetition> ExercisesToTeams { get; set; }
-        public virtual DbSet<ExercisesToUser> ExercisesToUsers { get; set; }
+        public virtual DbSet<ExercisesToUsersToCompetition> ExercisesToUsersToCompetitions { get; set; }
         public virtual DbSet<OperatorsToCompetition> OperatorsToCompetitions { get; set; }
         public virtual DbSet<Status> Statuses { get; set; }
         public virtual DbSet<Team> Teams { get; set; }
@@ -519,24 +519,64 @@ namespace ASPNETCore.DataAccess.Models.DBModels
                     .HasConstraintName("FK_competitions_to_teams_to_tasks_user_update");
             });
 
-            modelBuilder.Entity<ExercisesToUser>(entity =>
+            modelBuilder.Entity<ExercisesToUsersToCompetition>(entity =>
             {
-                entity.ToTable("exercises_to_users");
+                entity.ToTable("exercises_to_users_to_competitions");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.CompetitionId).HasColumnName("competition_id");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("create_date");
+
+                entity.Property(e => e.CreateUserId).HasColumnName("create_user_id");
+
                 entity.Property(e => e.ExerciseId).HasColumnName("exercise_id");
+
+                entity.Property(e => e.StatusId).HasColumnName("status_id");
+
+                entity.Property(e => e.UpdateDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("update_date");
+
+                entity.Property(e => e.UpdateUserId).HasColumnName("update_user_id");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
+                entity.HasOne(d => d.Competition)
+                    .WithMany(p => p.ExercisesToUsersToCompetitions)
+                    .HasForeignKey(d => d.CompetitionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_exercises_to_users_to_competitions_competition");
+
+                entity.HasOne(d => d.CreateUser)
+                    .WithMany(p => p.ExercisesToUsersToCompetitionCreateUsers)
+                    .HasForeignKey(d => d.CreateUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_exercises_to_users_to_competitions_user_create");
+
                 entity.HasOne(d => d.Exercise)
-                    .WithMany(p => p.ExercisesToUsers)
+                    .WithMany(p => p.ExercisesToUsersToCompetitions)
                     .HasForeignKey(d => d.ExerciseId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_exercises_to_users_exercise");
 
+                entity.HasOne(d => d.Status)
+                    .WithMany(p => p.ExercisesToUsersToCompetitions)
+                    .HasForeignKey(d => d.StatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_exercises_to_users_to_competitions_status");
+
+                entity.HasOne(d => d.UpdateUser)
+                    .WithMany(p => p.ExercisesToUsersToCompetitionUpdateUsers)
+                    .HasForeignKey(d => d.UpdateUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_exercises_to_users_to_competitions_user_update");
+
                 entity.HasOne(d => d.User)
-                    .WithMany(p => p.ExercisesToUsers)
+                    .WithMany(p => p.ExercisesToUsersToCompetitionUsers)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_exercises_to_users_user");

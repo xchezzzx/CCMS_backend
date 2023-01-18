@@ -1,5 +1,6 @@
 ﻿using ASPNETCore.BuisnessLogic.Managers.CompetitionsManager;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.CodeAnalysis.Editing;
 using SharedLib.Constants.Enums;
 using SharedLib.DataTransferModels;
 using SharedLib.Services.ExceptionBuilderService;
@@ -54,6 +55,10 @@ namespace ASPNETCore.Hubs
 			CompetitionDT competitionDT;
 			try
 			{
+				if (competitionId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionId));
+				}
 				competitionDT = await _competitionManager.GetCompetitionByIdAsync(competitionId);
 			}
 			catch
@@ -66,10 +71,6 @@ namespace ASPNETCore.Hubs
 
 		public async Task AddNewCompetition(CompetitionDT competitionDT)
 		{
-
-			CompetitionDT competitonDT;
-			string res = "Succes";
-
 			try
 			{
 				if (competitionDT == null)
@@ -77,11 +78,11 @@ namespace ASPNETCore.Hubs
 					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionDT));
 				}
 
-				competitonDT = await _competitionManager.AddNewCompetitionAsync(competitionDT, 1);
+				competitionDT = await _competitionManager.AddNewCompetitionAsync(competitionDT, 1);
 			}
 			catch
 			{
-				res = "failed";
+				throw;
 			}
 
 			await Clients.Caller.SendAsync("AddNewCompetition", competitionDT);
@@ -92,6 +93,10 @@ namespace ASPNETCore.Hubs
 			string res = "success";
 			try
 			{
+				if (competitionId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionId));
+				}
 				await _competitionManager.DeleteCompetitionByIdAsync(competitionId, 1);
 			}
 			catch
@@ -108,6 +113,10 @@ namespace ASPNETCore.Hubs
 			string res = "success";
 			try
 			{
+				if (competitionId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionId));
+				}
 				await _competitionManager.StartCompetitionByIdAsync(competitionId, 1);
 			}
 			catch
@@ -124,6 +133,10 @@ namespace ASPNETCore.Hubs
 			string res = "success";
 			try
 			{
+				if (competitionId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionId));
+				}
 				await _competitionManager.EndCompetitionByIdAsync(competitionId, 1);
 			}
 			catch
@@ -141,6 +154,10 @@ namespace ASPNETCore.Hubs
 			string res = "success";
 			try
 			{
+				if (competitionDT == null)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionDT));
+				}
 				await _competitionManager.UpdateCompetitionAsync(competitionDT, 1);
 			}
 			catch
@@ -157,6 +174,14 @@ namespace ASPNETCore.Hubs
 			string res = "success";
 			try
 			{
+				if (competitionId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionId));
+				}
+				if (operatorId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(operatorId));
+				}
 				await _competitionManager.AddNewOperatorToCompetitionAsync(competitionId, operatorId, 1);
 			}
 			catch
@@ -173,6 +198,14 @@ namespace ASPNETCore.Hubs
 			string res = "success";
 			try
 			{
+				if (competitionId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionId));
+				}
+				if (operatorId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(operatorId));
+				}
 				await _competitionManager.RemoveOperatorFromCompetitionAsync(competitionId, operatorId, 1);
 			}
 			catch
@@ -189,6 +222,14 @@ namespace ASPNETCore.Hubs
 			string res = "success";
 			try
 			{
+				if (competitionId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionId));
+				}
+				if (exerciseId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(exerciseId));
+				}
 				await _competitionManager.AddNewExerciseToCompetitionAsync(competitionId, exerciseId, 1);
 			}
 			catch
@@ -205,6 +246,14 @@ namespace ASPNETCore.Hubs
 			string res = "success";
 			try
 			{
+				if (competitionId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionId));
+				}
+				if (exerciseId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(exerciseId));
+				}
 				await _competitionManager.RemoveExerciseFromCompetitionAsync(competitionId, exerciseId, 1);
 			}
 			catch
@@ -221,6 +270,14 @@ namespace ASPNETCore.Hubs
 			string res = "success";
 			try
 			{
+				if (competitionId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionId));
+				}
+				if (teamId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(teamId));
+				}
 				await _competitionManager.AddNewTeamToCompetitionAsync(competitionId, teamId, 1);
 			}
 			catch
@@ -237,6 +294,14 @@ namespace ASPNETCore.Hubs
 			string res = "success";
 			try
 			{
+				if (competitionId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionId));
+				}
+				if (teamId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(teamId));
+				}
 				await _competitionManager.RemoveTeamFromCompetitionAsync(competitionId, teamId, 1);
 			}
 			catch
@@ -255,6 +320,10 @@ namespace ASPNETCore.Hubs
 			List<UserDT> usersDT;
 			try
 			{
+				if (competitionId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionId));
+				}
 				usersDT = await _competitionManager.GetAllCompetitionOperatorsAsync(competitionId);
 			}
 			catch
@@ -269,6 +338,10 @@ namespace ASPNETCore.Hubs
 			List<UserDT> usersDT;
 			try
 			{
+				if (competitionId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionId));
+				}
 				usersDT = await _competitionManager.GetAllCompetitionParticipantsAsync(competitionId);
 			}
 			catch
@@ -283,6 +356,10 @@ namespace ASPNETCore.Hubs
 			List<ExerciseDT> exerciseDT;
 			try
 			{
+				if (competitionId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionId));
+				}
 				exerciseDT = await _competitionManager.GetAllCompetitionExercisesAsync(competitionId);
 			}
 			catch
@@ -297,6 +374,10 @@ namespace ASPNETCore.Hubs
 			List<TeamDT> teamDT;
 			try
 			{
+				if (competitionId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionId));
+				}
 				teamDT = await _competitionManager.GetAllCompetitionTeamsAsync(competitionId);
 			}
 			catch

@@ -1,4 +1,7 @@
-﻿namespace ASPNETCore.DataAccess.Models.DBModels
+﻿using System;
+using System.Collections.Generic;
+
+namespace ASPNETCore.DataAccess.Models.DBModels
 {
     public partial class ExerciseState
     {

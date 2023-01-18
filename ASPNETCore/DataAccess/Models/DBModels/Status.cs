@@ -11,6 +11,7 @@
             Exercises = new HashSet<Exercise>();
             ExercisesToCompetitions = new HashSet<ExercisesToCompetition>();
             ExercisesToTeams = new HashSet<ExercisesToTeamToCompetition>();
+            ExercisesToUsersToCompetitions = new HashSet<ExercisesToUsersToCompetition>();
             OperatorsToCompetitions = new HashSet<OperatorsToCompetition>();
             Teams = new HashSet<Team>();
             TeamsToCompetitions = new HashSet<TeamsToCompetition>();
@@ -28,6 +29,7 @@
         public virtual ICollection<Exercise> Exercises { get; set; }
         public virtual ICollection<ExercisesToCompetition> ExercisesToCompetitions { get; set; }
         public virtual ICollection<ExercisesToTeamToCompetition> ExercisesToTeams { get; set; }
+        public virtual ICollection<ExercisesToUsersToCompetition> ExercisesToUsersToCompetitions { get; set; }
         public virtual ICollection<OperatorsToCompetition> OperatorsToCompetitions { get; set; }
         public virtual ICollection<Team> Teams { get; set; }
         public virtual ICollection<TeamsToCompetition> TeamsToCompetitions { get; set; }

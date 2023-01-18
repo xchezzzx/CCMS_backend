@@ -1,7 +1,7 @@
 ﻿namespace ASPNETCore.DataAccess.Models.DBModels
 {
     public partial class UsersToTeam : ICRUDEntity
-    {
+	{
         public int Id { get; set; }
         public int UserId { get; set; }
         public int TeamId { get; set; }

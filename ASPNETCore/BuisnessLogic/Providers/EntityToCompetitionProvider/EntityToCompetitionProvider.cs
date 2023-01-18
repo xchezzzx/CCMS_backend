@@ -1,7 +1,6 @@
 ﻿using ASPNETCore.BuisnessLogic.Providers.CompetitionsToAdministratorsProvider;
 using ASPNETCore.DataAccess.Models.DBModels;
 using ASPNETCore.DataAccess.Repositories;
-using SharedLib.Services.ExceptionBuilderService;
 
 namespace ASPNETCore.BuisnessLogic.Providers.EntityToCompetitionProvider
 {
@@ -14,15 +13,13 @@ namespace ASPNETCore.BuisnessLogic.Providers.EntityToCompetitionProvider
 		private readonly IEntityRepository<UsersToTeam> _usersToTeamRepository;
 		private readonly IEntityRepository<ExercisesToCompetition> _exerciseToCompetitionRepository;
 		private readonly IEntityRepository<Exercise> _exerciseRepository;
-		private readonly IExceptionBuilderService _exceptionBuilderService;
 
-		public EntityToCompetitionProvider(IEntityRepository<Exercise> exerciseRepository, IEntityRepository<ExercisesToCompetition> exerciseToCompetitionRepository, IEntityRepository<UsersToTeam> usersToTeamRepository, IExceptionBuilderService exceptionBuilderService, IEntityRepository<OperatorsToCompetition> operatorsToCompetitionRepository, IEntityRepository<TeamsToCompetition> teamsToCompetitionRepository, IEntityRepository<User> userRepository, IEntityRepository<Team> teamRepository)
+		public EntityToCompetitionProvider(IEntityRepository<Exercise> exerciseRepository, IEntityRepository<ExercisesToCompetition> exerciseToCompetitionRepository, IEntityRepository<UsersToTeam> usersToTeamRepository, IEntityRepository<OperatorsToCompetition> operatorsToCompetitionRepository, IEntityRepository<TeamsToCompetition> teamsToCompetitionRepository, IEntityRepository<User> userRepository, IEntityRepository<Team> teamRepository)
 		{
 			_operatorsToCompetitionRepository = operatorsToCompetitionRepository;
 			_teamsToCompetitionRepository = teamsToCompetitionRepository;
 			_userRepository = userRepository;
 			_teamRepository = teamRepository;
-			_exceptionBuilderService = exceptionBuilderService;
 			_usersToTeamRepository = usersToTeamRepository;
 			_exerciseToCompetitionRepository = exerciseToCompetitionRepository;
 			_exerciseRepository = exerciseRepository;

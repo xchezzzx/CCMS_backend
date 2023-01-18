@@ -1,7 +1,7 @@
 ﻿namespace ASPNETCore.DataAccess.Models.DBModels
 {
     public partial class CompetitionState
-    {
+	{
         public CompetitionState()
         {
             Competitions = new HashSet<Competition>();

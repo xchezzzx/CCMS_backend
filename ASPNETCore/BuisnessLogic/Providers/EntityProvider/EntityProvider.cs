@@ -9,12 +9,10 @@ namespace ASPNETCore.BuisnessLogic.Providers.EntityProvider
 	public class EntityProvider<TEntity> : IEntityProvider<TEntity> where TEntity : class, ICRUDEntity
 	{
 		private readonly DataAccess.Repositories.IEntityRepository<TEntity> _entityRepository;
-		private readonly IExceptionBuilderService _exceptionBuilderService;
 
 		public EntityProvider(DataAccess.Repositories.IEntityRepository<TEntity> entityRepository, IExceptionBuilderService exceptionBuilderService)
 		{
 			_entityRepository = entityRepository;
-			_exceptionBuilderService = exceptionBuilderService;
 		}
 
 		public async Task<List<TEntity>> GetAllEntitiesWithIncludeAsync(params Expression<Func<TEntity, object>>[] includeProperties)
@@ -81,7 +79,7 @@ namespace ASPNETCore.BuisnessLogic.Providers.EntityProvider
 			return entities;
 		}
 
-		public async Task<TEntity> GetEntityByIdWithIncludeAsync(int id, params Expression<Func<TEntity, object>>[] includeProperties)
+		public async Task<TEntity> GetActiveEntityByIdWithIncludeAsync(int id, params Expression<Func<TEntity, object>>[] includeProperties)
 		{
 
 			List<TEntity> entities;
@@ -94,24 +92,11 @@ namespace ASPNETCore.BuisnessLogic.Providers.EntityProvider
 			{
 				throw;
 			}
-			if (entities.Count == 0)
-			{
-				throw _exceptionBuilderService.ParseException(ExceptionCodes.DBNoDataFoundException);
-			}
 			return entities[0];
 		}
 
 		public async Task<TEntity> AddNewEntityAsync(TEntity Entity, int userCreateId)
 		{
-			if (Entity == null)
-			{
-				throw _exceptionBuilderService.ParseException(ExceptionCodes.ArgumentNullException, nameof(Entity));
-			}
-
-			if (userCreateId <= 0)
-			{
-				throw _exceptionBuilderService.ParseException(ExceptionCodes.ArgumentNullException, nameof(userCreateId));
-			}
 
 			CRUDEntityHelper.CreateEntity(ref Entity, userCreateId);
 
@@ -130,15 +115,6 @@ namespace ASPNETCore.BuisnessLogic.Providers.EntityProvider
 
 		public async Task UpdateEntityAsync(TEntity Entity, int userUpdateId)
 		{
-			if (Entity == null)
-			{
-				throw _exceptionBuilderService.ParseException(ExceptionCodes.ArgumentNullException, nameof(Entity));
-			}
-
-			if (userUpdateId <= 0)
-			{
-				throw _exceptionBuilderService.ParseException(ExceptionCodes.ArgumentNullException, nameof(userUpdateId));
-			}
 
 			CRUDEntityHelper.UpdateEntity(ref Entity, userUpdateId);
 
@@ -154,15 +130,6 @@ namespace ASPNETCore.BuisnessLogic.Providers.EntityProvider
 
 		public async Task DeleteEntityAsync(TEntity Entity, int userUpdateId)
 		{
-			if (Entity == null)
-			{
-				throw _exceptionBuilderService.ParseException(ExceptionCodes.ArgumentNullException, nameof(Entity));
-			}
-
-			if (userUpdateId <= 0)
-			{
-				throw _exceptionBuilderService.ParseException(ExceptionCodes.ArgumentNullException, nameof(userUpdateId));
-			}
 
 			CRUDEntityHelper.DeleteEntity(ref Entity, userUpdateId);
 

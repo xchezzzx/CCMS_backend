@@ -1,7 +1,7 @@
 ﻿namespace ASPNETCore.DataAccess.Models.DBModels
 {
     public partial class ExerciseLang : ICRUDEntity
-    {
+	{
         public ExerciseLang()
         {
             Exercises = new HashSet<Exercise>();

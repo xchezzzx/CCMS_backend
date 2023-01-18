@@ -2,11 +2,9 @@
 using ASPNETCore.BuisnessLogic.Providers.EntityProvider;
 using ASPNETCore.DataAccess.Models.DBModels;
 using ASPNETCore.Helpers;
-using Microsoft.CodeAnalysis.Editing;
 using SharedLib.Constants.Enums;
 using SharedLib.DataTransferModels;
 using SharedLib.Services.ExceptionBuilderService;
-using System.Collections.Generic;
 
 namespace ASPNETCore.BuisnessLogic.Managers.CompetitionsManager
 {
@@ -17,12 +15,10 @@ namespace ASPNETCore.BuisnessLogic.Managers.CompetitionsManager
 		private readonly IEntityProvider<TeamsToCompetition> _teamsToCompetitionEntityProvider;
 		private readonly IEntityProvider<ExercisesToCompetition> _exercisesToCompetitionEntityProvider;
 		private readonly IEntityToCompetitionProvider _entityToCompetitionProvider;
-		private readonly IExceptionBuilderService _exceptionBuilderService;
 
 		public CompetitionManager(IEntityProvider<ExercisesToCompetition> exercisesToCompetitionEntityProvider, IEntityProvider<TeamsToCompetition> teamsToCompetitionEntityProvider, IEntityProvider<OperatorsToCompetition> operatorsToCompetitionEntityProvider, IEntityProvider<Competition> entityProvider, IExceptionBuilderService exceptionBuilderService, IEntityToCompetitionProvider entityToCompetitionProvider)
 		{
 			_competitionEntityProvider = entityProvider;
-			_exceptionBuilderService = exceptionBuilderService;
 			_entityToCompetitionProvider = entityToCompetitionProvider;
 			_operatorsToCompetitionEntityProvider = operatorsToCompetitionEntityProvider;
 			_teamsToCompetitionEntityProvider = teamsToCompetitionEntityProvider;
@@ -75,14 +71,6 @@ namespace ASPNETCore.BuisnessLogic.Managers.CompetitionsManager
 
 		public async Task<CompetitionDT> AddNewCompetitionAsync(CompetitionDT competitionDT, int createUserId)
 		{
-			if (competitionDT == null)
-			{
-				throw _exceptionBuilderService.ParseException(ExceptionCodes.ArgumentNullException, nameof(competitionDT));
-			}
-			if (createUserId <= 0)
-			{
-				throw _exceptionBuilderService.ParseException(ExceptionCodes.ArgumentNullException, nameof(createUserId));
-			}
 
 			var competition = ToDBModelsParsers.CompetitionParser(competitionDT);
 			
@@ -105,7 +93,7 @@ namespace ASPNETCore.BuisnessLogic.Managers.CompetitionsManager
 			CompetitionDT competitionDT;
 			try
 			{
-				var competition = await _competitionEntityProvider.GetEntityByIdWithIncludeAsync(competitionId, c => c.Status, c => c.CreateUser, c => c.UpdateUser, c => c.State);
+				var competition = await _competitionEntityProvider.GetActiveEntityByIdWithIncludeAsync(competitionId, c => c.Status, c => c.CreateUser, c => c.UpdateUser, c => c.State);
 				competitionDT = ToDTModelsParsers.DTCompetitionParser(competition);
 			}
 			catch
@@ -119,7 +107,7 @@ namespace ASPNETCore.BuisnessLogic.Managers.CompetitionsManager
 		{
 			try
 			{
-				var competition = await _competitionEntityProvider.GetEntityByIdWithIncludeAsync(competitionId);
+				var competition = await _competitionEntityProvider.GetActiveEntityByIdWithIncludeAsync(competitionId);
 
 				await _competitionEntityProvider.DeleteEntityAsync(competition, updateUserId);
 			}
@@ -133,7 +121,7 @@ namespace ASPNETCore.BuisnessLogic.Managers.CompetitionsManager
 		{
 			try
 			{
-				var competition = await _competitionEntityProvider.GetEntityByIdWithIncludeAsync(competitionId);
+				var competition = await _competitionEntityProvider.GetActiveEntityByIdWithIncludeAsync(competitionId);
 
 				competition.StateId = (int)CompetitionStates.Canceled;
 
@@ -149,7 +137,7 @@ namespace ASPNETCore.BuisnessLogic.Managers.CompetitionsManager
 		{
 			try
 			{
-				var competition = await _competitionEntityProvider.GetEntityByIdWithIncludeAsync(competitionId);
+				var competition = await _competitionEntityProvider.GetActiveEntityByIdWithIncludeAsync(competitionId);
 
 				competition.StateId = (int)CompetitionStates.InProgress;
 				competition.StartDateTime = DateTime.Now;
@@ -167,7 +155,7 @@ namespace ASPNETCore.BuisnessLogic.Managers.CompetitionsManager
 		{
 			try
 			{
-				var competition = await _competitionEntityProvider.GetEntityByIdWithIncludeAsync(competitionId);
+				var competition = await _competitionEntityProvider.GetActiveEntityByIdWithIncludeAsync(competitionId);
 
 				competition.StateId = (int)CompetitionStates.Ended;
 				competition.EndDateTime = DateTime.Now;

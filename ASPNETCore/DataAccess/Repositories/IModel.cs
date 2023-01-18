@@ -16,9 +16,9 @@ namespace ASPNETCore.DataAccess.Repositories
 	public class UsersStorage : IGenerateUsers, IReadUsers
 	{
 		private List<User> Users;
-		private readonly CCMSContext _dbContext;
+		private readonly Models.DBModels.CCMSContext _dbContext;
 
-		public UsersStorage(CCMSContext dbContext)
+		public UsersStorage(Models.DBModels.CCMSContext dbContext)
 		{
 			_dbContext = dbContext;
 		}

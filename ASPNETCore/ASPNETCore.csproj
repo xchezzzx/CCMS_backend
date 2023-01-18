@@ -6,9 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DataAccess\Models\CloudServiceModels\**" />
     <Compile Remove="Mocks\**" />
+    <Content Remove="DataAccess\Models\CloudServiceModels\**" />
     <Content Remove="Mocks\**" />
+    <EmbeddedResource Remove="DataAccess\Models\CloudServiceModels\**" />
     <EmbeddedResource Remove="Mocks\**" />
+    <None Remove="DataAccess\Models\CloudServiceModels\**" />
     <None Remove="Mocks\**" />
   </ItemGroup>
 
@@ -22,10 +26,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DataAccess\Models\CloudServiceModels\" />
   </ItemGroup>
 
   <ItemGroup>

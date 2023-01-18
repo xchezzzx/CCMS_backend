@@ -1,12 +1,12 @@
 ﻿namespace ASPNETCore.DataAccess.Models.DBModels
 {
     public partial class Exercise : ICRUDEntity
-    {
+	{
         public Exercise()
         {
             ExercisesToCompetitions = new HashSet<ExercisesToCompetition>();
             ExercisesToTeams = new HashSet<ExercisesToTeamToCompetition>();
-            ExercisesToUsers = new HashSet<ExercisesToUser>();
+            ExercisesToUsersToCompetitions = new HashSet<ExercisesToUsersToCompetition>();
         }
 
         public int Id { get; set; }
@@ -36,6 +36,6 @@
         public virtual User UpdateUser { get; set; }
         public virtual ICollection<ExercisesToCompetition> ExercisesToCompetitions { get; set; }
         public virtual ICollection<ExercisesToTeamToCompetition> ExercisesToTeams { get; set; }
-        public virtual ICollection<ExercisesToUser> ExercisesToUsers { get; set; }
+        public virtual ICollection<ExercisesToUsersToCompetition> ExercisesToUsersToCompetitions { get; set; }
     }
 }
