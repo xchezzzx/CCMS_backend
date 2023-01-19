@@ -1,15 +1,17 @@
 ﻿using ASPNETCore.BuisnessLogic.Managers.CompetitionsManager;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.CodeAnalysis.Editing;
 using SharedLib.Constants.Enums;
 using SharedLib.DataTransferModels;
 using SharedLib.Services.ExceptionBuilderService;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASPNETCore.Hubs
 {
 	public class CompetitionHub : Hub
 	{
-
+		
 		private readonly ICompetitionManager _competitionManager;
 		private readonly IExceptionBuilderService _exceptionBuilderService;
 
@@ -19,6 +21,7 @@ namespace ASPNETCore.Hubs
 			_exceptionBuilderService = exceptionBuilderService;
 		}
 
+		[Authorize]
 		public async Task GetAllCompetitions()
 		{
 
@@ -34,7 +37,7 @@ namespace ASPNETCore.Hubs
 
 			await Clients.All.SendAsync("GetAllCompetitions", competitionsDT);
 		}
-
+		[Authorize]
 		public async Task GetActiveCompetitions()
 		{
 			List<CompetitionDT> competitionsDT;

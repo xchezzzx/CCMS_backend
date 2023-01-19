@@ -10,6 +10,7 @@ using ASPNETCore.DataAccess.Repositories;
 using ASPNETCore.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Web;
 using SharedLib.Services.ExceptionBuilderService;
 using System.Text.Json.Serialization;
 
@@ -17,16 +18,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-	.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, c =>
-	{
-		c.Authority = $"https://{builder.Configuration["Auth0:Domain"]}";
-		c.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-		{
-			ValidAudience = builder.Configuration["Auth0:Audience"],
-			ValidIssuer = $"https://{builder.Configuration["Auth0:Domain"]}"
-		};
-	});
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
