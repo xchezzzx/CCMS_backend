@@ -8,6 +8,7 @@ using ASPNETCore.BuisnessLogic.Providers.EntityToTeamProvider;
 using ASPNETCore.DataAccess.Models.DBModels;
 using ASPNETCore.DataAccess.Repositories;
 using ASPNETCore.Hubs;
+using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using SharedLib.Services.ExceptionBuilderService;
@@ -17,22 +18,52 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-	.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, c =>
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, c =>
+//    {
+//        c.Authority = builder.Configuration["Auth0:Domain"];
+//        c.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+//        {
+//            ValidAudience = builder.Configuration["Auth0:Audience"],
+//            ValidIssuer = builder.Configuration["Auth0:Domain"]
+//        };
+//    });
+
+
+//builder.Services.AddAuth0WebAppAuthentication(options =>
+//{
+//    options.Domain = builder.Configuration["Auth0:Domain"];
+//    options.ClientId = builder.Configuration["Auth0:ClientId"];
+//});
+
+builder.Services.AddAuthentication(o =>
+{
+	o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+	o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(o =>
+{
+	o.Authority = builder.Configuration["Auth0:Authority"];
+	o.Audience = builder.Configuration["Auth0:Audience"];
+	o.Events = new JwtBearerEvents
 	{
-		c.Authority = $"https://{builder.Configuration["Auth0:Domain"]}";
-		c.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+		OnMessageReceived = context =>
 		{
-			ValidAudience = builder.Configuration["Auth0:Audience"],
-			ValidIssuer = $"https://{builder.Configuration["Auth0:Domain"]}"
-		};
-	});
+			var accessToken = context.Request.Query["access_token"];
+			var path = context.HttpContext.Request.Path;
+			if (!string.IsNullOrEmpty(accessToken))
+			{
+				context.Token = accessToken;
+			}
+			return Task.CompletedTask;
+		}
+	};
+});
 
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
 
 string DB_CONNECTION_STRING =
-    "Server=tcp:ccmsdbserver.database.windows.net,1433;Initial Catalog=ccms;Persist Security Info=False;User ID=ccmsadmin;Password=Q!w2e3r4t5;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+	"Server=tcp:ccmsdbserver.database.windows.net,1433;Initial Catalog=ccms;Persist Security Info=False;User ID=ccmsadmin;Password=Q!w2e3r4t5;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
 builder.Services.AddDbContext<CCMSContext>(options => options.UseSqlServer(DB_CONNECTION_STRING));
 
@@ -82,10 +113,10 @@ builder.Services.AddTransient<IExercisesManager, ExercisesManager>();
 
 
 builder.Services.AddControllers()
-        .AddJsonOptions(options =>
-        {
-            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-        });
+		.AddJsonOptions(options =>
+		{
+			options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+		});
 
 
 
@@ -96,21 +127,21 @@ var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
-    app.UseHsts();
+	app.UseExceptionHandler("/Error");
+	app.UseHsts();
 }
 else
 {
-    app.UseDeveloperExceptionPage();
+	app.UseDeveloperExceptionPage();
 }
 
 using (var scope = app.Services.CreateScope())
 {
-    var services = scope.ServiceProvider;
+	var services = scope.ServiceProvider;
 
-    var context = services.GetRequiredService<CCMSContext>();
+	var context = services.GetRequiredService<CCMSContext>();
 
-    //SQLHelper.OpenConnection(context);
+	//SQLHelper.OpenConnection(context);
 }
 
 app.UseCors("policy");

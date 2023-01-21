@@ -1,4 +1,5 @@
 ﻿using ASPNETCore.BuisnessLogic.Managers.CompetitionsManager;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.CodeAnalysis.Editing;
 using SharedLib.Constants.Enums;
@@ -34,7 +35,7 @@ namespace ASPNETCore.Hubs
 
 			await Clients.All.SendAsync("GetAllCompetitions", competitionsDT);
 		}
-
+		[Authorize]
 		public async Task GetActiveCompetitions()
 		{
 			List<CompetitionDT> competitionsDT;
