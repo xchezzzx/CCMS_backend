@@ -1,4 +1,5 @@
 ﻿using ASPNETCore.DataAccess.Models.DBModels;
+using Microsoft.CodeAnalysis;
 using SharedLib.Constants.Enums;
 using SharedLib.DataTransferModels;
 
@@ -144,6 +145,25 @@ namespace ASPNETCore.Helpers
 			};
 		}
 
+		/*public static UserDT DTUserParser(User user)
+		{
+			return new UserDT()
+			{
+				Id = user.Id,
+				FirstName = user.FirstName,
+				LastName = user.LastName,
+				Password = user.Password,
+				RoleId = (Roles)user.RoleId,
+				Email = user.Email,
+				CreateDate = user.CreateDate,
+				CreateUserId = user.CreateUserId,
+				UpdateDate = user.UpdateDate,
+				UpdateUserId = user.UpdateUserId,
+				Status = ((EntityStatuses)user.StatusId).ToString(),
+				StatusId = (EntityStatuses)user.StatusId,
+				PointsSummary = user.PointsSummary
+			};
+		}*/
 	}
 }
 

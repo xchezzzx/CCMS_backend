@@ -1,6 +1,7 @@
 using ASPNETCore.BuisnessLogic.Managers.CompetitionsManager;
 using ASPNETCore.BuisnessLogic.Managers.ExercisesManager;
 using ASPNETCore.BuisnessLogic.Managers.TeamsManager;
+using ASPNETCore.BuisnessLogic.Managers.UserManager;
 using ASPNETCore.BuisnessLogic.Providers.CompetitionsToAdministratorsProvider;
 using ASPNETCore.BuisnessLogic.Providers.EntityProvider;
 using ASPNETCore.BuisnessLogic.Providers.EntityToCompetitionProvider;
@@ -103,6 +104,7 @@ builder.Services.AddSingleton<IExceptionBuilderService, ExceptionBuilderService>
 builder.Services.AddTransient<ICompetitionManager, CompetitionManager>();
 builder.Services.AddTransient<ITeamManager, TeamManager>();
 builder.Services.AddTransient<IExercisesManager, ExercisesManager>();
+builder.Services.AddTransient<IUserManager, UserManager>();
 
 
 //builder.Services.AddTransient<IGenerateUsers, UsersStorage>();
@@ -156,6 +158,7 @@ app.MapControllers();
 app.MapHub<CompetitionHub>("/competitions");
 app.MapHub<ExerciseHub>("/exercises");
 app.MapHub<TeamHub>("/teams");
+app.MapHub<UserHub>("/users");
 
 
 app.Run();

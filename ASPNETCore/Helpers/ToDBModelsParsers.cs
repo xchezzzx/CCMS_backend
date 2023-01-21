@@ -90,5 +90,19 @@ namespace ASPNETCore.Helpers
                 StatusId = (int)exercisePlatformDT.StatusId
 			};
         }
+
+        public static User UserParser(UserDT userDT) 
+        {
+            return new User()
+            {
+                FirstName = userDT.FirstName,
+                LastName = userDT.LastName,
+                Password = userDT.Password,
+                Email = userDT.Email,
+                RoleId = (int)userDT.RoleId,
+                PointsSummary = 0,
+                 
+            };
+        }
 	}
 }

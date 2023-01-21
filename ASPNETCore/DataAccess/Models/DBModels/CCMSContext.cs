@@ -765,7 +765,6 @@ namespace ASPNETCore.DataAccess.Models.DBModels
                 entity.ToTable("user");
 
                 entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
                     .HasColumnName("id");
 
                 entity.Property(e => e.CreateDate)
