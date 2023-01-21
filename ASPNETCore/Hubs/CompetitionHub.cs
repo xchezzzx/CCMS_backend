@@ -10,7 +10,7 @@ using SharedLib.Services.ExceptionBuilderService;
 
 namespace ASPNETCore.Hubs
 {
-	public class CompetitionHub : Microsoft.AspNetCore.SignalR.Hub
+	public class CompetitionHub : Hub
 	{
 
 		private readonly ICompetitionManager _competitionManager;
@@ -22,7 +22,6 @@ namespace ASPNETCore.Hubs
 			_exceptionBuilderService = exceptionBuilderService;
 		}
 
-		[Authorize]
 
 		public async Task GetAllCompetitions()
 		{
@@ -40,7 +39,6 @@ namespace ASPNETCore.Hubs
 			await Clients.All.SendAsync("GetAllCompetitions", competitionsDT);
 		}
 
-		[Authorize(Roles = "Operator")]
 		public async Task GetActiveCompetitions()
 		{
 
