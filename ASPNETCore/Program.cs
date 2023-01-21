@@ -17,16 +17,33 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-	.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, c =>
+builder.Services.AddAuthentication(options =>
+{
+	// Identity made Cookie authentication the default.
+	// However, we want JWT Bearer Auth to be the default.
+	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+	options.Authority = "https://code-competition.eu.auth0.com";
+	options.Audience = "https://CCMS_Server";
+	options.Events = new JwtBearerEvents
 	{
-		c.Authority = $"https://{builder.Configuration["Auth0:Domain"]}";
-		c.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+		OnMessageReceived = context =>
 		{
-			ValidAudience = builder.Configuration["Auth0:Audience"],
-			ValidIssuer = $"https://{builder.Configuration["Auth0:Domain"]}"
-		};
-	});
+			var accessToken = context.Request.Query["access_token"];
+
+			// If the request is for our hub...
+
+			var path = context.HttpContext.Request.Path;
+			if (!string.IsNullOrEmpty(accessToken))
+			{
+				context.Token = accessToken;
+			}
+			return Task.CompletedTask;
+		}
+	};
+});
 
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
@@ -36,7 +53,18 @@ string DB_CONNECTION_STRING =
 
 builder.Services.AddDbContext<CCMSContext>(options => options.UseSqlServer(DB_CONNECTION_STRING));
 
-builder.Services.AddCors(c => c.AddPolicy("policy", a => a.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("AllowAnyGet",
+		builder => builder.AllowAnyOrigin()
+			.WithMethods("GET")
+			.AllowAnyHeader());
+	options.AddPolicy("AllowExampleDomain",
+		builder => builder.WithOrigins("https://code-competition.eu.auth0.com")
+			.AllowAnyMethod()
+			.AllowAnyHeader()
+			.AllowCredentials());
+});
 
 builder.Services.AddTransient<IEntityRepository<Competition>, EntityRepository<Competition>>();
 builder.Services.AddTransient<IEntityRepository<Exercise>, EntityRepository<Exercise>>();
@@ -113,7 +141,8 @@ using (var scope = app.Services.CreateScope())
     //SQLHelper.OpenConnection(context);
 }
 
-app.UseCors("policy");
+app.UseCors("AllowAnyGet")
+   .UseCors("AllowExampleDomain");
 
 // Configure the HTTP request pipeline.
 
@@ -130,3 +159,4 @@ app.MapHub<TeamHub>("/teams");
 
 
 app.Run();
+

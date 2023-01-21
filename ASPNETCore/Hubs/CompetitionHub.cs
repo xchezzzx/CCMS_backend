@@ -1,4 +1,7 @@
 ﻿using ASPNETCore.BuisnessLogic.Managers.CompetitionsManager;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.CodeAnalysis.Editing;
 using SharedLib.Constants.Enums;
@@ -7,7 +10,7 @@ using SharedLib.Services.ExceptionBuilderService;
 
 namespace ASPNETCore.Hubs
 {
-	public class CompetitionHub : Hub
+	public class CompetitionHub : Microsoft.AspNetCore.SignalR.Hub
 	{
 
 		private readonly ICompetitionManager _competitionManager;
@@ -19,9 +22,11 @@ namespace ASPNETCore.Hubs
 			_exceptionBuilderService = exceptionBuilderService;
 		}
 
+		[Authorize]
+
 		public async Task GetAllCompetitions()
 		{
-
+			var a = Context.UserIdentifier;
 			List<CompetitionDT> competitionsDT;
 			try
 			{
@@ -35,8 +40,14 @@ namespace ASPNETCore.Hubs
 			await Clients.All.SendAsync("GetAllCompetitions", competitionsDT);
 		}
 
+		[Authorize(Roles = "Operator")]
 		public async Task GetActiveCompetitions()
 		{
+
+
+			var a = Context.UserIdentifier;
+
+
 			List<CompetitionDT> competitionsDT;
 			try
 			{
