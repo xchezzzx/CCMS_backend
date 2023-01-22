@@ -7,15 +7,18 @@
         public int TeamId { get; set; }
         public int ExerciseId { get; set; }
         public DateTime TakeTime { get; set; }
-        public DateTime? SubmitTime { get; set; }
         public TimeSpan Timeframe { get; set; }
-        public TimeSpan? SubmitDuration { get; set; }
         public int ExerciseStateId { get; set; }
-        public string SolutionLink { get; set; }
-        public string Comment { get; set; }
-        public string FileLink { get; set; }
+
+        #nullable enable
+		public DateTime? SubmitTime { get; set; }
+		public TimeSpan? SubmitDuration { get; set; }
+		public string? SolutionLink { get; set; }
+        public string? Comment { get; set; }
+        public string? FileLink { get; set; }
         public int? ApprovedPoints { get; set; }
-        public DateTime CreateDate { get; set; }
+		#nullable disable
+		public DateTime CreateDate { get; set; }
         public int CreateUserId { get; set; }
         public DateTime UpdateDate { get; set; }
         public int UpdateUserId { get; set; }

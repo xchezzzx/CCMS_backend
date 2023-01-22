@@ -167,6 +167,31 @@ namespace ASPNETCore.Helpers
 				PointsSummary = user.PointsSummary
 			};
 		}*/
+
+		public static ExerciseToTeamToCompetitionDT DTExerciseToTeamToCompetitionParser(ExercisesToTeamToCompetition exerciseToTeamToCompetition)
+		{
+			return new ExerciseToTeamToCompetitionDT()
+			{
+				Id = exerciseToTeamToCompetition.Id,
+				ApprovedPoints = exerciseToTeamToCompetition.ApprovedPoints,
+				Comment = exerciseToTeamToCompetition.Comment,
+				CompetitionId = exerciseToTeamToCompetition.CompetitionId,
+				CreateDate = exerciseToTeamToCompetition.CreateDate,
+				CreateUserId = exerciseToTeamToCompetition.CreateUserId,
+				UpdateDate = exerciseToTeamToCompetition.UpdateDate,
+				UpdateUserId = exerciseToTeamToCompetition.UpdateUserId,
+				ExerciseId = exerciseToTeamToCompetition.ExerciseId,
+				ExerciseStateId = exerciseToTeamToCompetition.ExerciseStateId,
+				FileLink = exerciseToTeamToCompetition.FileLink,
+				SolutionLink = exerciseToTeamToCompetition.SolutionLink,
+				StatusId = exerciseToTeamToCompetition.StatusId,
+				SubmitDuration = exerciseToTeamToCompetition.SubmitDuration,
+				SubmitTime = exerciseToTeamToCompetition.SubmitTime,
+				TakeTime = exerciseToTeamToCompetition.TakeTime,
+				TeamId = exerciseToTeamToCompetition.TeamId,
+				Timeframe = exerciseToTeamToCompetition.Timeframe
+			};
+		}
 	}
 }
 

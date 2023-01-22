@@ -216,7 +216,7 @@ namespace ASPNETCore.BuisnessLogic.Managers.TeamsManager
 						ApprovedPoints = null,
 						TakeTime = DateTime.Now,
 						SubmitTime = null,
-						Timeframe = exercise.Timeframe,
+						Timeframe = (TimeSpan)(exercise.Timeframe + exercise?.BonusTimeframe),
 						SubmitDuration = null,
 						ExerciseStateId = (int)ExerciseStates.Taken,
 						SolutionLink = String.Empty,
@@ -225,6 +225,24 @@ namespace ASPNETCore.BuisnessLogic.Managers.TeamsManager
 					};
 
 					await _exercisesToTeamToCompetitionEntityProvider.AddNewEntityAsync(exerciseToTeamToCompetition, userCreateId);
+
+			}
+			catch
+			{
+				throw;
+			}
+		}
+
+
+
+		public async Task UpdateExerciseToCompetitionTeamAsync(ExerciseToTeamToCompetitionDT exercisesToTeamToCompetitionDT, int userUpdateId)
+		{
+
+			try
+			{
+
+				var exerciseToTeamToCompetition = ToDBModelsParsers.ExerciseToTeamToCompetitionParser(exercisesToTeamToCompetitionDT);
+				await _exercisesToTeamToCompetitionEntityProvider.UpdateEntityAsync(exerciseToTeamToCompetition, userUpdateId);
 
 			}
 			catch

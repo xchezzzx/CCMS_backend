@@ -104,5 +104,30 @@ namespace ASPNETCore.Helpers
                  
             };
         }
+
+		public static ExercisesToTeamToCompetition ExerciseToTeamToCompetitionParser(ExerciseToTeamToCompetitionDT exerciseToTeamToCompetitionDT)
+		{
+            return new ExercisesToTeamToCompetition()
+            {
+                Id = (int)exerciseToTeamToCompetitionDT.Id,
+                ApprovedPoints = exerciseToTeamToCompetitionDT.ApprovedPoints,
+                Comment = exerciseToTeamToCompetitionDT.Comment,
+                CompetitionId = exerciseToTeamToCompetitionDT.CompetitionId,
+                CreateDate = exerciseToTeamToCompetitionDT.CreateDate ,
+                CreateUserId = exerciseToTeamToCompetitionDT.CreateUserId ,
+                UpdateDate = exerciseToTeamToCompetitionDT.UpdateDate ,
+                UpdateUserId = exerciseToTeamToCompetitionDT.UpdateUserId ,
+                ExerciseId = exerciseToTeamToCompetitionDT.ExerciseId ,
+                ExerciseStateId = exerciseToTeamToCompetitionDT.ExerciseStateId,
+                FileLink = exerciseToTeamToCompetitionDT.FileLink ,
+                SolutionLink = exerciseToTeamToCompetitionDT.SolutionLink ,
+                StatusId = exerciseToTeamToCompetitionDT.StatusId,
+                SubmitDuration = exerciseToTeamToCompetitionDT.SubmitDuration ,
+                SubmitTime = exerciseToTeamToCompetitionDT.SubmitTime ,
+                TakeTime = exerciseToTeamToCompetitionDT.TakeTime ,
+                TeamId = exerciseToTeamToCompetitionDT.TeamId,
+                Timeframe = exerciseToTeamToCompetitionDT.Timeframe
+            };
+		}
 	}
 }

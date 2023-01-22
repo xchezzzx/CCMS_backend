@@ -20,7 +20,7 @@ namespace ASPNETCore.Hubs
 			{
 				userDT = await _userManager.GetCurrentUserAsync(userDT);
 
-				await Clients.Caller.SendAsync("GetCurrentUser", userDT);
+					await Clients.Caller.SendAsync("GetCurrentUser", userDT);
 			}
 			catch (Exception ex) 
 			{

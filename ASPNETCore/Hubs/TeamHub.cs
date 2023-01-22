@@ -1,5 +1,6 @@
 ﻿using ASPNETCore.BuisnessLogic.Managers.TeamsManager;
 using ASPNETCore.DataAccess.Models.DBModels;
+using ASPNETCore.Helpers;
 using Microsoft.AspNetCore.SignalR;
 using SharedLib.DataTransferModels;
 using SharedLib.Services.ExceptionBuilderService;
@@ -340,5 +341,19 @@ namespace ASPNETCore.Hubs
 			await Clients.Caller.SendAsync("MakeTeamMemberCaptain", res);
 		}
 
+		public async Task UpdateExerciseToCompetitionTeam(ExerciseToTeamToCompetitionDT exercisesToTeamToCompetitionDT, int userUpdateId)
+		{
+
+			try
+			{
+				await _teamManager.UpdateExerciseToCompetitionTeamAsync(exercisesToTeamToCompetitionDT, userUpdateId);
+			}
+			catch
+			{
+				throw;
+			}
+		}
 	}
+
+	
 }

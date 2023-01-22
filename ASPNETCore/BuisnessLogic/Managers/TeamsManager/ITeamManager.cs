@@ -1,4 +1,5 @@
-﻿using SharedLib.DataTransferModels;
+﻿using ASPNETCore.DataAccess.Models.DBModels;
+using SharedLib.DataTransferModels;
 
 namespace ASPNETCore.BuisnessLogic.Managers.TeamsManager
 {
@@ -24,5 +25,7 @@ namespace ASPNETCore.BuisnessLogic.Managers.TeamsManager
 		Task RemoveExerciseFromCompetitionTeamAsync(int competitionId, int teamId, int exerciseId, int userUpdateId);
 
 		Task MakeTeamMemberCaptainAsync(int teamId, int userId, int userUpdateId);
+
+		Task UpdateExerciseToCompetitionTeamAsync(ExerciseToTeamToCompetitionDT exerciseToTeamToCompetitionDT, int userUpdateID);
 	}
 }
