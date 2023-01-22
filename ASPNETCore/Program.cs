@@ -11,6 +11,7 @@ using ASPNETCore.DataAccess.Repositories;
 using ASPNETCore.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SharedLib.Services.ExceptionBuilderService;
 using System.Text.Json.Serialization;
 
@@ -48,6 +49,11 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
+
+
+builder.Logging.ClearProviders();
+builder.Logging.AddDebug();
+
 
 string DB_CONNECTION_STRING =
     "Server=tcp:ccmsdbserver.database.windows.net,1433;Initial Catalog=ccms;Persist Security Info=False;User ID=ccmsadmin;Password=Q!w2e3r4t5;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
@@ -107,16 +113,6 @@ builder.Services.AddTransient<IExercisesManager, ExercisesManager>();
 builder.Services.AddTransient<IUserManager, UserManager>();
 
 
-//builder.Services.AddTransient<IGenerateUsers, UsersStorage>();
-//builder.Services.AddTransient<IReadUsers, UsersStorage>();
-
-
-builder.Services.AddControllers()
-        .AddJsonOptions(options =>
-        {
-            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-        });
-
 
 
 
@@ -124,24 +120,7 @@ builder.Services.AddControllers()
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-    app.UseHsts();
-}
-else
-{
-    app.UseDeveloperExceptionPage();
-}
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-
-    var context = services.GetRequiredService<CCMSContext>();
-
-    //SQLHelper.OpenConnection(context);
-}
 
 app.UseCors("AllowAnyGet")
    .UseCors("AllowExampleDomain");
@@ -155,11 +134,27 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapHub<CompetitionHub>("/competitions");
-app.MapHub<ExerciseHub>("/exercises");
-app.MapHub<TeamHub>("/teams");
-app.MapHub<UserHub>("/users");
 
+app.Logger.LogInformation("Mapping routes");
+
+app.MapHub<CompetitionHub>("/competitions", context =>
+{
+    app.Logger.LogInformation("Map route {0}", nameof(CompetitionHub));
+});
+app.MapHub<ExerciseHub>("/exercises", context =>
+{
+    app.Logger.LogInformation("Map route {0}", nameof(ExerciseHub));
+});
+app.MapHub<TeamHub>("/teams", context =>
+{
+    app.Logger.LogInformation("Map route {0}", nameof(TeamHub));
+});
+app.MapHub<UserHub>("/users", context =>
+{
+    app.Logger.LogInformation("Map route {0}", nameof(UserHub));
+});
+
+app.Logger.LogInformation("Strating the server");
 
 app.Run();
 

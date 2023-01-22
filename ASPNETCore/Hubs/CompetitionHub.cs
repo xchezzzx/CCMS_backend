@@ -1,9 +1,5 @@
 ﻿using ASPNETCore.BuisnessLogic.Managers.CompetitionsManager;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.CodeAnalysis.Editing;
 using SharedLib.Constants.Enums;
 using SharedLib.DataTransferModels;
 using SharedLib.Services.ExceptionBuilderService;
@@ -202,7 +198,35 @@ namespace ASPNETCore.Hubs
 			await Clients.Caller.SendAsync("AddNewOperatorToCompetition", res);
 		}
 
-		public async Task RemoveOperatorFromCompetition(int competitionId, int operatorId)
+
+        public async Task AddNewOperatorToCompetition(int competitionId, List<int> operatorIds)
+        {
+            string res = "success";
+            try
+            {
+                if (competitionId <= 0)
+                {
+                    throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionId));
+                }
+                if (operatorIds.Count == 0)
+                {
+                    throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(operatorIds));
+                }
+                foreach (var id in operatorIds)
+                {
+                    await _competitionManager.AddNewOperatorToCompetitionAsync(competitionId, id, 1);
+                }
+            }
+            catch
+            {
+                res = "failed";
+                throw;
+            }
+
+            await Clients.Caller.SendAsync("AddNewOperatorToCompetition", res);
+        }
+
+        public async Task RemoveOperatorFromCompetition(int competitionId, int operatorId)
 		{
 			string res = "success";
 			try
@@ -250,7 +274,35 @@ namespace ASPNETCore.Hubs
 			await Clients.Caller.SendAsync("AddNewExerciseToCompetition", res);
 		}
 
-		public async Task RemoveExerciseFromCompetition(int competitionId, int exerciseId)
+
+        public async Task AddNewExerciseToCompetition(int competitionId, List<int> exerciseIds)
+        {
+            string res = "success";
+            try
+            {
+                if (competitionId <= 0)
+                {
+                    throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionId));
+                }
+                if (exerciseIds.Count == 0)
+                {
+                    throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(exerciseIds));
+                }
+				foreach (var id in exerciseIds)
+                {
+                    await _competitionManager.AddNewExerciseToCompetitionAsync(competitionId, id, 1);
+                }
+            }
+            catch
+            {
+                res = "failed";
+                throw;
+            }
+
+            await Clients.Caller.SendAsync("AddNewExerciseToCompetition", res);
+        }
+
+        public async Task RemoveExerciseFromCompetition(int competitionId, int exerciseId)
 		{
 			string res = "success";
 			try
@@ -288,6 +340,34 @@ namespace ASPNETCore.Hubs
 					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(teamId));
 				}
 				await _competitionManager.AddNewTeamToCompetitionAsync(competitionId, teamId, 1);
+			}
+			catch
+			{
+				res = "failed";
+				throw;
+			}
+
+			await Clients.Caller.SendAsync("AddNewTeamToCompetition", res);
+		}
+
+		
+		public async Task AddNewTeamToCompetition(int competitionId, List<int> teamIds)
+		{
+			string res = "success";
+			try
+			{
+				if (competitionId <= 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(competitionId));
+				}
+				if (teamIds.Count == 0)
+				{
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(teamIds));
+				}
+				foreach (var id in teamIds)
+				{
+                    await _competitionManager.AddNewTeamToCompetitionAsync(competitionId, id, 1);
+                }
 			}
 			catch
 			{

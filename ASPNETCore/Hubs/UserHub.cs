@@ -21,8 +21,9 @@ namespace ASPNETCore.Hubs
 
 				await Clients.Caller.SendAsync("GetCurrentUser", userDT);
 			}
-			catch 
+			catch (Exception ex) 
 			{
+				Console.WriteLine(ex.Message);
 				throw;
 			}
 		}
