@@ -11,7 +11,7 @@ using ASPNETCore.DataAccess.Repositories;
 using ASPNETCore.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using SharedLib.Services.TwitterService;
 using SharedLib.Services.ExceptionBuilderService;
 using System.Text.Json.Serialization;
 
@@ -111,6 +111,8 @@ builder.Services.AddTransient<ICompetitionManager, CompetitionManager>();
 builder.Services.AddTransient<ITeamManager, TeamManager>();
 builder.Services.AddTransient<IExercisesManager, ExercisesManager>();
 builder.Services.AddTransient<IUserManager, UserManager>();
+
+builder.Services.AddTransient<ITwitterService, TwitterService>();
 
 
 

@@ -42,7 +42,7 @@ namespace ASPNETCore.Hubs
 			}
 		}
 
-        public async Task GetAllUsersAsync()
+        public async Task GetAllUsers()
 		{
 			List<UserDT> usersDT = new();
 			try
@@ -57,7 +57,7 @@ namespace ASPNETCore.Hubs
 			}
 		}
 
-        public async Task GetAllActiveUsersAsync()
+        public async Task GetAllActiveUsers()
 		{
             List<UserDT> usersDT = new();
             try

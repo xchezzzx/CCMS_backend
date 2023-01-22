@@ -5,6 +5,7 @@ using ASPNETCore.Helpers;
 using SharedLib.Constants.Enums;
 using SharedLib.DataTransferModels;
 using SharedLib.Services.ExceptionBuilderService;
+using SharedLib.Services.TwitterService;
 
 namespace ASPNETCore.BuisnessLogic.Managers.CompetitionsManager
 {
@@ -15,9 +16,11 @@ namespace ASPNETCore.BuisnessLogic.Managers.CompetitionsManager
 		private readonly IEntityProvider<TeamsToCompetition> _teamsToCompetitionEntityProvider;
 		private readonly IEntityProvider<ExercisesToCompetition> _exercisesToCompetitionEntityProvider;
 		private readonly IEntityToCompetitionProvider _entityToCompetitionProvider;
+		private readonly ITwitterService _twitterService;
 
-		public CompetitionManager(IEntityProvider<ExercisesToCompetition> exercisesToCompetitionEntityProvider, IEntityProvider<TeamsToCompetition> teamsToCompetitionEntityProvider, IEntityProvider<OperatorsToCompetition> operatorsToCompetitionEntityProvider, IEntityProvider<Competition> entityProvider, IExceptionBuilderService exceptionBuilderService, IEntityToCompetitionProvider entityToCompetitionProvider)
+		public CompetitionManager(ITwitterService twitterService, IEntityProvider<ExercisesToCompetition> exercisesToCompetitionEntityProvider, IEntityProvider<TeamsToCompetition> teamsToCompetitionEntityProvider, IEntityProvider<OperatorsToCompetition> operatorsToCompetitionEntityProvider, IEntityProvider<Competition> entityProvider, IExceptionBuilderService exceptionBuilderService, IEntityToCompetitionProvider entityToCompetitionProvider)
 		{
+			_twitterService = twitterService;
 			_competitionEntityProvider = entityProvider;
 			_entityToCompetitionProvider = entityToCompetitionProvider;
 			_operatorsToCompetitionEntityProvider = operatorsToCompetitionEntityProvider;
@@ -84,6 +87,11 @@ namespace ASPNETCore.BuisnessLogic.Managers.CompetitionsManager
 			}
 
 			competitionDT = ToDTModelsParsers.DTCompetitionParser(competition);
+			try
+			{
+				await _twitterService.TweetAsync($"New competition \"{competitionDT.Name}\" created! \nWill started {competitionDT.StartDateTime}. \nJoin us #{competitionDT.Hashtag}");
+			}
+			catch { }
 
 			return competitionDT;
 		}

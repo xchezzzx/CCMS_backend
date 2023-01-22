@@ -326,7 +326,7 @@ namespace ASPNETCore.Hubs
 			await Clients.Caller.SendAsync("RemoveExerciseFromCompetition", res);
 		}
 
-		public async Task AddNewTeamsToCompetition(int competitionId, int teamId)
+		public async Task AddNewTeamToCompetition(int competitionId, int teamId)
 		{
 			string res = "success";
 			try
@@ -351,7 +351,7 @@ namespace ASPNETCore.Hubs
 		}
 
 		
-		public async Task AddNewTeamToCompetition(int competitionId, List<int> teamIds)
+		public async Task AddNewTeamsToCompetition(int competitionId, List<int> teamIds)
 		{
 			string res = "success";
 			try
