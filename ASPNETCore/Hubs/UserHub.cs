@@ -1,5 +1,6 @@
 ﻿using ASPNETCore.BuisnessLogic.Managers.UserManager;
 using Microsoft.AspNetCore.SignalR;
+using SharedLib.Constants.Enums;
 using SharedLib.DataTransferModels;
 
 namespace ASPNETCore.Hubs
@@ -13,11 +14,11 @@ namespace ASPNETCore.Hubs
 			_userManager = userManager;
 		}
 
-		public async Task GetCurrentUser(string auth0Id)
+		public async Task GetCurrentUser(UserDT userDT)
 		{
 			try
 			{
-				var userDT = await _userManager.GetCurrentUserAsync(auth0Id);
+				userDT = await _userManager.GetCurrentUserAsync(userDT);
 
 				await Clients.Caller.SendAsync("GetCurrentUser", userDT);
 			}
@@ -40,5 +41,78 @@ namespace ASPNETCore.Hubs
 				throw;
 			}
 		}
-	}
+
+        public async Task GetAllUsersAsync()
+		{
+			List<UserDT> usersDT = new();
+			try
+			{
+				usersDT = await _userManager.GetAllUsersAsync();
+				await Clients.Caller.SendAsync("GetAllUsers", usersDT);
+			}
+			catch 
+			{
+
+				throw;
+			}
+		}
+
+        public async Task GetAllActiveUsersAsync()
+		{
+            List<UserDT> usersDT = new();
+            try
+            {
+                usersDT = await _userManager.GetActiveUsersAsync();
+                await Clients.Caller.SendAsync("GetAllActiveUsers", usersDT);
+            }
+            catch
+            {
+
+                throw;
+            }
+        }
+
+        public async Task UpdateUser(UserDT userDT, int userUpdateId)
+		{
+            try
+            {
+                await _userManager.UpdateUserAsync(userDT, userUpdateId);
+            }
+            catch
+            {
+
+                throw;
+            }
+        }
+
+        public async Task DeleteUserById(int userId, int userUpdateId)
+		{
+
+            try
+            {
+                await _userManager.DeleteUserByIdAsync(userId, userUpdateId);
+            }
+            catch
+            {
+
+                throw;
+            }
+        }
+
+        public async Task AssignRoleToUser(int userId, Roles role, int userUpdateId)
+		{
+
+            try
+            {
+                await _userManager.AssignRoleToUserAsync(userId, role, userUpdateId);
+            }
+            catch
+            {
+
+                throw;
+            }
+        }
+
+
+    }
 }

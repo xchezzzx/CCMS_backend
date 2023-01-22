@@ -39,7 +39,7 @@ namespace ASPNETCore.Hubs
 			{
 				if (exerciseDT == null)
 				{
-					throw _exceptionBuilderService.ParseException(SharedLib.Constants.Enums.ExceptionCodes.HubMethodNullArgumentException, nameof(exerciseDT));
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(exerciseDT));
 				}
 				await _exercisesManager.AddExerciseAsync(exerciseDT, 1);
 			}
@@ -59,7 +59,7 @@ namespace ASPNETCore.Hubs
 			{
 				if (exerciseCategoryDT == null)
 				{
-					throw _exceptionBuilderService.ParseException(SharedLib.Constants.Enums.ExceptionCodes.HubMethodNullArgumentException, nameof(exerciseCategoryDT));
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(exerciseCategoryDT));
 				}
 				await _exercisesManager.AddNewExerciseCategoryAsync(exerciseCategoryDT);
 			}
@@ -79,7 +79,7 @@ namespace ASPNETCore.Hubs
 			{
 				if (exerciseLangDT == null)
 				{
-					throw _exceptionBuilderService.ParseException(SharedLib.Constants.Enums.ExceptionCodes.HubMethodNullArgumentException, nameof(exerciseLangDT));
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(exerciseLangDT));
 				}
 				await _exercisesManager.AddNewExerciseLangAsync(exerciseLangDT);
 			}
@@ -144,7 +144,7 @@ namespace ASPNETCore.Hubs
 			{
 				if (exercisePlatformDT == null)
 				{
-					throw _exceptionBuilderService.ParseException(SharedLib.Constants.Enums.ExceptionCodes.HubMethodNullArgumentException, nameof(exercisePlatformDT));
+					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(exercisePlatformDT));
 				}
 				await _exercisesManager.AddNewExercisePlatformAsync(exercisePlatformDT);
 			}
@@ -155,6 +155,5 @@ namespace ASPNETCore.Hubs
 			await Clients.Caller.SendAsync("Add", res);
 
 		}
-
 	}
 }

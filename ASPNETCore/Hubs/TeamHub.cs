@@ -212,7 +212,34 @@ namespace ASPNETCore.Hubs
 			await Clients.Caller.SendAsync("AddNewTeamMember", res);
 		}
 
-		public async Task RemoveMemberFromTeam(int teamId, int userId)
+
+        public async Task AddNewTeamMembers(int teamId, List<int> userIds)
+        {
+            string res = "succes";
+            try
+            {
+                if (teamId <= 0)
+                {
+                    throw _exceptionBuilderService.ParseException(SharedLib.Constants.Enums.ExceptionCodes.HubMethodNullArgumentException, nameof(teamId));
+                }
+                if (userIds.Count == 0)
+                {
+                    throw _exceptionBuilderService.ParseException(SharedLib.Constants.Enums.ExceptionCodes.HubMethodNullArgumentException, nameof(userIds));
+                }
+				foreach (var id in userIds)
+                {
+                    await _teamManager.AddNewTeamMemberAsync(teamId, id, 1);
+                }
+            }
+            catch
+            {
+                res = "failed";
+                throw;
+            }
+            await Clients.Caller.SendAsync("AddNewTeamMember", res);
+        }
+
+        public async Task RemoveMemberFromTeam(int teamId, int userId)
 		{
 			string res = "succes";
 			try
