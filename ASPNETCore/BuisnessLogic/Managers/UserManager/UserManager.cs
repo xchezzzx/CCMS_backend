@@ -212,12 +212,14 @@ namespace ASPNETCore.BuisnessLogic.Managers.UserManager
 				try
 				{
 					var currentCompetitions = await _competitionEntityProvider.GetActiveEntitiesWithIncludeAsync(x => x.StateId == (int)CompetitionStates.InProgress);
+					foreach (var comeptition in currentCompetitions)
+					{
+						competitionsDT.Add(ToDTModelsParsers.DTCompetitionParser(comeptition));
+					}
+					
 					if (currentCompetitions.Count >= 5)
 					{
-						foreach (var comeptition in currentCompetitions)
-						{
-							competitionsDT.Add(ToDTModelsParsers.DTCompetitionParser(comeptition));
-						}
+						return competitionsDT;
 					}
 					else
 					{
