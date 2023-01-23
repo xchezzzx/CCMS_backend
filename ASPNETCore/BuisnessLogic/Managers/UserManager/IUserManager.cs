@@ -23,6 +23,5 @@ namespace ASPNETCore.BuisnessLogic.Managers.UserManager
 		Task<List<CompetitionDT>> GetFiveCurrentOrNearestCompetitionsAsync();
 
 		Task<TeamDT> GetParticipantTeamAsync(int participantId);
-
 	}
 }

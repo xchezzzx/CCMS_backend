@@ -1,5 +1,6 @@
 ﻿using ASPNETCore.DataAccess.Models.DBModels;
 using ASPNETCore.DataAccess.Repositories;
+using SharedLib.Constants.Enums;
 
 namespace ASPNETCore.BuisnessLogic.Providers.EntityToTeamProvider
 {
@@ -83,33 +84,24 @@ namespace ASPNETCore.BuisnessLogic.Providers.EntityToTeamProvider
 		public async Task<Competition> GetTeamCurrentOrNearestCompetitionAsync(int teamId)
 		{
 			Competition competition;
+
 			try
 			{
-				var teamsToCompetition = await _teamsToCompetitionRepository.GetActiveEntitiesWithIncludeAsync(x => x.TeamId == teamId);
-				var ids = teamsToCompetition.Select(x => x.CompetitionId).ToList();
-				var competitions = await _competitionRepository.GetActiveEntitiesWithIncludeAsync(x => ids.Contains(x.Id));
-				competition = competitions.Where(x => x.StartDateTime <= DateTime.Now && x.EndDateTime >= DateTime.Now).FirstOrDefault();
-				if (competition == null)
+				var competitionIds = (await _teamsToCompetitionRepository.GetActiveEntitiesWithIncludeAsync(x => x.TeamId == teamId)).Select(x => x.CompetitionId).ToList();
+				try
 				{
-					competitions = competitions.Where(x => x.StartDateTime >= DateTime.Now).ToList();
-					if (competitions.Count > 0)
-					{
-						competition = competitions.First();
-						foreach (var comp in competitions)
-						{
-							if (comp.StartDateTime < competition.StartDateTime) competition = comp;
-						}
-					}
+					competition = (await _competitionRepository.GetActiveEntitiesWithIncludeAsync(x => competitionIds.Contains(x.Id) && x.StateId == (int)CompetitionStates.InProgress)).FirstOrDefault();
 				}
-
-				return competition;
-
+				catch 
+				{
+					competition = (await _competitionRepository.GetActiveEntitiesWithIncludeAsync(x => competitionIds.Contains(x.Id) && x.StateId == (int)CompetitionStates.InProgress)).OrderBy(x => x.StartDateTime).ToList()[0];
+				}
 			}
 			catch
 			{
 				throw;
 			}
+			return competition;
 		}
-
 	}
 }
