@@ -15,14 +15,16 @@ namespace ASPNETCore.BuisnessLogic.Managers.TeamsManager
 		private readonly IEntityToTeamProvider _entityToTeamProvider;
 		private readonly IEntityProvider<Exercise> _exerciseEntityProvider;
 		private readonly IEntityProvider<UsersToTeam> _usersToTeamEntityProvider;
+		private readonly IEntityProvider<TeamsToCompetition> _teamToCompetitionEntityProvider;
 
-		public TeamManager(IEntityProvider<UsersToTeam> usersToTeamEntityProvider, IEntityProvider<ExercisesToTeamToCompetition> exercisesToTeamToCompetitionEntityProvider, IEntityProvider<Exercise> exerciseEntityProvider, IEntityToTeamProvider entityToTeamProvider, IEntityProvider<Team> entityProvider)
+		public TeamManager(IEntityProvider<TeamsToCompetition> teamToCompetitionEntityProvider, IEntityProvider<UsersToTeam> usersToTeamEntityProvider, IEntityProvider<ExercisesToTeamToCompetition> exercisesToTeamToCompetitionEntityProvider, IEntityProvider<Exercise> exerciseEntityProvider, IEntityToTeamProvider entityToTeamProvider, IEntityProvider<Team> entityProvider)
 		{
 			_teamEntityProvider = entityProvider;
 			_entityToTeamProvider = entityToTeamProvider;
 			_exerciseEntityProvider = exerciseEntityProvider;
 			_exercisesToTeamToCompetitionEntityProvider = exercisesToTeamToCompetitionEntityProvider;
 			_usersToTeamEntityProvider = usersToTeamEntityProvider;
+			_teamToCompetitionEntityProvider = teamToCompetitionEntityProvider;
 		}
 
 
@@ -323,6 +325,25 @@ namespace ASPNETCore.BuisnessLogic.Managers.TeamsManager
 			{
 				throw;
 			}
+		}
+
+		public async Task<int> GetTeamPointsInCompetitionAsync(int teamId, int competitionId)
+		{
+			int points;
+			try
+			{
+				var nullablepoints = (await _teamToCompetitionEntityProvider.GetActiveEntitiesWithIncludeAsync(x => x.TeamId == teamId && x.CompetitionId == competitionId))[0].TeamPoints;
+
+				if (nullablepoints == null) points = 0;
+				else points = nullablepoints.Value;
+			}
+			catch 
+			{
+
+				throw;
+			}
+
+			return points;
 		}
 	}
 }

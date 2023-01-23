@@ -1,6 +1,4 @@
 ﻿using ASPNETCore.BuisnessLogic.Managers.TeamsManager;
-using ASPNETCore.DataAccess.Models.DBModels;
-using ASPNETCore.Helpers;
 using Microsoft.AspNetCore.SignalR;
 using SharedLib.DataTransferModels;
 using SharedLib.Services.ExceptionBuilderService;
@@ -353,7 +351,20 @@ namespace ASPNETCore.Hubs
 				throw;
 			}
 		}
-	}
 
-	
+
+		public async Task GetTeamPointsInCompetition(int teamId, int competitionId)
+		{
+			int points;
+			try
+			{
+				points = await _teamManager.GetTeamPointsInCompetitionAsync(teamId, competitionId);
+				await Clients.Caller.SendAsync("GetTeamPointsInCompetition", points);
+			}
+			catch
+			{
+				throw;
+			}
+		}
+	}
 }

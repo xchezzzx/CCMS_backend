@@ -27,5 +27,6 @@ namespace ASPNETCore.BuisnessLogic.Managers.TeamsManager
 		Task MakeTeamMemberCaptainAsync(int teamId, int userId, int userUpdateId);
 
 		Task UpdateExerciseToCompetitionTeamAsync(ExerciseToTeamToCompetitionDT exerciseToTeamToCompetitionDT, int userUpdateID);
+		Task<int> GetTeamPointsInCompetitionAsync(int teamId, int competitionId);
 	}
 }

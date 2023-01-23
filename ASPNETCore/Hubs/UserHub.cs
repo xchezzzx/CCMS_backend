@@ -1,5 +1,6 @@
 ﻿using ASPNETCore.BuisnessLogic.Managers.UserManager;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.CodeAnalysis.Editing;
 using SharedLib.Constants.Enums;
 using SharedLib.DataTransferModels;
 
@@ -114,5 +115,64 @@ namespace ASPNETCore.Hubs
         }
 
 
-    }
+
+
+		public async Task GetOperatorCurrentOrNearestCompetition(int operatorId)
+		{
+			CompetitionDT competitionDT = new();
+			try
+			{
+				competitionDT = await _userManager.GetOperatorCurrentOrNearestCompetitionAsync(operatorId);
+				await Clients.Caller.SendAsync("GetOperatorCurrentOrNearestCompetition", competitionDT);
+			}
+			catch 
+			{
+				throw;
+			}
+		}
+
+		public async Task GetParticipantCurrentOrNearestCompetition(int participantId)
+		{
+
+			CompetitionDT competitionDT = new();
+			try
+			{
+				competitionDT = await _userManager.GetParticipantCurrentOrNearestCompetitionAsync(participantId);
+				await Clients.Caller.SendAsync("GetParticipantCurrentOrNearestCompetition", competitionDT);
+			}
+			catch
+			{
+				throw;
+			}
+		}
+
+		public async Task GetFiveCurrentOrNearestCompetitions()
+		{
+
+			List<CompetitionDT> competitionsDT = new();
+			try
+			{
+				competitionsDT = await _userManager.GetFiveCurrentOrNearestCompetitionsAsync();
+				await Clients.Caller.SendAsync("GetFiveCurrentOrNearestCompetitions", competitionsDT);
+			}
+			catch
+			{
+				throw;
+			}
+		}
+
+		public async Task GetParticipantTeam(int participantId)
+		{
+			TeamDT teamDT = new();
+			try
+			{
+				teamDT = await _userManager.GetParticipantTeamAsync(participantId);
+				await Clients.Caller.SendAsync("GetParticipantTeam", teamDT);
+			}
+			catch
+			{
+				throw;
+			}
+		}
+	}
 }

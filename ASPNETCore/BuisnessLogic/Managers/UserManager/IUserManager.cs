@@ -1,4 +1,5 @@
-﻿using SharedLib.Constants.Enums;
+﻿using ASPNETCore.DataAccess.Models.DBModels;
+using SharedLib.Constants.Enums;
 using SharedLib.DataTransferModels;
 
 namespace ASPNETCore.BuisnessLogic.Managers.UserManager
@@ -14,5 +15,14 @@ namespace ASPNETCore.BuisnessLogic.Managers.UserManager
         Task DeleteUserByIdAsync(int userId, int userUpdateId);
 
         Task AssignRoleToUserAsync(int userId, Roles role, int userUpdateId);
-    }
+
+		Task<CompetitionDT> GetOperatorCurrentOrNearestCompetitionAsync(int operatorId);
+
+		Task<CompetitionDT> GetParticipantCurrentOrNearestCompetitionAsync(int participantId);
+
+		Task<List<CompetitionDT>> GetFiveCurrentOrNearestCompetitionsAsync();
+
+		Task<TeamDT> GetParticipantTeamAsync(int participantId);
+
+	}
 }

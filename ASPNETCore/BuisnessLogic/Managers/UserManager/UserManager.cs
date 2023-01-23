@@ -1,6 +1,7 @@
 ﻿using ASPNETCore.BuisnessLogic.Providers.EntityProvider;
 using ASPNETCore.DataAccess.Models.DBModels;
 using ASPNETCore.Helpers;
+using Microsoft.CodeAnalysis.Editing;
 using SharedLib.Constants.Enums;
 using SharedLib.DataTransferModels;
 
@@ -9,10 +10,17 @@ namespace ASPNETCore.BuisnessLogic.Managers.UserManager
     public class UserManager : IUserManager
 	{
 		private readonly IEntityProvider<User> _userEntityProvider;
+		private readonly IEntityProvider<OperatorsToCompetition> _operatorsToCompetitionEntityProvider;
+		private readonly IEntityProvider<UsersToTeam> _usersToTeamEntityProvider;
+		private readonly IEntityProvider<Competition> _competitionEntityProvider;
+		private readonly IEntityProvider<TeamsToCompetition> _teamsToCompetitionEntityProvider;
 
-		public UserManager(IEntityProvider<User> userEntityProvider)
+		public UserManager(IEntityProvider<Competition> competitionEntityProvider, IEntityProvider<User> userEntityProvider, IEntityProvider<OperatorsToCompetition> operatorsEntityProvider, IEntityProvider<UsersToTeam> usersToTeamEntityProvider)
 		{
 			_userEntityProvider = userEntityProvider;
+			_operatorsToCompetitionEntityProvider = operatorsEntityProvider;
+			_usersToTeamEntityProvider = usersToTeamEntityProvider;
+			_competitionEntityProvider = competitionEntityProvider;
 		}
 		public async Task<UserDT> GetCurrentUserAsync(UserDT userDT)
 		{
@@ -135,5 +143,124 @@ namespace ASPNETCore.BuisnessLogic.Managers.UserManager
                 throw;
             }
         }
-    }
+
+		public async Task<CompetitionDT> GetOperatorCurrentOrNearestCompetitionAsync(int operatorId)
+		{
+			CompetitionDT competitionDT = new();
+			try
+			{
+				var competitionIds = (await _operatorsToCompetitionEntityProvider.GetActiveEntitiesWithIncludeAsync(x => x.UserId == operatorId)).Select(x => x.CompetitionId).ToList();
+
+				try
+				{
+					var currentCompetition = (await _competitionEntityProvider.GetActiveEntitiesWithIncludeAsync(x => x.StateId == (int)CompetitionStates.InProgress && competitionIds.Contains(x.Id)))[0];
+					competitionDT = ToDTModelsParsers.DTCompetitionParser(currentCompetition);
+				}
+				catch 
+				{
+					var nearestCompetitions = await _competitionEntityProvider.GetActiveEntitiesWithIncludeAsync(x => x.StateId == (int)CompetitionStates.Planned && competitionIds.Contains(x.Id));
+					var nearestCompetition = nearestCompetitions.OrderBy(x => x.StartDateTime).ToList()[0];
+					competitionDT = ToDTModelsParsers.DTCompetitionParser(nearestCompetition);
+				}
+				
+			}
+			catch 
+			{
+
+				throw;
+			}
+
+			return competitionDT;
+		}
+
+		public async Task<CompetitionDT> GetParticipantCurrentOrNearestCompetitionAsync(int participantId)
+		{
+			CompetitionDT competitionDT = new();
+			try
+			{
+				var teamId = (await _usersToTeamEntityProvider.GetActiveEntitiesWithIncludeAsync(x => x.UserId == participantId)).FirstOrDefault().Id;
+				var competitionIds = (await _teamsToCompetitionEntityProvider.GetActiveEntitiesWithIncludeAsync(x => x.TeamId == teamId)).Select(x => x.CompetitionId).ToList();
+				try
+				{
+					var currentCompetition = (await _competitionEntityProvider.GetActiveEntitiesWithIncludeAsync(x => x.StateId == (int)CompetitionStates.InProgress && competitionIds.Contains(x.Id)))[0];
+					competitionDT = ToDTModelsParsers.DTCompetitionParser(currentCompetition);
+				}
+				catch
+				{
+					var nearestCompetitions = await _competitionEntityProvider.GetActiveEntitiesWithIncludeAsync(x => x.StateId == (int)CompetitionStates.Planned && competitionIds.Contains(x.Id));
+					var nearestCompetition = nearestCompetitions.OrderBy(x => x.StartDateTime).ToList()[0];
+					competitionDT = ToDTModelsParsers.DTCompetitionParser(nearestCompetition);
+				}
+
+			}
+			catch
+			{
+
+				throw;
+			}
+
+			return competitionDT;
+		}
+
+		public async Task<List<CompetitionDT>> GetFiveCurrentOrNearestCompetitionsAsync()
+		{
+			List<CompetitionDT> competitionsDT = new();
+			try
+			{
+				try
+				{
+					var currentCompetitions = await _competitionEntityProvider.GetActiveEntitiesWithIncludeAsync(x => x.StateId == (int)CompetitionStates.InProgress);
+					if (currentCompetitions.Count >= 5)
+					{
+						foreach (var comeptition in currentCompetitions)
+						{
+							competitionsDT.Add(ToDTModelsParsers.DTCompetitionParser(comeptition));
+						}
+					}
+					else
+					{
+						var nearestCompetitions = (await _competitionEntityProvider.GetActiveEntitiesWithIncludeAsync(x => x.StateId == (int)CompetitionStates.Planned)).OrderBy(x => x.StartDateTime).ToList();
+						foreach (var comeptition in nearestCompetitions)
+						{
+							competitionsDT.Add(ToDTModelsParsers.DTCompetitionParser(comeptition));
+							if (competitionsDT.Count >= 5) break;
+						}
+					}
+					
+				}
+				catch
+				{
+					var nearestCompetitions = (await _competitionEntityProvider.GetActiveEntitiesWithIncludeAsync(x => x.StateId == (int)CompetitionStates.Planned)).OrderBy(x => x.StartDateTime).ToList();
+					foreach (var comeptition in nearestCompetitions)
+					{
+						competitionsDT.Add(ToDTModelsParsers.DTCompetitionParser(comeptition));
+						if (competitionsDT.Count >= 5) break;
+					}
+				}
+
+			}
+			catch
+			{
+
+				throw;
+			}
+
+			return competitionsDT;
+		}
+
+		public async Task<TeamDT> GetParticipantTeamAsync(int participantId)
+		{
+			TeamDT teamDT = new();
+			try
+			{
+				var participant = await _usersToTeamEntityProvider.GetActiveEntityByIdWithIncludeAsync(participantId, x => x.Team);
+				teamDT = ToDTModelsParsers.DTTeamParser(participant.Team);
+			}
+			catch 
+			{
+				throw;
+			}
+			return teamDT;
+		}
+	}
 }
