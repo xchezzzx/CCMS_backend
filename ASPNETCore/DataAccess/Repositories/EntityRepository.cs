@@ -24,7 +24,7 @@ namespace ASPNETCore.DataAccess.Repositories
 
         public async Task<List<TEntity>> GetAllEntitiesWithIncludeAsync(params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            var entities = await Include(includeProperties).ToListAsync();
+            var entities = await (await Include(includeProperties)).ToListAsync();
             if (entities == null || entities.Count == 0)
             {
                 throw _exceptionBuilderService.ParseException(ExceptionCodes.DBNullResponseException, entities.GetType());
@@ -35,7 +35,7 @@ namespace ASPNETCore.DataAccess.Repositories
 
         public async Task<List<TEntity>> GetAllEntitiesWithIncludeAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            var query = Include(includeProperties);
+            var query = await Include(includeProperties);
 			var entities = await query.Where(predicate).ToListAsync(); 
 			if (entities == null || entities.Count == 0)
 			{
@@ -48,7 +48,7 @@ namespace ASPNETCore.DataAccess.Repositories
 
         public async Task<List<TEntity>> GetActiveEntitiesWithIncludeAsync(params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            var query = Include(includeProperties).Where(x => x.StatusId == (int)EntityStatuses.Active);
+            var query = (await Include(includeProperties)).Where(x => x.StatusId == (int)EntityStatuses.Active);
 
 			var entities = await query.ToListAsync();
 
@@ -64,7 +64,7 @@ namespace ASPNETCore.DataAccess.Repositories
 
         public async Task<List<TEntity>> GetActiveEntitiesWithIncludeAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            var query = Include(includeProperties).Where(x => x.StatusId == (int)EntityStatuses.Active).Where(predicate);
+            var query = (await Include(includeProperties)).Where(x => x.StatusId == (int)EntityStatuses.Active).Where(predicate);
 
 			var entities = await query.ToListAsync();
 
@@ -119,7 +119,7 @@ namespace ASPNETCore.DataAccess.Repositories
             _logger.LogInformation("Entity has been updated {0}: \n id:{1}\n by user:{2} (id)", Entity.GetType(), Entity.Id, userUpdateId);
         }
 
-        private IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] includeProperties)
+        private async Task<IQueryable<TEntity>> Include(params Expression<Func<TEntity, object>>[] includeProperties)
         {
             IQueryable<TEntity> query = _dbSet.AsNoTracking();
             return includeProperties

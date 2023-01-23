@@ -223,12 +223,20 @@ namespace ASPNETCore.BuisnessLogic.Managers.UserManager
 					}
 					else
 					{
-						var nearestCompetitions = (await _competitionEntityProvider.GetActiveEntitiesWithIncludeAsync(x => x.StateId == (int)CompetitionStates.Planned)).OrderBy(x => x.StartDateTime).ToList();
-						foreach (var comeptition in nearestCompetitions)
+						try
 						{
-							competitionsDT.Add(ToDTModelsParsers.DTCompetitionParser(comeptition));
-							if (competitionsDT.Count >= 5) break;
+							var nearestCompetitions = (await _competitionEntityProvider.GetActiveEntitiesWithIncludeAsync(x => x.StateId == (int)CompetitionStates.Planned)).OrderBy(x => x.StartDateTime).ToList();
+							foreach (var comeptition in nearestCompetitions)
+							{
+								competitionsDT.Add(ToDTModelsParsers.DTCompetitionParser(comeptition));
+								if (competitionsDT.Count >= 5) break;
+							}
 						}
+						catch 
+						{
+							return competitionsDT;
+						}
+						
 					}
 					
 				}
