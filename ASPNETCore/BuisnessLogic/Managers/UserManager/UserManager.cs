@@ -15,12 +15,14 @@ namespace ASPNETCore.BuisnessLogic.Managers.UserManager
 		private readonly IEntityProvider<Competition> _competitionEntityProvider;
 		private readonly IEntityProvider<TeamsToCompetition> _teamsToCompetitionEntityProvider;
 
-		public UserManager(IEntityProvider<Competition> competitionEntityProvider, IEntityProvider<User> userEntityProvider, IEntityProvider<OperatorsToCompetition> operatorsEntityProvider, IEntityProvider<UsersToTeam> usersToTeamEntityProvider)
+		public UserManager(IEntityProvider<TeamsToCompetition> teamsToCompetitionEntityProvider, IEntityProvider<Competition> competitionEntityProvider, IEntityProvider<User> userEntityProvider, IEntityProvider<OperatorsToCompetition> operatorsEntityProvider, IEntityProvider<UsersToTeam> usersToTeamEntityProvider)
 		{
 			_userEntityProvider = userEntityProvider;
 			_operatorsToCompetitionEntityProvider = operatorsEntityProvider;
 			_usersToTeamEntityProvider = usersToTeamEntityProvider;
 			_competitionEntityProvider = competitionEntityProvider;
+			_teamsToCompetitionEntityProvider = teamsToCompetitionEntityProvider;
+
 		}
 		public async Task<UserDT> GetCurrentUserAsync(UserDT userDT)
 		{
