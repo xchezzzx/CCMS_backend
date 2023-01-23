@@ -34,60 +34,58 @@ namespace ASPNETCore.Hubs
 
 		public async Task AddNewExercise(ExerciseDT exerciseDT)
 		{
-			string res = "Success";
+			
 			try
 			{
 				if (exerciseDT == null)
 				{
 					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(exerciseDT));
 				}
-				await _exercisesManager.AddExerciseAsync(exerciseDT, 1);
+				exerciseDT = await _exercisesManager.AddNewExerciseAsync(exerciseDT, 1);
 			}
 			catch
 			{
-				res = "failed";
+				throw;
 			}
-			await Clients.Caller.SendAsync("Add", res);
+			await Clients.Caller.SendAsync("AddNewExercise", exerciseDT);
 		}
 
 
 		public async Task AddNewExerciseCategory(ExerciseCategoryDT exerciseCategoryDT)
 		{
 
-			string res = "Success";
 			try
 			{
 				if (exerciseCategoryDT == null)
 				{
 					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(exerciseCategoryDT));
 				}
-				await _exercisesManager.AddNewExerciseCategoryAsync(exerciseCategoryDT);
+				exerciseCategoryDT = await _exercisesManager.AddNewExerciseCategoryAsync(exerciseCategoryDT);
 			}
 			catch
 			{
-				res = "failed";
+				throw;
 			}
-			await Clients.Caller.SendAsync("Add", res);
+			await Clients.Caller.SendAsync("AddNewExerciseCategory", exerciseCategoryDT);
 
 		}
 
 		public async Task AddNewExerciseLang(ExerciseLangDT exerciseLangDT)
 		{
 
-			string res = "Success";
 			try
 			{
 				if (exerciseLangDT == null)
 				{
 					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(exerciseLangDT));
 				}
-				await _exercisesManager.AddNewExerciseLangAsync(exerciseLangDT);
+				exerciseLangDT = await _exercisesManager.AddNewExerciseLangAsync(exerciseLangDT);
 			}
 			catch
 			{
-				res = "failed";
+				throw;
 			}
-			await Clients.Caller.SendAsync("Add", res);
+			await Clients.Caller.SendAsync("AddNewExerciseLang", exerciseLangDT);
 
 		}
 
@@ -103,7 +101,7 @@ namespace ASPNETCore.Hubs
 				throw;
 			}
 
-			await Clients.Caller.SendAsync("Get", exerciseCategoryDT);
+			await Clients.Caller.SendAsync("GetAllExerciseCategories", exerciseCategoryDT);
 		}
 
 		public async Task GetAllExerciseLangs()
@@ -118,7 +116,7 @@ namespace ASPNETCore.Hubs
 				throw;
 			}
 
-			await Clients.Caller.SendAsync("Get", exerciseLangDT);
+			await Clients.Caller.SendAsync("GetAllExerciseLangs", exerciseLangDT);
 		}
 
 		public async Task GetAllExercisePlatforms()
@@ -134,25 +132,24 @@ namespace ASPNETCore.Hubs
 				throw;
 			}
 
-			await Clients.Caller.SendAsync("Get", exercisePlatformDT);
+			await Clients.Caller.SendAsync("GetAllExercisePlatforms", exercisePlatformDT);
 		}
 
 		public async Task AddNewExercisePlatform(ExercisePlatformDT exercisePlatformDT)
 		{
-			string res = "Success";
 			try
 			{
 				if (exercisePlatformDT == null)
 				{
 					throw _exceptionBuilderService.ParseException(ExceptionCodes.HubMethodNullArgumentException, nameof(exercisePlatformDT));
 				}
-				await _exercisesManager.AddNewExercisePlatformAsync(exercisePlatformDT);
+				exercisePlatformDT = await _exercisesManager.AddNewExercisePlatformAsync(exercisePlatformDT);
 			}
 			catch
 			{
-				res = "failed";
+				throw;
 			}
-			await Clients.Caller.SendAsync("Add", res);
+			await Clients.Caller.SendAsync("AddNewExercisePlatform", exercisePlatformDT);
 
 		}
 	}

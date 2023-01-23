@@ -92,12 +92,10 @@ namespace ASPNETCore.Hubs
 			{
 				throw;
 			}
-			await Clients.Caller.SendAsync("UpdateTeam", teamDT);
 		}
 
 		public async Task DeleteTeamByIdASync(int teamId)
 		{
-			string res = "succes";
 			try
 			{
 				if (teamId <= 0)
@@ -108,10 +106,8 @@ namespace ASPNETCore.Hubs
 			}
 			catch
 			{
-				res = "failed";
 				throw;
 			}
-			await Clients.Caller.SendAsync("DeleteTeamByIdASync", res);
 		}
 
 		public async Task GetAllTeamMembers(int teamId)
@@ -190,7 +186,6 @@ namespace ASPNETCore.Hubs
 
 		public async Task AddNewTeamMember(int teamId, int userId)
 		{
-			string res = "succes";
 			try
 			{
 				if (teamId <= 0)
@@ -205,16 +200,13 @@ namespace ASPNETCore.Hubs
 			}
 			catch
 			{
-				res = "failed";
 				throw;
 			}
-			await Clients.Caller.SendAsync("AddNewTeamMember", res);
 		}
 
 
         public async Task AddNewTeamMembers(int teamId, List<int> userIds)
         {
-            string res = "succes";
             try
             {
                 if (teamId <= 0)
@@ -232,15 +224,12 @@ namespace ASPNETCore.Hubs
             }
             catch
             {
-                res = "failed";
                 throw;
             }
-            await Clients.Caller.SendAsync("AddNewTeamMember", res);
         }
 
         public async Task RemoveMemberFromTeam(int teamId, int userId)
 		{
-			string res = "succes";
 			try
 			{
 				if (teamId <= 0)
@@ -255,15 +244,12 @@ namespace ASPNETCore.Hubs
 			}
 			catch
 			{
-				res = "failed";
 				throw;
 			}
-			await Clients.Caller.SendAsync("RemoveMemberFromTeam", res);
 		}
 
 		public async Task AddNewExerciseToCompetitionTeam(int teamId, int userId, int competitionId)
 		{
-			string res = "succes";
 			try
 			{
 				if (teamId <= 0)
@@ -282,15 +268,12 @@ namespace ASPNETCore.Hubs
 			}
 			catch
 			{
-				res = "failed";
 				throw;
 			}
-			await Clients.Caller.SendAsync("AddNewExerciseToCompetitionTeam", res);
 		}
 
 		public async Task RemoveExerciseFromCompetitionTeam(int teamId, int userId, int competitionId)
 		{
-			string res = "succes";
 			try
 			{
 				if (teamId <= 0)
@@ -309,16 +292,13 @@ namespace ASPNETCore.Hubs
 			}
 			catch
 			{
-				res = "failed";
 				throw;
 			}
-			await Clients.Caller.SendAsync("RemoveExerciseFromCompetitionTeam", res);
 		}
 
 
 		public async Task MakeTeamMemberCaptain(int teamId, int userId)
 		{
-			string res = "succes";
 			try
 			{
 				if (teamId <= 0)
@@ -333,10 +313,8 @@ namespace ASPNETCore.Hubs
 			}
 			catch
 			{
-				res = "failed";
 				throw;
 			}
-			await Clients.Caller.SendAsync("MakeTeamMemberCaptain", res);
 		}
 
 		public async Task UpdateExerciseToCompetitionTeam(ExerciseToTeamToCompetitionDT exercisesToTeamToCompetitionDT, int userUpdateId)

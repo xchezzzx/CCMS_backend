@@ -4,7 +4,7 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 {
 	public interface IExercisesManager
 	{
-		Task AddExerciseAsync(ExerciseDT exerciseDT, int userCreateId);
+		Task<ExerciseDT> AddNewExerciseAsync(ExerciseDT exerciseDT, int userCreateId);
 
 		Task<List<ExerciseDT>> GetAllExercisesAsync();
 
@@ -12,8 +12,8 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 		Task<List<ExerciseCategoryDT>> GetAllExerciseCategoriesAsync();
 		Task<List<ExercisePlatformDT>> GetAllExercisePlatformsAsync();
 
-		Task AddNewExerciseLangAsync(ExerciseLangDT exerciseLangDT);
-		Task AddNewExerciseCategoryAsync(ExerciseCategoryDT exerciseCategoryDT);
-		Task AddNewExercisePlatformAsync(ExercisePlatformDT exerciseCategoryDT);
+		Task<ExerciseLangDT> AddNewExerciseLangAsync(ExerciseLangDT exerciseLangDT);
+		Task<ExerciseCategoryDT> AddNewExerciseCategoryAsync(ExerciseCategoryDT exerciseCategoryDT);
+		Task<ExercisePlatformDT> AddNewExercisePlatformAsync(ExercisePlatformDT exerciseCategoryDT);
 	}
 }

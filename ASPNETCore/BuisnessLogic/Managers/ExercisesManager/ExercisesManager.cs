@@ -43,10 +43,19 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 			return result;
 		}
 
-		public async Task AddExerciseAsync(ExerciseDT exerciseDT, int userCreateId)
+		public async Task<ExerciseDT> AddNewExerciseAsync(ExerciseDT exerciseDT, int userCreateId)
 		{
-			var exercise = ToDBModelsParsers.ExerciseParser(exerciseDT);
-			await _entityProviderExercise.AddNewEntityAsync(exercise, userCreateId);
+			try
+			{
+				var exercise = ToDBModelsParsers.ExerciseParser(exerciseDT);
+				exercise = await _entityProviderExercise.AddNewEntityAsync(exercise, userCreateId);
+				exerciseDT = ToDTModelsParsers.DTExerciseParser(exercise);
+				return exerciseDT;
+			}
+			catch 
+			{
+				throw;
+			}
 		}
 
 		public async Task<List<ExerciseLangDT>> GetAllExerciseLangsAsync()
@@ -112,12 +121,14 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 			return result;
 		}
 
-		public async Task AddNewExerciseLangAsync(ExerciseLangDT exerciseLangDT)
+		public async Task<ExerciseLangDT> AddNewExerciseLangAsync(ExerciseLangDT exerciseLangDT)
 		{
 			var exerciseLang = ToDBModelsParsers.ExerciseLangParser(exerciseLangDT);
 			try
 			{
-				await _entityProviderExerciseLang.AddNewEntityAsync(exerciseLang, 1);
+				exerciseLang = await _entityProviderExerciseLang.AddNewEntityAsync(exerciseLang, 1);
+				exerciseLangDT = ToDTModelsParsers.DTExerciseLanguageParser(exerciseLang);
+				return exerciseLangDT;
 			}
 			catch
 			{
@@ -125,13 +136,15 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 			}
 		}
 
-		public async Task AddNewExerciseCategoryAsync(ExerciseCategoryDT exerciseCategoryDT)
+		public async Task<ExerciseCategoryDT> AddNewExerciseCategoryAsync(ExerciseCategoryDT exerciseCategoryDT)
 		{
 			var exerciseCategory = ToDBModelsParsers.ExerciseCategoryParser(exerciseCategoryDT);
 
 			try
 			{
-				await _entityProviderExerciseCategory.AddNewEntityAsync(exerciseCategory, 1);
+				exerciseCategory = await _entityProviderExerciseCategory.AddNewEntityAsync(exerciseCategory, 1);
+				exerciseCategoryDT = ToDTModelsParsers.DTExerciseCategoryParser(exerciseCategory);
+				return exerciseCategoryDT;
 			}
 			catch
 			{
@@ -140,13 +153,15 @@ namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 
 		}
 
-		public async Task AddNewExercisePlatformAsync(ExercisePlatformDT exercisePlatformDT)
+		public async Task<ExercisePlatformDT> AddNewExercisePlatformAsync(ExercisePlatformDT exercisePlatformDT)
 		{
 			var exercisePlatform = ToDBModelsParsers.ExercisePlatformParser(exercisePlatformDT);
 
 			try
 			{
-				await _entityProviderExercisePlatform.AddNewEntityAsync(exercisePlatform, 1);
+				exercisePlatform = await _entityProviderExercisePlatform.AddNewEntityAsync(exercisePlatform, 1);
+				exercisePlatformDT = ToDTModelsParsers.DTExercisePlatformParser(exercisePlatform);
+				return exercisePlatformDT;
 			}
 			catch
 			{
