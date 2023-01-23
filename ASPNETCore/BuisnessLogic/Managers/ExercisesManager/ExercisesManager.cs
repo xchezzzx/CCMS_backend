@@ -1,13 +1,12 @@
 ﻿using ASPNETCore.BuisnessLogic.Providers.EntityProvider;
 using ASPNETCore.DataAccess.Models.DBModels;
 using ASPNETCore.Helpers;
-using SharedLib.Constants.Enums;
 using SharedLib.DataTransferModels;
 using SharedLib.Services.ExceptionBuilderService;
 
 namespace ASPNETCore.BuisnessLogic.Managers.ExercisesManager
 {
-    public class ExercisesManager : IExercisesManager
+	public class ExercisesManager : IExercisesManager
 	{
 		private readonly IEntityProvider<Exercise> _entityProviderExercise;
 		private readonly IEntityProvider<ExerciseLang> _entityProviderExerciseLang;

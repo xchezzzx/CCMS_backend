@@ -95,7 +95,6 @@ namespace ASPNETCore.Hubs
 
 		public async Task DeleteCompetitionById(int competitionId)
 		{
-			string res = "success";
 			try
 			{
 				if (competitionId <= 0)
@@ -106,16 +105,13 @@ namespace ASPNETCore.Hubs
 			}
 			catch
 			{
-				res = "failed";
 				throw;
 			}
 
-			await Clients.Caller.SendAsync("DeleteCompetitionById", res);
 		}
 
 		public async Task StartCompetitionById(int competitionId)
 		{
-			string res = "success";
 			try
 			{
 				if (competitionId <= 0)
@@ -126,16 +122,13 @@ namespace ASPNETCore.Hubs
 			}
 			catch
 			{
-				res = "failed";
 				throw;
 			}
 
-			await Clients.Caller.SendAsync("StartCompetitionById", res);
 		}
 
 		public async Task EndCompetitionById(int competitionId)
 		{
-			string res = "success";
 			try
 			{
 				if (competitionId <= 0)
@@ -146,17 +139,14 @@ namespace ASPNETCore.Hubs
 			}
 			catch
 			{
-				res = "failed";
 				throw;
 			}
 
-			await Clients.Caller.SendAsync("EndCompetitionById", res);
 		}
 
 
 		public async Task UpdateCompetition(CompetitionDT competitionDT)
 		{
-			string res = "success";
 			try
 			{
 				if (competitionDT == null)
@@ -167,16 +157,13 @@ namespace ASPNETCore.Hubs
 			}
 			catch
 			{
-				res = "failed";
 				throw;
 			}
 
-			await Clients.Caller.SendAsync("UpdateCompetition", res);
 		}
 
 		public async Task AddNewOperatorToCompetition(int competitionId, int operatorId)
 		{
-			string res = "success";
 			try
 			{
 				if (competitionId <= 0)
@@ -191,17 +178,14 @@ namespace ASPNETCore.Hubs
 			}
 			catch
 			{
-				res = "failed";
 				throw;
 			}
 
-			await Clients.Caller.SendAsync("AddNewOperatorToCompetition", res);
 		}
 
 
         public async Task AddNewOperatorsToCompetition(int competitionId, List<int> operatorIds)
         {
-            string res = "success";
             try
             {
                 if (competitionId <= 0)
@@ -219,16 +203,13 @@ namespace ASPNETCore.Hubs
             }
             catch
             {
-                res = "failed";
                 throw;
             }
 
-            await Clients.Caller.SendAsync("AddNewOperatorToCompetition", res);
         }
 
         public async Task RemoveOperatorFromCompetition(int competitionId, int operatorId)
 		{
-			string res = "success";
 			try
 			{
 				if (competitionId <= 0)
@@ -243,16 +224,13 @@ namespace ASPNETCore.Hubs
 			}
 			catch
 			{
-				res = "failed";
 				throw;
 			}
 
-			await Clients.Caller.SendAsync("RemoveOperatorFromCompetition", res);
 		}
 
 		public async Task AddNewExerciseToCompetition(int competitionId, int exerciseId)
 		{
-			string res = "success";
 			try
 			{
 				if (competitionId <= 0)
@@ -267,17 +245,14 @@ namespace ASPNETCore.Hubs
 			}
 			catch
 			{
-				res = "failed";
 				throw;
 			}
 
-			await Clients.Caller.SendAsync("AddNewExerciseToCompetition", res);
 		}
 
 
         public async Task AddNewExercisesToCompetition(int competitionId, List<int> exerciseIds)
         {
-            string res = "success";
             try
             {
                 if (competitionId <= 0)
@@ -295,16 +270,13 @@ namespace ASPNETCore.Hubs
             }
             catch
             {
-                res = "failed";
                 throw;
             }
 
-            await Clients.Caller.SendAsync("AddNewExerciseToCompetition", res);
         }
 
         public async Task RemoveExerciseFromCompetition(int competitionId, int exerciseId)
 		{
-			string res = "success";
 			try
 			{
 				if (competitionId <= 0)
@@ -319,16 +291,12 @@ namespace ASPNETCore.Hubs
 			}
 			catch
 			{
-				res = "failed";
 				throw;
 			}
-
-			await Clients.Caller.SendAsync("RemoveExerciseFromCompetition", res);
 		}
 
 		public async Task AddNewTeamToCompetition(int competitionId, int teamId)
 		{
-			string res = "success";
 			try
 			{
 				if (competitionId <= 0)
@@ -343,17 +311,13 @@ namespace ASPNETCore.Hubs
 			}
 			catch
 			{
-				res = "failed";
 				throw;
 			}
-
-			await Clients.Caller.SendAsync("AddNewTeamToCompetition", res);
 		}
 
 		
 		public async Task AddNewTeamsToCompetition(int competitionId, List<int> teamIds)
 		{
-			string res = "success";
 			try
 			{
 				if (competitionId <= 0)
@@ -371,16 +335,12 @@ namespace ASPNETCore.Hubs
 			}
 			catch
 			{
-				res = "failed";
 				throw;
 			}
-
-			await Clients.Caller.SendAsync("AddNewTeamToCompetition", res);
 		}
 
 		public async Task RemoveTeamFromCompetition(int competitionId, int teamId)
 		{
-			string res = "success";
 			try
 			{
 				if (competitionId <= 0)
@@ -395,11 +355,9 @@ namespace ASPNETCore.Hubs
 			}
 			catch
 			{
-				res = "failed";
 				throw;
 			}
 
-			await Clients.Caller.SendAsync("RemoveTeamFromCompetition", res);
 
 
 		}
