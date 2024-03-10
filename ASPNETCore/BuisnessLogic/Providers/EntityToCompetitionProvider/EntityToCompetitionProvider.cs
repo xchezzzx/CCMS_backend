@@ -49,8 +49,8 @@ namespace ASPNETCore.BuisnessLogic.Providers.EntityToCompetitionProvider
 			try
 			{
 				var exerciseToCompetition = await _exerciseToCompetitionRepository.GetActiveEntitiesWithIncludeAsync(x => x.CompetitionId == competitionId);
-				var ids = exerciseToCompetition.Select(x => x.Id).ToList();
-				exercises = await _exerciseRepository.GetActiveEntitiesWithIncludeAsync(x => ids.Contains(x.Id), x => x.Category, x => x.Lang, x => x.Platform);
+				var ids = exerciseToCompetition.Select(x => x.ExerciseId).ToList();
+				exercises = await _exerciseRepository.GetActiveEntitiesWithIncludeAsync(x => ids.Contains(x.Id), u => u.CreateUser, u => u.UpdateUser, u => u.Category, u => u.Lang, u => u.Platform);
 			}
 			catch
 			{

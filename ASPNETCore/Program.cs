@@ -56,7 +56,7 @@ builder.Logging.AddDebug();
 
 
 string DB_CONNECTION_STRING =
-    "Server=tcp:ccmsdbserver.database.windows.net,1433;Initial Catalog=ccms;Persist Security Info=False;User ID=ccmsadmin;Password=Q!w2e3r4t5;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+	"Server=HAL-9000\\SQLEXPRESS;Database=ccms;User ID=admin;Password=Q!w2e3r4t5;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;";
 
 builder.Services.AddDbContext<CCMSContext>(options => options.UseSqlServer(DB_CONNECTION_STRING));
 
